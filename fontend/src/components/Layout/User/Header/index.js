@@ -1,5 +1,6 @@
 import './style.css';
 import { Helmet } from 'react-helmet';
+import {Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUser, faSignOutAlt, faShoppingCart , faPhone ,faHome, faBox} from '@fortawesome/free-solid-svg-icons';
 const header = ()=>{
@@ -56,14 +57,14 @@ function Header() {
                             <div className="col-md">
                             </div>
                             <div className="col-md">
-                                <a href="./cart.php" className="  position-relative">
+                                <Link to="/cart" className="  position-relative">
                                 <span className="fs-3 text-dark"><FontAwesomeIcon icon={faShoppingCart} /></span>
                                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 </span>
-                                </a>
+                                </Link>
                             </div>
                             <div className="col-md">
-                                <a className="fs-3 text-dark" href="./Signin "><FontAwesomeIcon icon={faSignOutAlt} /></a>
+                                <Link className="fs-3 text-dark" to="/Signin "><FontAwesomeIcon icon={faSignOutAlt} /></Link>
                             </div>
                         </div>
                     </div>
@@ -78,29 +79,29 @@ function Header() {
                         <div className="col-6">
                             <ul className="menu nav">
                                 <li className="nav-item ">
-                                    <a className="nav-link" href="./"><FontAwesomeIcon icon={faHome} /> Trang chủ</a>
+                                    <Link className="nav-link" to="/"><FontAwesomeIcon icon={faHome} /> Trang chủ</Link>
                                 </li>
                                 <li className="nav-item ">
-                                    <a className="nav-link" href="./Product">Sản phẩm</a>
+                                    <Link className="nav-link" to="/Product">Sản phẩm</Link>
                                 </li>
                                 <li className="nav-item ">
-                                    <a className="nav-link" href="./Introduce"> Giới thiệu</a>
+                                    <Link className="nav-link" to="/Introduce"> Giới thiệu</Link>
                                 </li>
                                 <li className="nav-item ">
-                                    <a className="nav-link" href="./Contact">Liên hệ</a>
+                                    <Link className="nav-link" to="/Contact">Liên hệ</Link>
                                 </li>
                             </ul>
                         </div>
                         <div className="col-6">
                             <ul className="menu menu-2  nav">
                                 <li className="nav-item dropdown">
-                                    <a className="nav-link" href="./Order">Tra cứu đơn hàng</a>
+                                    <Link className="nav-link" to="/Order">Tra cứu đơn hàng</Link>
                                 </li>
                                 <li className="nav-item ">
-                                    <a className="nav-link dropdown-toggle" href="./" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Tải ứng dụng</a>
+                                    <Link className="nav-link dropdown-toggle" to="./" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Tải ứng dụng</Link>
                                     <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a className="dropdown-item" href="#"><img style={{width: 300}} src="../../css/img/qr.png" alt /></a></li>
+                                        <li><Link className="dropdown-item" to="#"><img style={{width: 300}} src="../../css/img/qr.png" alt /></Link></li>
                                     </ul>
                                 </li>
                             </ul>
