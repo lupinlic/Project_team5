@@ -1,5 +1,6 @@
 import './style.css';
 import React, { useState, useRef, useEffect } from 'react';
+import {Link } from 'react-router-dom';
 
 function Home (){
         const [currentIndex, setCurrentIndex] = useState(0);
@@ -131,25 +132,25 @@ function Home (){
                     <img src='https://file.hstatic.net/200000551679/article/20h30-15.09-480x320_37693a78e5d04998ad5b621caff9b081_large.png' alt='' style={{width:'100%'}}/>
                     <a  href=''><h5 style={{margin:'4px 0'}}>Tưới nước cho da căng mọng cùng top tonner ẩm sâu</h5></a>
                     <p>Bí kíp giữ làn da không tuổi tràn đầy sức sống....</p>
-                    <a href='' style={{color:'#f067bc'}} >Đọc tiếp</a>
+                    <Link to='' style={{color:'#f067bc'}} >Đọc tiếp</Link>
                 </div>
                 <div className='col-md-3 tip'>
                     <img src='https://file.hstatic.net/200000551679/article/480x320_390c2498e2f34b1abc9c1761b5e8aadb_large.png' alt='' style={{width:'100%'}}/>
                     <a href=''><h5 style={{margin:'4px 0'}}>Chăm da dịu lành từ 4 dược liệu trứ danh xứ hàn</h5></a>
                     <p>Thiên nhiên hàn quốc đa dạng và xanh tươi chính là....</p>
-                    <a href='' style={{color:'#f067bc'}} >Đọc tiếp</a>
+                    <Link to='' style={{color:'#f067bc'}} >Đọc tiếp</Link>
                 </div>
                 <div className='col-md-3 tip'>
                     <img src='https://file.hstatic.net/200000551679/article/20h30-12.09-480x320_4f6d4a444c8548df8d4f0307e9a21f15_large.png' alt='' style={{width:'100%'}}/>
                     <a href=''><h5 style={{margin:'4px 0'}}>Bạn biết gì về Directo Pi ??</h5></a>
                     <p>Chưa biết đến directo pi là sự thiếu sót vô cùng lớn...</p>
-                    <a href='' style={{color:'#f067bc'}} >Đọc tiếp</a>
+                    <Link to='' style={{color:'#f067bc'}} >Đọc tiếp</Link>
                 </div>
                 <div className='col-md-3 tip'>
                     <img src='https://file.hstatic.net/200000551679/article/topic-kem-duong-da-kho-480x320_7961f07cc4924196a58004b61a3864ab_large.png' alt='' style={{width:'100%'}}/>
                     <a href=''><h5 style={{margin:'4px 0'}}>Tạm biệt da khô bong chóc với top kem dưỡng tại eightstore</h5></a>
                     <p>Cứ thay đổi thời tiết một tí là da liền cầu cứu khắp mọi nơi...</p>
-                    <a href='' style={{color:'#f067bc'}} >Đọc tiếp</a>
+                    <Link to='' style={{color:'#f067bc'}} >Đọc tiếp</Link>
                 </div>
             </div>
         </div>

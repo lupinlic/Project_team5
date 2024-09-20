@@ -58,12 +58,12 @@ function Product_detail() {
                     {/*  */}
                     <div className='row'>
                         <div className='col-md-5'>
-                            <Button className='w-100' style={{background: 'white',color: 'rgb(237, 111, 132)',borderColor:'rgb(237, 111, 132)'}}>Mua Ngay</Button>
+                            <a href='./Pay'><Button className='w-100' style={{background: 'white',color: 'rgb(237, 111, 132)',borderColor:'rgb(237, 111, 132)'}}>Mua Ngay</Button></a>
                         </div>
                         <div className='col-md-5'>
-                            <Button className="w-100" style={{background: 'rgb(237, 111, 132)',color: 'white',borderColor:'white'}}>
+                            <a href='./Cart'><Button className="w-100" style={{background: 'rgb(237, 111, 132)',color: 'white',borderColor:'white'}}>
                             Thêm vào giỏ hàng
-                            </Button>
+                            </Button></a>
                         </div>
                         <div className='col-md-2'>
 

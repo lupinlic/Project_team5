@@ -1,7 +1,7 @@
 import Header from "./Header";
 import Footer from "./Footer";
 
-function DefaultLayout({children}) {
+function User({children}) {
     return ( 
         <div >
             <Header/>
@@ -11,4 +11,4 @@ function DefaultLayout({children}) {
      );
 }
 
-export default DefaultLayout;
+export default User;
