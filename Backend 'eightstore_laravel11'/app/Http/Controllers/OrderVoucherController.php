@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\District;
-use App\Http\Requests\StoreDistrictRequest;
-use App\Http\Requests\UpdateDistrictRequest;
+use App\Models\OrderVoucher;
+use App\Http\Requests\StoreOrderVoucherRequest;
+use App\Http\Requests\UpdateOrderVoucherRequest;
 
-class DistrictController extends Controller
+class OrderVoucherController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $get_district = District::all();
+        $get_VoucherUser = OrderVoucher::join('tbl_voucher','tbl_product_voucher.voucher_id','=','tbl_voucher.voucher_id')
+                                        ->get();
 
-        if(count($get_district)>0){
+        if(count($get_VoucherUser)>0){
             return response()->json(
                 [
                     "message" => "đã lấy dữ liệu thành công",
-                    "data" => $get_district,
+                    "data" => $get_VoucherUser,
                 ]
             );
         }else{
@@ -42,21 +43,21 @@ class DistrictController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDistrictRequest $request)
+    public function store(StoreOrderVoucherRequest $request)
     {
-        $get_district = new District();
+        $get_OrderVoucher = new OrderVoucher();
        
-        if($get_district){
-            $get_district->district_name = $request->district_name;
-            $get_district->city_id = $request->city_id;
+        if($get_OrderVoucher){
+            $get_OrderVoucher->order_id = $request->order_id;
+            $get_OrderVoucher->voucher_id = $request->voucher_id;
+            $get_OrderVoucher->orderVoucher_price = $request->orderVoucher_price;
 
-
-            $get_district->save();
+            $get_OrderVoucher->save();
 
             return response()->json(
                 [
                     "message" => "đã thêm dữ liệu thành công",
-                    "data" => $get_district,
+                    "data" => $get_OrderVoucher,
                 ]
             );
         }else{
@@ -71,12 +72,12 @@ class DistrictController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(District $district)
+    public function show(OrderVoucher $orderVoucher)
     {
         return response()->json(
             [
                 "message" => "lấy dữ liệu thành công",
-                "data" => $district,
+                "data" => $orderVoucher,
             ]
         );
     }
@@ -84,7 +85,7 @@ class DistrictController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(District $district)
+    public function edit(OrderVoucher $orderVoucher)
     {
         //
     }
@@ -92,16 +93,18 @@ class DistrictController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDistrictRequest $request, District $district)
+    public function update(UpdateOrderVoucherRequest $request, OrderVoucher $orderVoucher)
     {
-        $district->district_name = $request->district_name;
-        $district->city_id = $request->city_id;
+            $orderVoucher->order_id = $request->order_id;
+            $orderVoucher->voucher_id = $request->voucher_id;
+            $orderVoucher->orderVoucher_price = $request->orderVoucher_price;
 
-            $district->save();
+            $orderVoucher->save();
+
             return response()->json(
                 [
-                    "message" => "đã update thành công",
-                    "data" => $district,
+                    "message" => "update dữ liệu thành công",
+                    "data" => $orderVoucher,
                 ]
             );
     }
@@ -109,14 +112,14 @@ class DistrictController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(District $district)
+    public function destroy(OrderVoucher $orderVoucher)
     {
-        $district->delete();
+        $orderVoucher->delete();
 
             return response()->json(
                 [
                     "message" => "đã xóa thành công",
-                    "data" => $district,
+                    "data" => $orderVoucher,
                 ]
             );
     }

@@ -50,9 +50,11 @@ class ReceiverController extends Controller
             $get_receiver->receiver_name = $request->receiver_name;
             $get_receiver->receiver_phone = $request->receiver_phone;
             $get_receiver->user_id = $request->user_id;
-            $get_receiver->city_id = $request->city_id;
-            $get_receiver->district_id = $request->district_id;
-            $get_receiver->commune_id = $request->commune_id;
+            $get_receiver->receiver_city = $request->receiver_city;
+            $get_receiver->receiver_district = $request->receiver_district;
+            $get_receiver->receiver_commune = $request->receiver_commune;
+            $get_receiver->receiver_dsc = $request->receiver_dsc;
+            $get_receiver->receiver_type = $request->receiver_type;
 
 
             $get_receiver->save();
@@ -101,9 +103,11 @@ class ReceiverController extends Controller
         $receiver->receiver_name = $request->receiver_name;
         $receiver->receiver_phone = $request->receiver_phone;
         $receiver->user_id = $request->user_id;
-        $receiver->city_id = $request->city_id;
-        $receiver->district_id = $request->district_id;
-        $receiver->commune_id = $request->commune_id;
+        $receiver->receiver_city = $request->receiver_city;
+        $receiver->receiver_district = $request->receiver_district;
+        $receiver->receiver_commune = $request->receiver_commune;
+        $receiver->receiver_dsc = $request->receiver_dsc;
+        $receiver->receiver_type = $request->receiver_type;
 
 
             $receiver->save();

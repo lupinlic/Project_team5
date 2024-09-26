@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Commune;
-use App\Http\Requests\StoreCommuneRequest;
-use App\Http\Requests\UpdateCommuneRequest;
+use App\Models\VoucherGroup;
+use App\Http\Requests\StoreVoucherGroupRequest;
+use App\Http\Requests\UpdateVoucherGroupRequest;
+use Illuminate\Routing\Route;
 
-class CommuneController extends Controller
+class VoucherGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $get_commune = Commune::all();
+        $get_VoucherGroup = VoucherGroup::all();
 
-        if(count($get_commune)>0){
+        if(count($get_VoucherGroup)>0){
             return response()->json(
                 [
                     "message" => "đã lấy dữ liệu thành công",
-                    "data" => $get_commune,
+                    "data" => $get_VoucherGroup,
                 ]
             );
         }else{
@@ -42,22 +43,21 @@ class CommuneController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCommuneRequest $request)
+    public function store(StoreVoucherGroupRequest $request)
     {
-        $get_commune = new Commune();
+        $get_VoucherGroup = new VoucherGroup();
        
-        if($get_commune){
-            $get_commune->commune_name = $request->commune_name;
-            $get_commune->city_id = $request->city_id;
-            $get_commune->district_id = $request->district_id;
+        if($get_VoucherGroup){
+            $get_VoucherGroup->voucherGroup_name = $request->voucherGroup_name;
+            $get_VoucherGroup->voucherGroup_img = $request->voucherGroup_img;
+            $get_VoucherGroup->voucherGroup_dsc = $request->voucherGroup_dsc;
 
-
-            $get_commune->save();
+            $get_VoucherGroup->save();
 
             return response()->json(
                 [
                     "message" => "đã thêm dữ liệu thành công",
-                    "data" => $get_commune,
+                    "data" => $get_VoucherGroup,
                 ]
             );
         }else{
@@ -72,12 +72,12 @@ class CommuneController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Commune $commune)
+    public function show(VoucherGroup $voucherGroup)
     {
         return response()->json(
             [
                 "message" => "lấy dữ liệu thành công",
-                "data" => $commune,
+                "data" => $voucherGroup,
             ]
         );
     }
@@ -85,7 +85,7 @@ class CommuneController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Commune $commune)
+    public function edit(VoucherGroup $voucherGroup)
     {
         //
     }
@@ -93,17 +93,18 @@ class CommuneController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCommuneRequest $request, Commune $commune)
+    public function update(UpdateVoucherGroupRequest $request, VoucherGroup $voucherGroup)
     {
-            $commune->commune_name = $request->commune_name;
-            $commune->city_id = $request->city_id;
-            $commune->district_id = $request->district_id;
+            $voucherGroup->voucherGroup_name = $request->voucherGroup_name;
+            $voucherGroup->voucherGroup_img = $request->voucherGroup_img;
+            $voucherGroup->voucherGroup_dsc = $request->voucherGroup_dsc;
 
-            $commune->save();
+            $voucherGroup->save();
+
             return response()->json(
                 [
-                    "message" => "đã update thành công",
-                    "data" => $commune,
+                    "message" => "update dữ liệu thành công",
+                    "data" => $voucherGroup,
                 ]
             );
     }
@@ -111,14 +112,14 @@ class CommuneController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Commune $commune)
+    public function destroy(VoucherGroup $voucherGroup)
     {
-        $commune->delete();
+        $voucherGroup->delete();
 
             return response()->json(
                 [
                     "message" => "đã xóa thành công",
-                    "data" => $commune,
+                    "data" => $voucherGroup,
                 ]
             );
     }

@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class District extends Model
+class CategoryVoucher extends Model
 {
     use HasFactory;
-    protected $table = "tbl_district";
-    protected $primaryKey = "district_id";
+
+    protected $table = "tbl_category_voucher";
+    protected $primaryKey = "categoryVoucher_id";
 
     public $timestamps  = false;
 }

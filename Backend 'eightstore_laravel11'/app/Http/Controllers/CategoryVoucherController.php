@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
-use App\Http\Requests\StoreCityRequest;
-use App\Http\Requests\UpdateCityRequest;
+use App\Models\CategoryVoucher;
+use App\Http\Requests\StoreCategoryVoucherRequest;
+use App\Http\Requests\UpdateCategoryVoucherRequest;
 
-class CityController extends Controller
+class CategoryVoucherController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $get_city = City::all();
+        $get_CategoryVoucher = CategoryVoucher::join('tbl_voucher','tbl_category_voucher.voucher_id','=','tbl_voucher.voucher_id')
+                                        ->get();
 
-        if(count($get_city)>0){
+        if(count($get_CategoryVoucher)>0){
             return response()->json(
                 [
                     "message" => "đã lấy dữ liệu thành công",
-                    "data" => $get_city,
+                    "data" => $get_CategoryVoucher,
                 ]
             );
         }else{
@@ -42,19 +43,21 @@ class CityController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCityRequest $request)
+    public function store(StoreCategoryVoucherRequest $request)
     {
-        $get_city = new City();
+        $get_CategoryVoucher = new CategoryVoucher();
        
-        if($get_city){
-            $get_city->city_name = $request->city_name;
+        if($get_CategoryVoucher){
+            $get_CategoryVoucher->category_id = $request->category_id;
+            $get_CategoryVoucher->voucher_id = $request->voucher_id;
+            $get_CategoryVoucher->categoryVoucher_dsc = $request->categoryVoucher_dsc;
 
-            $get_city->save();
+            $get_CategoryVoucher->save();
 
             return response()->json(
                 [
                     "message" => "đã thêm dữ liệu thành công",
-                    "data" => $get_city,
+                    "data" => $get_CategoryVoucher,
                 ]
             );
         }else{
@@ -69,12 +72,12 @@ class CityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(City $city)
+    public function show(CategoryVoucher $categoryVoucher)
     {
         return response()->json(
             [
                 "message" => "lấy dữ liệu thành công",
-                "data" => $city,
+                "data" => $categoryVoucher,
             ]
         );
     }
@@ -82,7 +85,7 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(City $city)
+    public function edit(CategoryVoucher $categoryVoucher)
     {
         //
     }
@@ -90,15 +93,18 @@ class CityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCityRequest $request, City $city)
+    public function update(UpdateCategoryVoucherRequest $request, CategoryVoucher $categoryVoucher)
     {
-        $city->city_name = $request->city_name;
+        $categoryVoucher->category_id = $request->category_id;
+            $categoryVoucher->voucher_id = $request->voucher_id;
+            $categoryVoucher->categoryVoucher_dsc = $request->categoryVoucher_dsc;
 
-            $city->save();
+            $categoryVoucher->save();
+
             return response()->json(
                 [
-                    "message" => "đã update thành công",
-                    "data" => $city,
+                    "message" => "update dữ liệu thành công",
+                    "data" => $categoryVoucher,
                 ]
             );
     }
@@ -106,14 +112,14 @@ class CityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(City $city)
+    public function destroy(CategoryVoucher $categoryVoucher)
     {
-        $city->delete();
+        $categoryVoucher->delete();
 
             return response()->json(
                 [
                     "message" => "đã xóa thành công",
-                    "data" => $city,
+                    "data" => $categoryVoucher,
                 ]
             );
     }

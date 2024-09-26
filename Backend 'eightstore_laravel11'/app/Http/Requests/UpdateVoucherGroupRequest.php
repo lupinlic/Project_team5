@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateCommuneRequest extends FormRequest
+class UpdateVoucherGroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,25 +22,20 @@ class UpdateCommuneRequest extends FormRequest
      */
     public function rules(): array
     {
-        $commune = $this->route()->commune;
-
+        $voucherGroup = $this->route()->voucherGroup;
         return [
-            "city_id" => [
+            "voucherGroup_name" => [
                 "required",
                 "string",
-                Rule::exists('tbl_city','city_id')
+                Rule::unique('tbl_voucher_group','voucherGroup_name')->ignore($voucherGroup->voucherGroup_id,'voucherGroup_id')
             ],
-            "district_id" => [
+            "voucherGroup_img" => [
                 "required",
                 "string",
-                Rule::exists('tbl_district','district_id')
+                'min:5',
+                Rule::unique('tbl_voucher_group','voucherGroup_img')->ignore($voucherGroup->voucherGroup_id,'voucherGroup_id')
             ],
-
-            "commune_name" => [
-                "required",
-                "string",
-                Rule::unique('tbl_commune','commune_name')->ignore($commune->commune_id,'commune_id')
-            ],
+            "voucherGroup_dsc" => 'required|string|min:5',
         ];
     }
 
@@ -49,15 +44,15 @@ class UpdateCommuneRequest extends FormRequest
         return[
             "required" => ':attribute không được để trống',
             "unique" => ":attribute đã tồn tại",
-            "exists" => ":attribute không tồn tại",
+            "min" => ':attribute tối thiểu là :min'
         ];
     }
 
     public function attributes(){
         return [
-            "city_id" => 'id city',
-            "district_id" => 'id district',
-            "commune_name" => 'tên',
+            "voucherGroup_name" => 'Ten voucher',
+            "voucherGroup_img" => 'Anh voucher',
+            "voucherGroup_dsc" => 'Mo ta voucher',
         ];
     }
 }

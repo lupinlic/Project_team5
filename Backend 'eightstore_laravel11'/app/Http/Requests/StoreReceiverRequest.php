@@ -25,9 +25,11 @@ class StoreReceiverRequest extends FormRequest
             "receiver_name" => 'required|string|unique:tbl_receiver,receiver_name',
             "receiver_phone" => 'required|string|min:10|unique:tbl_receiver,receiver_phone',
             "user_id" => 'required|string|exists:tbl_user,user_id',
-            "city_id" => 'required|string|exists:tbl_city,city_id',
-            "district_id" => 'required|string|exists:tbl_district,district_id',
-            "commune_id" => 'required|string|exists:tbl_commune,commune_id',
+            "receiver_city" => 'required|string|min:5',
+            "receiver_district" => 'required|string|min:5',
+            "receiver_commune" => 'required|string|min:5',
+            "receiver_dsc" => 'required|string|min:5',
+            "receiver_type" => 'required|string|min:1',
         ];
     }
 
@@ -36,6 +38,7 @@ class StoreReceiverRequest extends FormRequest
             "required" => ':attribute không được để trống',
             "unique" => ":attribute đã tồn tại",
             "exists" => ":attribute không tồn tại",
+            "min" => ":attribute tối thiểu 5 kí tự",
         ];
     }
 
@@ -44,9 +47,11 @@ class StoreReceiverRequest extends FormRequest
             "receiver_name" => 'Tên người nhận',
             "receiver_phone" => 'số điện thoại người nhận',
             "user_id" => 'Người dùng',
-            "city_id" => 'Thành phố',
-            "district_id" => 'Quận/Huyện',
-            "commune_id" => 'Xã',
+            "receiver_city" => 'Thành phố',
+            "receiver_district" => 'Quận/Huyện',
+            "receiver_commune" => 'Xã',
+            "receiver_dsc" => 'mô tả',
+            "receiver_type" => 'kiểu mặc định',
         ];
     }
 }

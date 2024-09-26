@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Commune extends Model
+class Shipping extends Model
 {
     use HasFactory;
 
-    protected $table = "tbl_commune";
-    protected $primaryKey = "commune_id";
+    protected $table = "tbl_shipping";
+    protected $primaryKey = "shipping_id";
 
     public $timestamps  = false;
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCommuneRequest extends FormRequest
+class StoreProductVoucherRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,27 +22,24 @@ class StoreCommuneRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "city_id" => 'required|string|exists:tbl_city,city_id',
-            "district_id" => 'required|string|exists:tbl_district,district_id',
-
-            "commune_name" => 'required|string|unique:tbl_commune,commune_name',
+            "product_id" => 'required|string|exists:tbl_product,product_id',
+            "voucher_id" => 'required|string|exists:tbl_voucher,voucher_id',
+            "productVoucher_dsc" => 'required|string|min:3',
         ];
     }
-
 
     public function messages(){
         return[
             "required" => ':attribute không được để trống',
-            "unique" => ":attribute đã tồn tại",
-            "exists" => ":attribute không tồn tại",
+            "exists" => ":attribute khong tồn tại",
         ];
     }
 
     public function attributes(){
         return [
-            "city_id" => 'id city',
-            "district_id" => 'id district',
-            "commune_name" => 'tên',
+            "product_id" =>        'san pham',
+            "voucher_id" =>         'voucher',
+            "productVoucher_dsc" => 'mo ta voucher',
         ];
     }
 }

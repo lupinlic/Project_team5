@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateDistrictRequest extends FormRequest
+class UpdateProductVoucherRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,34 +22,33 @@ class UpdateDistrictRequest extends FormRequest
      */
     public function rules(): array
     {
-        $district = $this->route()->district;
         return [
-            "city_id" => [
-                "required",
-                "string",
-                Rule::exists('tbl_city','city_id')
+            "product_id" => [
+                'required',
+                'string',
+                Rule::exists('tbl_product','product_id')
             ],
-            "district_name" => [
-                "required",
-                "string",
-                Rule::unique('tbl_district','district_name')->ignore($district->district_id,'district_id')
+            "voucher_id" => [
+                'required',
+                'string',
+                Rule::exists('tbl_voucher','voucher_id')
             ],
+            "productVoucher_dsc" => 'required|string|min:3',
         ];
     }
-
 
     public function messages(){
         return[
             "required" => ':attribute không được để trống',
-            "unique" => ":attribute đã tồn tại",
-            "exists" => ":attribute không tồn tại",
+            "exists" => ":attribute khong tồn tại",
         ];
     }
 
     public function attributes(){
         return [
-            "city_id" => 'id',
-            "district_name" => 'tên',
+            "product_id" =>        'san pham',
+            "voucher_id" =>         'voucher',
+            "productVoucher_dsc" => 'mo ta voucher',
         ];
     }
 }

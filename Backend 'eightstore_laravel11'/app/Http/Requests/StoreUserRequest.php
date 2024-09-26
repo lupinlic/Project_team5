@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCityRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,24 +22,30 @@ class StoreCityRequest extends FormRequest
     public function rules(): array
     {
         return [
-             "city_name" => [
-                "required",
-                "string",
-                "unique:tbl_city,city_name"
-            ]
+            "user_name" => 'required|string|unique:tbl_user,user_name',
+            "user_password" => 'required|string|min:5',
+            "user_email" => 'required|string|unique:tbl_user,user_email',
+            "user_isNew" => 'required|string',
+            "user_role" => 'required|string',
         ];
     }
+
 
     public function messages(){
         return[
             "required" => ':attribute không được để trống',
-            "unique" => ":attribute đã tồn tại"
+            "unique" => ":attribute đã tồn tại",
+            "min" => ':attribute tối thiểu là :min'
         ];
     }
 
     public function attributes(){
         return [
-            "city_name" => 'Tên',
+            "user_name" => 'tên khách hàng',
+            "user_password" => 'mật khẩu',
+            "user_email" => 'email',
+            "user_isNew" => 'là người mới',
+            "user_role" => 'quyền hạn',
         ];
     }
 }
