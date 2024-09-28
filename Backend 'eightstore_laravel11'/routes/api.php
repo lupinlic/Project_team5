@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\CategoryVoucherController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
@@ -24,6 +25,7 @@ Route::apiResource('receivers',ReceiverController::class);
 Route::apiResource('shippings',ShippingController::class);
 
 Route::apiResource('categorys',CategoryController::class);
+Route::resource('categorys.products',CategoryProductController::class);
 Route::apiResource('products',ProductController::class);
 Route::apiResource('suppliers',SupplierController::class);
 Route::apiResource('vouchers',VoucherController::class);
