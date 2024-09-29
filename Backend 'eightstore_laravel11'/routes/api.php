@@ -4,6 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\CategoryVoucherController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\OrderVoucherController;
@@ -43,5 +44,7 @@ Route::apiResource('productVouchers',ProductVoucherController::class);
 Route::apiResource('orderVouchers',OrderVoucherController::class);
 Route::apiResource('orders',OrderController::class);
 Route::apiResource('orderDetails',OrderDetailController::class);
+
+Route::get('/login',[LoginController::class,'User_Login']);
 
 
