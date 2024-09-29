@@ -13,7 +13,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        $get_cart = Cart::all();
+        $get_cart = Cart::join('tbl_product','tbl_cart.product_id','=','tbl_product.product_id')->get();
 
         if(count($get_cart)>0){
             return response()->json(

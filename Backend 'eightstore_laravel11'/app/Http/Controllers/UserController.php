@@ -146,4 +146,44 @@ class UserController extends Controller
             );
         }
     }
+
+    public function ShowReceiver(User $user)
+    {
+        $get_receivers = $user->receivers;
+
+        if(count($get_receivers)>0){
+            return response()->json(
+                [
+                    "message" => "đã lấy dữ liệu thành công",
+                    "data" => $get_receivers,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoặc không có",
+                ]
+            );
+        }
+    }
+
+    public function ShowVoucher(User $user)
+    {
+        $get_voucher = $user->voucherUsers;
+
+        if(count($get_voucher)>0){
+            return response()->json(
+                [
+                    "message" => "đã lấy dữ liệu thành công",
+                    "data" => $get_voucher,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoặc không có",
+                ]
+            );
+        }
+    }
 }

@@ -23,16 +23,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('users',UserController::class);
 Route::apiResource('carts',CartController::class); 
-Route::resource('users/{user}/carts',[UserController::class,'ShowCarts']);
+Route::get('users/{user}/carts',[UserController::class,'ShowCarts']);
 
 Route::apiResource('receivers',ReceiverController::class);
 Route::apiResource('shippings',ShippingController::class);
 
 Route::apiResource('categorys',CategoryController::class);
-Route::resource('categorys/{categroy}/products',[CategoryController::class,'ShowProducts']);
+Route::get('categorys/{categroy}/products',[CategoryController::class,'ShowProducts']);
 
 Route::apiResource('products',ProductController::class);
 Route::apiResource('suppliers',SupplierController::class);
+Route::get('suppliers/{supplier}/products',[SupplierController::class,'ShowProducts']);
+
 Route::apiResource('vouchers',VoucherController::class);
 Route::apiResource('voucherGroups',VoucherGroupController::class);
 Route::apiResource('voucherUsers',VoucherUserController::class);

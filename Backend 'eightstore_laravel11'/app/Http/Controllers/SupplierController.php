@@ -124,4 +124,24 @@ class SupplierController extends Controller
                 ]
             );
     }
+
+    public function ShowProducts(Supplier $supplier)
+    {
+        $allproduct = $supplier->products;
+
+        if(count($allproduct)>0){
+            return response()->json(
+                [
+                    "message" => "đã lấy dữ liệu thành công",
+                    "data" => $allproduct,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoac ko co",
+                ]
+            );
+        }
+    }
 }
