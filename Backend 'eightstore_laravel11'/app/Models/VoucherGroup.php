@@ -13,4 +13,8 @@ class VoucherGroup extends Model
     protected $primaryKey = "voucherGroup_id";
 
     public $timestamps  = false;
+
+    public function vouchers(){
+        return $this->hasMany(Voucher::class,'voucherGroup_id','voucherGroup_id');
+    }
 }

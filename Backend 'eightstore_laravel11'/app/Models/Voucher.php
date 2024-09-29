@@ -13,4 +13,8 @@ class Voucher extends Model
     protected $primaryKey = "voucher_id";
 
     public $timestamps  = false;
+
+    public function voucherGroup(){
+        return $this->belongsTo(VoucherGroup::class,'voucherGroup_id','voucherGroup_id');
+    }
 }

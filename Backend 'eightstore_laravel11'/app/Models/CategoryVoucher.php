@@ -13,4 +13,12 @@ class CategoryVoucher extends Model
     protected $primaryKey = "categoryVoucher_id";
 
     public $timestamps  = false;
+
+    public function category(){
+        return $this->belongsTo(Category::class,'category_id','category_id');
+    }
+
+    public function voucher(){
+        return $this->belongsTo(Voucher::class,'voucher_id','voucher_id');
+    }
 }

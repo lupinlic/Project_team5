@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -50,8 +51,8 @@ class ProductController extends Controller
             $get_product->product_name = $request->product_name;
             $get_product->product_img = $request->product_img;
             $get_product->product_price = $request->product_price;
-            $get_product->product_dsc = $request->product_dsc;
             $get_product->category_id = $request->category_id;
+            $get_product->product_dsc = $request->product_dsc;
             $get_product->supplier_id = $request->supplier_id;
             $get_product->product_quantity = $request->product_quantity;
 

@@ -13,4 +13,8 @@ class Shipping extends Model
     protected $primaryKey = "shipping_id";
 
     public $timestamps  = false;
+
+    public function order(){
+        return $this->belongsTo(Order::class,'shipping_id','shipping_id');
+    }
 }

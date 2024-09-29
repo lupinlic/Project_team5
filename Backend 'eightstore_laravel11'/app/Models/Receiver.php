@@ -13,4 +13,12 @@ class Receiver extends Model
     protected $primaryKey = "receiver_id";
 
     public $timestamps  = false;
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id','user_id');
+    }
+
+    public function order(){
+        return $this->belongsTo(Order::class,'order_id','order_id');
+    }
 }

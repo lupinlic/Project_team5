@@ -12,4 +12,12 @@ class VoucherUser extends Model
     protected $primaryKey = "voucherUser_id";
 
     public $timestamps  = false;
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id','user_id');
+    }
+
+    public function voucher(){
+        return $this->belongsTo(Voucher::class,'voucher_id','voucher_id');
+    }
 }

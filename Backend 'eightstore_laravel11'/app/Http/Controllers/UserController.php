@@ -126,4 +126,24 @@ class UserController extends Controller
                 ]
             );
     }
+
+    public function ShowCarts(User $user)
+    {
+        $get_cart = $user->carts;
+
+        if(count($get_cart)>0){
+            return response()->json(
+                [
+                    "message" => "đã lấy dữ liệu thành công",
+                    "data" => $get_cart,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoặc không có",
+                ]
+            );
+        }
+    }
 }

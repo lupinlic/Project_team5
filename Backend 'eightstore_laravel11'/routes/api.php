@@ -13,19 +13,24 @@ use App\Http\Controllers\ReceiverController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProductController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\VoucherGroupController;
 use App\Http\Controllers\VoucherUserController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::apiResource('users',UserController::class);
 Route::apiResource('carts',CartController::class); 
+Route::resource('users/{user}/carts',[UserController::class,'ShowCarts']);
+
 Route::apiResource('receivers',ReceiverController::class);
 Route::apiResource('shippings',ShippingController::class);
 
 Route::apiResource('categorys',CategoryController::class);
-Route::resource('categorys.products',CategoryProductController::class);
+Route::resource('categorys/{categroy}/products',[CategoryController::class,'ShowProducts']);
+
 Route::apiResource('products',ProductController::class);
 Route::apiResource('suppliers',SupplierController::class);
 Route::apiResource('vouchers',VoucherController::class);

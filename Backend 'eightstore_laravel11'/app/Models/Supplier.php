@@ -12,4 +12,8 @@ class Supplier extends Model
     protected $primaryKey = "supplier_id";
     public $timestamps  = false;
 
+    public function products(){
+        return $this->hasMany(Product::class,'product_id','product_id');
+    }
+
 }

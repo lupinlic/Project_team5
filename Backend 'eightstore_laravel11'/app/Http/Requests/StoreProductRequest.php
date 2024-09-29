@@ -21,15 +21,20 @@ class StoreProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $category = $this->route()->category;
+        $rules = [
             "product_name" => 'required|string|unique:tbl_product,product_name',
             "product_img" => 'required|string|unique:tbl_product,product_img',
             "product_price" => 'required|string',
             "product_dsc" => 'required|string',
-            "category_id" => 'required|string|exists:tbl_category,category_id',
             "supplier_id" => 'required|string|exists:tbl_supplier,supplier_id',
             "product_quantity" => 'required|string',
         ];
+
+        if(!$category){
+            $rules["category_id"] = 'required|string|exists:tbl_category,category_id';
+        }
+        return $rules;
     }
 
     public function messages(){

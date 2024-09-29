@@ -13,4 +13,12 @@ class ProductVoucher extends Model
     protected $primaryKey = "productVoucher_id";
 
     public $timestamps  = false;
+
+    public function product(){
+        return $this->belongsTo(Product::class,'product_id','product_id');
+    }
+
+    public function voucher(){
+        return $this->belongsTo(Voucher::class,'voucher_id','voucher_id');
+    }
 }

@@ -15,7 +15,7 @@ class SupplierController extends Controller
     {
         $get_supplier = Supplier::all();
 
-        if($get_supplier){
+        if(count($get_supplier)>0){
             return response()->json(
                 [
                     "message" => "đã lấy dữ liệu thành công",
