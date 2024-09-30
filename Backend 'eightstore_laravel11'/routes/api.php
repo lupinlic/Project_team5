@@ -19,32 +19,35 @@ use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\VoucherGroupController;
 use App\Http\Controllers\VoucherUserController;
 use App\Models\User;
+use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('users',UserController::class);
-Route::apiResource('carts',CartController::class); 
-Route::get('users/{user}/carts',[UserController::class,'ShowCarts']);
 
-Route::apiResource('receivers',ReceiverController::class);
-Route::apiResource('shippings',ShippingController::class);
+Route::middleware('auth:sanctum')->group(function(){
+    Route::get('auth/profile', [LoginController::class, 'ShowProfile']);
+    Route::apiResource('users',UserController::class);
+    Route::apiResource('carts',CartController::class); 
+    Route::get('users/{user}/carts',[UserController::class,'ShowCarts']);
+    Route::apiResource('receivers',ReceiverController::class);
+    Route::apiResource('shippings',ShippingController::class);
 
-Route::apiResource('categorys',CategoryController::class);
-Route::get('categorys/{categroy}/products',[CategoryController::class,'ShowProducts']);
+    Route::apiResource('categorys',CategoryController::class);
+    Route::get('categorys/{category}/products',[CategoryController::class,'ShowProducts']);
 
-Route::apiResource('products',ProductController::class);
-Route::apiResource('suppliers',SupplierController::class);
-Route::get('suppliers/{supplier}/products',[SupplierController::class,'ShowProducts']);
+    Route::apiResource('products',ProductController::class);
+    Route::apiResource('suppliers',SupplierController::class);
+    Route::get('suppliers/{supplier}/products',[SupplierController::class,'ShowProducts']);
 
-Route::apiResource('vouchers',VoucherController::class);
-Route::apiResource('voucherGroups',VoucherGroupController::class);
-Route::apiResource('voucherUsers',VoucherUserController::class);
-Route::apiResource('categoryVouchers',CategoryVoucherController::class);
-Route::apiResource('productVouchers',ProductVoucherController::class);
-Route::apiResource('orderVouchers',OrderVoucherController::class);
-Route::apiResource('orders',OrderController::class);
-Route::apiResource('orderDetails',OrderDetailController::class);
-
-Route::get('/login',[LoginController::class,'User_Login']);
+    Route::apiResource('vouchers',VoucherController::class);
+    Route::apiResource('voucherGroups',VoucherGroupController::class);
+    Route::apiResource('voucherUsers',VoucherUserController::class);
+    Route::apiResource('categoryVouchers',CategoryVoucherController::class);
+    Route::apiResource('productVouchers',ProductVoucherController::class);
+    Route::apiResource('orderVouchers',OrderVoucherController::class);
+    Route::apiResource('orders',OrderController::class);
+    Route::apiResource('orderDetails',OrderDetailController::class);                                        
+});
+Route::post('users/login',[LoginController::class,'User_Login']);
 
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -48,7 +50,8 @@ class UserController extends Controller
        
         if($get_user){
             $get_user->user_name = $request->user_name;
-            $get_user->user_password = $request->user_password;
+            $get_user->user_password = Hash::make($request->user_password); // Sử dụng Hash::make()
+            // $get_user->user_password = $request->user_password;
             $get_user->user_email = $request->user_email;
             $get_user->user_isNew = $request->user_isNew;
             $get_user->user_role = $request->user_role;

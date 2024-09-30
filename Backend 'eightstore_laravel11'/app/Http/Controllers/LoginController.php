@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -11,21 +13,30 @@ class LoginController extends Controller
         $user_email = $request->user_email;
         $user_password = $request->user_password;
 
-        $user = User::where('user_email',$user_email,)
-                        ->where('user_password',$user_password,)->first();
+        $status = Auth::attempt(['user_email'=>$user_email,'password'=>$user_password]);
 
-        if($user){
-            $request->session()->regenerate();
+        if($status){
+            $user = Auth::user();
+            
+            $token = $request->user()->createToken('Token_name');
 
-        // Lưu thông tin người dùng vào session
-            $request->session()->put('user', $user);
             return response()->json([
                 'message' => 'đăng nhập thành công',
-                'user_role' => $user->user_role,
+                'user' => $user,
+                'token' => $token->plainTextToken,
             ]);
         }
         return response()->json([
             'message' => 'đăng nhập thất bại sai tk hoặc mk',
         ]);
+    }
+
+    public function ShowProfile(Request $request){
+        return response()->json(
+            [
+                "message" => "lấy dữ liệu thành công",
+                'data' => $request->user(),
+            ]
+        );
     }
 }
