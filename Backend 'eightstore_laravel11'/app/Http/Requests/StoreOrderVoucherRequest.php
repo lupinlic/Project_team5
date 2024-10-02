@@ -22,9 +22,9 @@ class StoreOrderVoucherRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "order_id" => 'required|string|exists:tbl_order,order_id',
-            "voucher_id" => 'required|string|exists:tbl_voucher,voucher_id',
-            "orderVoucher_price" => 'required|string',
+            "order_id" => 'required|numeric|exists:tbl_order,order_id',
+            "voucher_id" => 'required|numeric|exists:tbl_voucher,voucher_id',
+            "orderVoucher_price" => 'required|numeric',
         ];
     }
 

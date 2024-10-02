@@ -24,12 +24,12 @@ class StoreReceiverRequest extends FormRequest
         return [
             "receiver_name" => 'required|string|unique:tbl_receiver,receiver_name',
             "receiver_phone" => 'required|string|min:10|unique:tbl_receiver,receiver_phone',
-            "user_id" => 'required|string|exists:tbl_user,user_id',
+            "user_id" => 'required|numeric|exists:tbl_user,user_id',
             "receiver_city" => 'required|string|min:5',
             "receiver_district" => 'required|string|min:5',
             "receiver_commune" => 'required|string|min:5',
             "receiver_dsc" => 'required|string|min:5',
-            "receiver_type" => 'required|string|min:1',
+            "receiver_type" => 'required|numeric|min:1',
         ];
     }
 

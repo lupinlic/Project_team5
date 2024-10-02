@@ -25,12 +25,12 @@ class UpdateProductVoucherRequest extends FormRequest
         return [
             "product_id" => [
                 'required',
-                'string',
+                'numeric',
                 Rule::exists('tbl_product','product_id')
             ],
             "voucher_id" => [
                 'required',
-                'string',
+                'numeric',
                 Rule::exists('tbl_voucher','voucher_id')
             ],
             "productVoucher_dsc" => 'required|string|min:3',

@@ -25,12 +25,12 @@ class UpdateCategoryVoucherRequest extends FormRequest
         return [
             "category_id" => [
                 'required',
-                'string',
+                'numeric',
                 Rule::exists('tbl_category','category_id')
             ],
             "voucher_id" => [
                 'required',
-                'string',
+                'numeric',
                 Rule::exists('tbl_voucher','voucher_id')
             ],
             "categoryVoucher_dsc" => 'required|string|min:3',

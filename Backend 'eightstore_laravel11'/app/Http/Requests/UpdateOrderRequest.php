@@ -23,12 +23,12 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             "order_date" => 'required|string|min:7',
-            "order_status" => 'required|string',
-            "order_totalmoney" => 'required|string',
-            "user_id" => 'required|string|exists:tbl_user,user_id',
+            "order_status" => 'required|numeric',
+            "order_totalmoney" => 'required|numeric',
+            "user_id" => 'required|numeric|exists:tbl_user,user_id',
             "order_content" => 'required|string',
-            "receiver_id" => 'required|string|exists:tbl_receiver,receiver_id',
-            "shipping_id" => 'required|string|exists:tbl_shipping,shipping_id',
+            "receiver_id" => 'required|numeric|exists:tbl_receiver,receiver_id',
+            "shipping_id" => 'required|numeric|exists:tbl_shipping,shipping_id',
         ];
     }
 

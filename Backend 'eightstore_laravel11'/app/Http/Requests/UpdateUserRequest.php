@@ -36,8 +36,8 @@ class UpdateUserRequest extends FormRequest
                 "string",
                 Rule::unique('tbl_user','user_email')->ignore($user->user_id,'user_id')
             ],
-            "user_isNew" => 'required|string',
-            "user_role" => 'required|string',
+            "user_isNew" => 'required|numeric',
+            "user_role" => 'required|numeric',
         ];
     }
 

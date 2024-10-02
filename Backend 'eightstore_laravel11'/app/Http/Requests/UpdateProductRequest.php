@@ -34,11 +34,11 @@ class UpdateProductRequest extends FormRequest
                 "string",
                 Rule::unique('tbl_product','product_img')->ignore($product->product_id,'product_id')
             ],
-            "product_price" => 'required|string',
+            "product_price" => 'required|numeric',
             "product_dsc" => 'required|string',
-            "category_id" => 'required|string',
-            "supplier_id" => 'required|string',
-            "product_quantity" => 'required|string',
+            "category_id" => 'required|numeric',
+            "supplier_id" => 'required|numeric',
+            "product_quantity" => 'required|numeric',
         ];
     }
 

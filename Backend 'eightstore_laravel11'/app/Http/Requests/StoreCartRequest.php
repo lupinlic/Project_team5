@@ -22,10 +22,10 @@ class StoreCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "user_id" => 'required|string|exists:tbl_user,user_id',
-            "product_id" => 'required|string|exists:tbl_product,product_id',
-            "cart_quantity" => 'required|string',
-            "cart_totalmoney" => 'required|string',
+            "user_id" => 'required|numeric|exists:tbl_user,user_id',
+            "product_id" => 'required|numeric|exists:tbl_product,product_id',
+            "cart_quantity" => 'required|numeric',
+            "cart_totalmoney" => 'required|numeric',
         ];
     }
 

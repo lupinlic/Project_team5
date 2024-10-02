@@ -29,17 +29,17 @@ class UpdateVoucherRequest extends FormRequest
                 'string',
                 Rule::exists('tbl_voucher_group','voucherGroup_id')
             ],
-            "voucher_type" => 'required|string|max:1',
-            "voucher_discount" => 'required|string|min:1',
-            "voucher_minOrder" => 'required|string|min:1',
-            "voucher_maxDiscount" => 'required|string|min:1',
+            "voucher_type" => 'required|numeric|max:1',
+            "voucher_discount" => 'required|numeric|min:1',
+            "voucher_minOrder" => 'required|numeric|min:1',
+            "voucher_maxDiscount" => 'required|numeric|min:1',
             "voucher_code" => [
                 'required',
                 'string',
                 'min:3',
                 Rule::unique('tbl_voucher','voucher_code')->ignore($voucher->voucher_id,'voucher_id')
             ],
-            "voucher_quantity" => 'required|string|min:1',
+            "voucher_quantity" => 'required|numeric|min:1',
             "voucher_dsc" => 'required|string|min:7',
             "start_date" => 'required|string|min:7',
             "end_date" => 'required|string|min:7',

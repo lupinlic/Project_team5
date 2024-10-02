@@ -22,9 +22,9 @@ class StoreVoucherUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "user_id" => 'required|string|exists:tbl_user,user_id',
-            "voucher_id" => 'required|string|exists:tbl_voucher,voucher_id',
-            "voucherUser_status" => 'required|string',
+            "user_id" => 'required|numeric|exists:tbl_user,user_id',
+            "voucher_id" => 'required|numeric|exists:tbl_voucher,voucher_id',
+            "voucherUser_status" => 'required|numeric',
             "voucherUser_date" => 'required|string|min:7',
         ];
     }

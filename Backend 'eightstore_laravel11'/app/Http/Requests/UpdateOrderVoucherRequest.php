@@ -25,15 +25,15 @@ class UpdateOrderVoucherRequest extends FormRequest
         return [
             "order_id" => [
                 'required',
-                'string',
+                'numeric',
                 Rule::exists('tbl_order','order_id')
             ],
             "voucher_id" => [
                 'required',
-                'string',
+                'numeric',
                 Rule::exists('tbl_voucher','voucher_id')
             ],
-            "orderVoucher_price" => 'required|string',
+            "orderVoucher_price" => 'required|numeric',
         ];
     }
 

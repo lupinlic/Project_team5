@@ -7,6 +7,8 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Policies\UserPolicy;
+
 
 class UserController extends Controller
 {
@@ -46,6 +48,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+
         $get_user = new User();
        
         if($get_user){
@@ -132,7 +135,7 @@ class UserController extends Controller
 
     public function ShowCarts(User $user)
     {
-        $get_cart = $user->carts;
+        $get_cart = $user->carts()->with('product')->get();
 
         if(count($get_cart)>0){
             return response()->json(
@@ -172,7 +175,7 @@ class UserController extends Controller
 
     public function ShowVoucher(User $user)
     {
-        $get_voucher = $user->voucherUsers;
+        $get_voucher = $user->voucherUsers()->with('voucherGroup')->get();
 
         if(count($get_voucher)>0){
             return response()->json(
@@ -189,4 +192,5 @@ class UserController extends Controller
             );
         }
     }
+    
 }

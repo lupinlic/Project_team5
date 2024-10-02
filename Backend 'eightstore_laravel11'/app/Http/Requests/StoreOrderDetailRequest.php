@@ -22,10 +22,10 @@ class StoreOrderDetailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "order_id" => 'required|string|exists:tbl_order,order_id',
-            "product_id" => 'required|string|exists:tbl_product,product_id',
-            "orderDetail_quantity" => 'required|string',
-            "orderDetail_total" => 'required|string',
+            "order_id" => 'required|numeric|exists:tbl_order,order_id',
+            "product_id" => 'required|numeric|exists:tbl_product,product_id',
+            "orderDetail_quantity" => 'required|numeric',
+            "orderDetail_total" => 'required|numeric',
         ];
     }
 

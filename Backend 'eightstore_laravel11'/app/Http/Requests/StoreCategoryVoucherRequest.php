@@ -22,8 +22,8 @@ class StoreCategoryVoucherRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "category_id" => 'required|string|exists:tbl_category,category_id',
-            "voucher_id" => 'required|string|exists:tbl_voucher,voucher_id',
+            "category_id" => 'required|numeric|exists:tbl_category,category_id',
+            "voucher_id" => 'required|numeric|exists:tbl_voucher,voucher_id',
             "categoryVoucher_dsc" => 'required|string|min:3',
         ];
     }

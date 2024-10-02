@@ -36,14 +36,14 @@ class UpdateReceiverRequest extends FormRequest
             ],
             "user_id" => [
                 'required',
-                'string',
+                'numeric',
                 Rule::exists('tbl_user','user_id')
             ],
             "receiver_city" => 'required|string|min:5',
             "receiver_district" => 'required|string|min:5',
             "receiver_commune" => 'required|string|min:5',
             "receiver_dsc" => 'required|string|min:5',
-            "receiver_type" => 'required|string|min:1',
+            "receiver_type" => 'required|numeric|min:1',
         ];
     }
 

@@ -22,8 +22,8 @@ class StoreProductVoucherRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "product_id" => 'required|string|exists:tbl_product,product_id',
-            "voucher_id" => 'required|string|exists:tbl_voucher,voucher_id',
+            "product_id" => 'required|numeric|exists:tbl_product,product_id',
+            "voucher_id" => 'required|numeric|exists:tbl_voucher,voucher_id',
             "productVoucher_dsc" => 'required|string|min:3',
         ];
     }

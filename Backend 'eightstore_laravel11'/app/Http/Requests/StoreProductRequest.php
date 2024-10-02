@@ -25,14 +25,14 @@ class StoreProductRequest extends FormRequest
         $rules = [
             "product_name" => 'required|string|unique:tbl_product,product_name',
             "product_img" => 'required|string|unique:tbl_product,product_img',
-            "product_price" => 'required|string',
+            "product_price" => 'required|numeric',
             "product_dsc" => 'required|string',
-            "supplier_id" => 'required|string|exists:tbl_supplier,supplier_id',
-            "product_quantity" => 'required|string',
+            "supplier_id" => 'required|numeric|exists:tbl_supplier,supplier_id',
+            "product_quantity" => 'required|numeric',
         ];
 
         if(!$category){
-            $rules["category_id"] = 'required|string|exists:tbl_category,category_id';
+            $rules["category_id"] = 'required|numeric|exists:tbl_category,category_id';
         }
         return $rules;
     }

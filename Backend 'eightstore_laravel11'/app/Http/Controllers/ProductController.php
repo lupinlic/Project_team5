@@ -132,7 +132,25 @@ class ProductController extends Controller
                     "data" => $product,
                 ]
             );
-    }
+    }    
 
-    
+    public function ProductisNew()
+    {
+        $get_product = Product::orderBy('product_id','desc')->limit(5)->get();
+
+        if(count($get_product)>0){
+            return response()->json(
+                [
+                    "message" => "đã lấy dữ liệu thành công",
+                    "data" => $get_product,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoac ko co",
+                ]
+            );
+        }
+    }
 }

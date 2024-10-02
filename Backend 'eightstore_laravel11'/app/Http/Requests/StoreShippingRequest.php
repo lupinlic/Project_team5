@@ -38,7 +38,7 @@ class StoreShippingRequest extends FormRequest
             }),
             ],
             "shipping_name" => 'required|string|min:4',
-            "shipping_price" => 'required|string',
+            "shipping_price" => 'required|numeric',
         ];
     }
 

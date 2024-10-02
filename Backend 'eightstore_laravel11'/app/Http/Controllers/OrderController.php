@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use GuzzleHttp\Psr7\Request;
 
 class OrderController extends Controller
 {
@@ -121,8 +122,10 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy(Request $request,Order $order)
     {
+        //$request->user()->can('delete',Order::class);
+
         $order->delete();
 
             return response()->json(

@@ -26,16 +26,16 @@ class UpdateCartRequest extends FormRequest
         return [
             "user_id" => [
                 "required",
-                "string",
+                "numeric",
                 Rule::exists('tbl_user','user_id'),
             ],
             "product_id" => [
                 "required",
-                "string",
+                "numeric",
                 Rule::exists('tbl_product','product_id'),
             ],
-            "cart_quantity" => 'required|string',
-            "cart_totalmoney" => 'required|string',
+            "cart_quantity" => 'required|numeric',
+            "cart_totalmoney" => 'required|numeric',
         ];
     }
 
