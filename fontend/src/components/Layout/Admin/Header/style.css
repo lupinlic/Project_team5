@@ -1,0 +1,10 @@
+a{
+    text-decoration: none;
+}
+.account_child a{
+    color: #62677399;
+    text-decoration: none;
+}
+.account_child a:hover{
+    color: #000;
+}
