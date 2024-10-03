@@ -15,6 +15,7 @@ import Shipping from '../pages/Shipping';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Introduce from '../pages/introduce'
+import Voucher from '../pages/Admin/Voucher';
 
 const publicRoutes = [
     {
@@ -58,6 +59,9 @@ const publicRoutes = [
     },
     {
         path:'/Admin/Product', component: AdProduct, layout:Admin
+    },
+    {
+        path:'/Admin/Voucher', component: Voucher, layout:Admin
     },
     // {
     //     path:'/Admin/Order', component: Order, layout:Admin

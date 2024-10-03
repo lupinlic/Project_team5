@@ -2,6 +2,7 @@ import './style.css';
 import React, { useState, useEffect, useRef  } from 'react';
 import { Helmet } from 'react-helmet';
 import {Link } from 'react-router-dom';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUser, faSignOutAlt, faShoppingCart , faPhone ,faHome, faCog,faLock} from '@fortawesome/free-solid-svg-icons';
 // import logo from '../../../../assets/img/logo8.png';
@@ -9,10 +10,11 @@ import { faSearch, faUser, faSignOutAlt, faShoppingCart , faPhone ,faHome, faCog
 function Header() {
     const [cartCount, setCartCount] = useState(0);
     const handleLogout = () => {
+        axios.get('http://localhost:8000/api/user/logout')
         localStorage.removeItem('authToken');
         localStorage.removeItem('user');
         // Chuyển hướng về trang đăng nhập
-        window.location.href = '/Login';
+        // window.location.href = '/Login';
     };
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const settingsRef = useRef(null);
@@ -79,7 +81,13 @@ function Header() {
                                             <li><Link to='' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faUser}/>Thông tin cá nhân</Link></li>
                                             <li><Link to='' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faCog}/>Đổi mật khẩu</Link></li>
                                             <li><Link to='/Shipping' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faLock}/>Địa chỉ giao hàng</Link></li>
-                                            <li className='pt-2'><Link to='/Login' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faSignOutAlt}/>Đăng xuất</Link></li>
+                                            <li className='pt-2' ><Link to='/Login' style={{color:'black'}} 
+                                                onClick={(e) => { 
+                                                    e.stopPropagation();  // Ngăn sự kiện nổi bọt lên thẻ cha
+                                                    handleLogout();
+                                                    }}>
+                                                <FontAwesomeIcon style={{paddingRight:'8px'}} icon={faSignOutAlt}/>Đăng xuất</Link>
+                                            </li>
                                         </ul>
                                     </div>
                                 )}

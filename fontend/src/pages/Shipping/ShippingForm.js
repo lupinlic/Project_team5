@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 const ShippingForm = ({receiverId, onUpdate, onClose}) => {
+  // console.log(receiverId)
     const [userId, setUserId] = useState(null);
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);

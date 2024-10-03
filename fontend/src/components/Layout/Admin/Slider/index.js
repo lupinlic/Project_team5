@@ -33,10 +33,9 @@ function Slider() {
                 <li className='slide' style={{padding:'8px 20px'}}><Link to='/Admin/Category'><FontAwesomeIcon icon={faUserTie} className='me-2'/> Danh mục</Link> </li>
                 <li className='slide' style={{padding:'8px 20px'}}><Link to='/Admin/Supplier'> <FontAwesomeIcon icon={faTruckLoading} className='me-2'/>Nhà cung cấp</Link></li>
                 <li className='slide' style={{padding:'8px 20px'}}><Link to='/Admin/Product'> <FontAwesomeIcon icon={faBoxOpen} className='me-2'/>Sản phẩm</Link> </li>
-                <li className='slide' style={{padding:'8px 20px'}}><Link to='/Admin/Coupon'> <FontAwesomeIcon icon={faPercent} className='me-2'/>Mã giảm giá</Link> </li>
+                <li className='slide' style={{padding:'8px 20px'}}><Link to='/Admin/Voucher'> <FontAwesomeIcon icon={faPercent} className='me-2'/>Mã giảm giá</Link> </li>
                 <li className='slide' style={{padding:'8px 20px'}}><Link to='/Admin/Shipping'> <FontAwesomeIcon icon={faMapMarkerAlt} className='me-2'/>Địa chỉ vận chuyển</Link> </li>
                 <li className='slide' style={{padding:'8px 20px'}}><Link to='/Admin/Order'> <FontAwesomeIcon icon={faShoppingCart} className='me-2'/>Đơn hàng</Link></li>
-                <li className='slide' style={{padding:'8px 20px'}}><Link to='/Admin/WareHouse'> <FontAwesomeIcon icon={faWarehouse} className='me-2'/>Kho</Link></li>
             
             </ul>
             <div>

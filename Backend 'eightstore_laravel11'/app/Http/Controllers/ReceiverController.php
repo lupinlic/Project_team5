@@ -79,6 +79,7 @@ class ReceiverController extends Controller
      */
     public function show(Receiver $receiver)
     {
+
         return response()->json(
             [
                 "message" => "lấy dữ liệu thành công",
@@ -134,4 +135,6 @@ class ReceiverController extends Controller
                 ]
             );
     }
+
+    
 }

@@ -6,12 +6,14 @@ import VoucherForm from '../Voucher/VoucherForm';
 
 
 function Pay() {
-
+    
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [isFormVisible1, setIsFormVisible1] = useState(false);
+    const [receiver, setData] = useState([]);
+    const [userId, setUserId] = useState(null);
 
     const openForm = () => {
-        // setSelectedSupplierId(supplierId);
+        
         setIsFormVisible(true);
       };
     
@@ -28,19 +30,43 @@ function Pay() {
       const closeForm1 = () => {
         setIsFormVisible1(false);
       };
+
+    //   đổ địa chỉ
+    const userData = localStorage.getItem('user');
+      useEffect(() => {
+          
+          const parsedUser = JSON.parse(userData);
+          setUserId(parsedUser.user_id);
+
+        }, []);
+        useEffect(() => {
+            console.log(userId)
+           
+              axios.get(`http://localhost:8000/api/users/${userId}/receivers/type`)
+                  .then(response => {
+                      // Truy cập vào phần "data" của API trả về và đặt vào state
+                      setData(response.data.data);
+                      console.log(response.data.data)
+                  })
+                  .catch(error => {
+                      console.error('Error fetching data: ', error);
+                  });
+                
+        }, [userId]);
     return ( 
         <div style={{margin:'20px 0'}}>
             <div style={{padding:'12px'}}>
                 <h5 style={{color:'red',fontWeight:'400',fontSize:'24px',marginBottom:'8px'}}>Địa chỉ nhận hàng</h5>
+                {receiver.map(item => (
                 <div className="row">
                     <div className="col-md-3" >
                         <h6>
-                            <span style={{marginRight:'8px',fontSize:'18px'}}>Hứa Tùng Lâm</span>
-                            <span>0328443736</span>
+                            <span style={{marginRight:'8px',fontSize:'18px'}}>{item.receiver_name}</span>
+                            <span>{item.receiver_phone}</span>
                         </h6>
                     </div>
                     <div className="col-md-6">
-                        <p style={{fontSize:'18px'}}>Số 20, Tân triều , Thanh trì, HÀ nội</p>
+                        <p style={{fontSize:'18px'}}>{item.receiver_dsc}, {item.receiver_commune}, {item.receiver_district}, {item.receiver_city}</p>
                     </div>
                     <div className="col-md-3">
                         <button style={{border:'none', color:'blue'}} onClick={() => openForm()}>Thay đổi</button>
@@ -56,6 +82,7 @@ function Pay() {
                        
                     </div>
                 </div>
+                ))}
 
             </div>
             {/* ,backgroundColor:'#eaf6fa' */}

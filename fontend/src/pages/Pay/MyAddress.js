@@ -5,46 +5,79 @@ import axios from 'axios';
 
 const MyAddress = ({onClose}) =>{
     const [isFormVisible, setIsFormVisible] = useState(false);
-
-  const openForm = () => {
+    const [selectedReceiverId, setSelectedReceiverId] = useState(null);
+  const openForm = (receiverId=null) => {
+    setSelectedReceiverId(receiverId);
     setIsFormVisible(true);
   };
 
   const closeForm = () => {
     setIsFormVisible(false);
   };
+// đổ dl
+    const [receiver, setData] = useState([]);
+    const [userId, setUserId] = useState(null);
+
+    const userData = localStorage.getItem('user');
+    useEffect(() => {
+        
+        const parsedUser = JSON.parse(userData);
+        setUserId(parsedUser.user_id);
+
+      }, []);
+      useEffect(() => {
+          console.log(userId)
+         
+            axios.get(`http://localhost:8000/api/users/${userId}/receivers`)
+                .then(response => {
+                    // Truy cập vào phần "data" của API trả về và đặt vào state
+                    setData(response.data.data);
+                    console.log(response.data.data)
+                })
+                .catch(error => {
+                    console.error('Error fetching data: ', error);
+                });
+              
+      }, [userId]);
+
+
     return ( 
         <div>
             <div className="form-popup" style={{padding:'20px'}}>
                 <h6 style={{padding:'20px 0',borderBottom:'1px solid #000'}} >Địa chỉ của tôi</h6>
-                <div className='row' style={{padding:'12px 0',borderBottom:'1px solid #000'}}>
-                    <div className='col-md-1'>
-                        <input type='checkbox'></input>
-                    </div>
-                    <div className='col-md-8'>
-                        <p>
-                            <span className="name">Hứa Tùng Lâm |</span>
-                            <span className="sđt">0328443736</span>
-                            </p>
-                        <p>Số 20, đường tân triều</p>
-                        <p>Xã tân triều, huyện Thanh trì</p>
-                        <p className="macd " style={{color: 'red'}}>Mặc định</p>
-                    </div>
-                    <div className='col-md-3'>
-                        <button style={{border:'none'}} onClick={openForm}>Cập nhật</button>
-                        {isFormVisible && (
-                            <>
-                            <ShippingForm onClose={closeForm} />
-                            </>
-                        )}
-                    </div>
-                    
+                <div style={{overflowY: 'auto',overflowX: 'hidden',marginTop:'8px',height:'350px'}}>
+                    {receiver.map(item => (
+                    <div className='row' style={{padding:'12px 0',borderBottom:'1px solid #000'}}>
+                        <div className='col-md-1'>
+                            <input type='checkbox'></input>
+                        </div>
+                        <div className='col-md-8'>
+                            <p>
+                                <span className="name">{item.receiver_name} | </span>
+                                <span className="sđt"> {item.receiver_phone}</span>
+                                </p>
+                            <p>{item.receiver_dsc}</p>
+                            <p>{item.receiver_commune}, {item.receiver_district}, {item.receiver_city}</p>
+                            <p className="macd " style={{color: 'red'}}>Mặc định</p>
+                        </div>
+                        <div className='col-md-3'>
+                            <button style={{border:'none'}} onClick={() => openForm(item.receiver_id)}>Cập nhật</button>
+                            {isFormVisible && (
+                                <>
+                                <ShippingForm onClose={closeForm} />
+                                </>
+                            )}
+                        </div>
+                        
 
+                    </div> ))}
                 </div>
                 <button style={{width:'200px', height:'50px',margin:'20px'}} onClick={openForm}> + Thêm địa chỉ mới</button>
                 {isFormVisible && (
                     <>
-                    <ShippingForm onClose={closeForm} />
+                    <ShippingForm 
+                    receiverId={selectedReceiverId} 
+                    onClose={closeForm} />
                     </>
                 )}
                 <div style={{position:'absolute',bottom:'4%',right:'4%'}}>
