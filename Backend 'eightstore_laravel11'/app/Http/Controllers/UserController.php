@@ -153,7 +153,7 @@ class UserController extends Controller
         }
     }
 
-    public function ShowReceiver(User $user)
+    public function ShowReceivers(User $user)
     {
         $get_receivers = $user->receivers;
 
@@ -191,6 +191,18 @@ class UserController extends Controller
                 ]
             );
         }
+    }
+    public function showByType(User $user)
+    {
+        $get_receivers = $user->receivers()->where('receiver_type',1)->get();
+        // $receiver= Receiver::where('receiver_type',1)->get();
+
+            return response()->json(
+                [
+                    "message" => "đã get thành công",
+                    "data" => $get_receivers,
+                ]
+            );
     }
     
 }

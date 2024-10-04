@@ -29,7 +29,7 @@ class StoreReceiverRequest extends FormRequest
             "receiver_district" => 'required|string|min:5',
             "receiver_commune" => 'required|string|min:5',
             "receiver_dsc" => 'required|string|min:5',
-            "receiver_type" => 'required|numeric',
+            "receiver_type" => 'required|numeric|min:0',
         ];
     }
 
