@@ -29,7 +29,7 @@ class StoreReceiverRequest extends FormRequest
             "receiver_district" => 'required|string|min:5',
             "receiver_commune" => 'required|string|min:5',
             "receiver_dsc" => 'required|string|min:5',
-            "receiver_type" => 'required|numeric|min:1',
+            "receiver_type" => 'required|numeric',
         ];
     }
 
@@ -38,7 +38,7 @@ class StoreReceiverRequest extends FormRequest
             "required" => ':attribute không được để trống',
             "unique" => ":attribute đã tồn tại",
             "exists" => ":attribute không tồn tại",
-            "min" => ":attribute tối thiểu 5 kí tự",
+            "min" => ":attribute tối thiểu :min kí tự",
         ];
     }
 

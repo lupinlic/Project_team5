@@ -133,5 +133,19 @@ class ReceiverController extends Controller
                     "data" => $receiver,
                 ]
             );
+    }  
+    public function HandleStatus(Receiver $receiver)
+    {
+        //tìm kiếm th nào đang mặc định và chuyển đổi nó
+        Receiver::where('receiver_type',1)->update(['receiver_type' => 0]);
+        $receiver->receiver_type = 1;
+
+        $receiver->save();
+            return response()->json(
+                [
+                    "message" => "đã cập nhập mặc định người dùng thành công",
+                    "data" => $receiver,
+                ]
+            );
     }
 }
