@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './style.css'
+import './style.css';
 import ShippingForm from './ShippingForm';
 
 function Shipping() {
   const [selectedReceiverId, setSelectedReceiverId] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [style_receiverType, setStyle] = useState(null);
+  const [style_receiverType, setStyle] = useState({cursor: 'not-allowed' ,opacity: '.7'});
+  const [style_noDelete, setdelete] = useState({display:'none'});
 
 
   const openForm = (receiverId = null) => {
@@ -62,32 +63,25 @@ function Shipping() {
       }
     };
 
-    const setDefault = (receiverId) => {
-      axios.get(`http://localhost:8000/api/receivers/${receiverId}`, {
-        // ...receiver,
-        type: 1
-      })
-      .then(response => {
-        if (response.data.success) {
-          // Gọi lại API để cập nhật danh sách địa chỉ sau khi thiết lập mặc định
-          updateReceivers();
-        }
-      })
-      .catch(error => {
-        console.error('Lỗi khi thiết lập mặc định:', error);
-      });
+    const HandlesetDefault = (receiver) => {
+      if(receiver.receiver_type == 0){
+        setDefault(receiver);
+      }
+    }
+
+    const setDefault = (receiver) => {
+      if(userId!==null){
+        axios.get(`http://localhost:8000/api/users/${userId}/receivers/${receiver.receiver_id}/status`,)
+        .then(response => {
+            // Gọi lại API để cập nhật danh sách địa chỉ sau khi thiết lập mặc định
+            updateReceivers();
+        })
+        .catch(error => {
+          console.error('Lỗi khi thiết lập mặc định:', error);
+        });
+      }
     };
 
-    useEffect(() => {
-      if(receiver.receiver_type == 1){
-        let style = {cursor: 'not-allowed' ,opacity: '.7'};
-        setStyle(style);
-        console.log('style');
-
-      }
-    }, [receiver]);
-
-    
     return ( 
       <div className="mb-4">
         <div className=' mt-4 sp_title mb-4' >
@@ -101,6 +95,7 @@ function Shipping() {
                     receiverId={selectedReceiverId} 
                     onUpdate={updateReceivers} 
                     onClose={closeForm} 
+                    setDefault={setDefault}
                     />
       )}
                     </>
@@ -122,10 +117,12 @@ function Shipping() {
             <div className="col-md-2 sp-bt">
               <div>
                 <button className="sp-bt_capnhat" onClick={() => openForm(item.receiver_id)}>Cập nhật</button>
-                <button className="sp-bt_capnhat" onClick={() => deleteReceiver(item.receiver_id)}>Xóa</button>
+                <button className="sp-bt_capnhat" onClick={() => deleteReceiver(item.receiver_id)}
+                  style={item.receiver_type == 1 ? style_noDelete : {} }
+                  >Xóa</button>
               </div>
-              <button className="sp-bt_md" onClick={() => setDefault(item.receiver_id)} 
-              style={style_receiverType}
+              <button className="sp-bt_md" onClick={() => HandlesetDefault(item)} 
+              style={item.receiver_type == 1 ? style_receiverType : {} }
                 >Thiết lập mặc định</button>
             </div>
           </div>

@@ -57,7 +57,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('users/{user}/vouchers',[UserController::class,'ShowVouchers']);
     Route::apiResource('carts',CartController::class); 
     Route::apiResource('receivers',ReceiverController::class);
-    Route::get('receivers/{receiver}/status',[ReceiverController::class,'HandleStatus']);
+    Route::get('users/{user}/receivers/{receiver}/status',[ReceiverController::class,'HandleStatus']);
     
     Route::apiResource('categorys',CategoryController::class)->only('index','show');
     Route::apiResource('products',ProductController::class)->only('index','show');

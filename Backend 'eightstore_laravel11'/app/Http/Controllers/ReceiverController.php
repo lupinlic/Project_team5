@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Receiver;
 use App\Http\Requests\StoreReceiverRequest;
 use App\Http\Requests\UpdateReceiverRequest;
+use App\Models\User;
 
 class ReceiverController extends Controller
 {
@@ -135,17 +136,15 @@ class ReceiverController extends Controller
                 ]
             );
     }  
-    public function HandleStatus(Receiver $receiver)
+    public function HandleStatus(User $user,$receiver_id)
     {
         //tìm kiếm th nào đang mặc định và chuyển đổi nó
-        Receiver::where('receiver_type',1)->update(['receiver_type' => 0]);
-        $receiver->receiver_type = 1;
+        $user->receivers()->where('receiver_type',1)->update(['receiver_type' => 0]);
+        $user->receivers()->where('receiver_id',$receiver_id)->update(['receiver_type' => 1]);
 
-        $receiver->save();
             return response()->json(
                 [
                     "message" => "đã cập nhập mặc định người dùng thành công",
-                    "data" => $receiver,
                 ]
             );
     }

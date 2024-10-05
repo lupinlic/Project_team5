@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useRef} from 'react';
 import axios from 'axios';
-const ShippingForm = ({receiverId, onUpdate, onClose}) => {
+const ShippingForm = ({receiverId, onUpdate, onClose,setDefault}) => {
   // console.log(receiverId)
     const [userId, setUserId] = useState(null);
     const [provinces, setProvinces] = useState([]);
@@ -157,17 +157,20 @@ const handleChange = (e) => {
     if(checkboxRef.current.checked){
       receiver.receiver_type = 1;
     }
+
     if (receiverId && receiverId !== null) {
       // Gọi API sửa nhà cung cấp
-      console.log(receiver)
       axios.put(`http://localhost:8000/api/receivers/${receiverId}`, receiver)
       .then(response => {
+        if(checkboxRef.current.checked){
+          setDefault(response.data.data);
+        }
         onUpdate(); 
         onClose(); // Cập nhật danh sách sau khi sửa
       })
     } else {
       // Gọi API thêm nhà cung cấp mới
-        
+
       if (userId !== null && receiver.receiver_name !=='' && receiver.receiver_phone !==''
         && receiver.receiver_city !=='' && receiver.receiver_commune !=='' && receiver.receiver_district !==''
         && receiver.receiver_dsc !=='') {
@@ -177,7 +180,9 @@ const handleChange = (e) => {
 
         axios.post('http://localhost:8000/api/receivers', receiver)
           .then(response => {
-          
+            if(checkboxRef.current.checked){
+              setDefault(response.data.data);
+            }
             setReceiver({
               user_id : userId,
               receiver_name: '',
@@ -188,6 +193,7 @@ const handleChange = (e) => {
               receiver_dsc: '',
               receiver_type: type,
             });
+
             onUpdate(); 
             onClose(); // Cập nhật danh sách sau khi thêm
           })
@@ -233,8 +239,10 @@ const handleChange = (e) => {
             <div className="bt-them"><button>+ Thêm vị trí</button></div>
 
             <div className="d-flex">
-                <input className="form-check-input me-2" type="checkbox" defaultValue id="squareCheckbox" ref={checkboxRef}/>
-                <p>Đặt làm địa chỉ mặc định</p>
+                <input className="form-check-input me-2" type="checkbox" defaultValue id="squareCheckbox" ref={checkboxRef}
+                style={receiver.receiver_type == 1 ? {display:'none'} : {} }
+                />
+                <p style={receiver.receiver_type == 1 ? {display:'none'} : {} }>Đặt làm địa chỉ mặc định</p>
             </div>
 
 
