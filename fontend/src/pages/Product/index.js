@@ -1,13 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faList,faShoppingCart} from '@fortawesome/free-solid-svg-icons';
-import {Link } from 'react-router-dom';
+import {Link,useParams  } from 'react-router-dom';
 
 
 import './style.css'
 import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
 
-function Product() {
+const Product = () =>{
         const [isMenuOpen, setIsMenuOpen] = useState(false);
 
         const openMenu = () => {
@@ -18,7 +18,7 @@ function Product() {
             setIsMenuOpen(false);
         };
         
-
+        const { category_Id } = useParams();
 // gọi api đỏ sản phẩm
 const [data, setData] = useState([]);
 const [categorys, setCategory] = useState([]);
@@ -26,6 +26,28 @@ const [filteredProducts, setFilteredProducts] = useState([]);
         const [selectedFilter, setSelectedFilter] = useState(""); 
 useEffect(() => {
     // Gọi hai API để lấy dữ liệu sản phẩm và danh mục, nhà cung cấp
+    if(category_Id){
+        axios.get(`http://localhost:8000/api/categorys/${category_Id}/products`)
+        .then(response => {
+            // Truy cập vào phần "data" của API trả về và đặt vào state
+            setData(response.data.data);
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+        });
+
+        axios.get(`http://localhost:8000/api/categorys/${category_Id}`)
+        .then(response => {
+            // Truy cập vào phần "data" của API trả về và đặt vào state
+            setCategory(response.data.data);
+            console.log(category_Id)
+            console.log(`http://localhost:8000/api/categorys/${category_Id}`)
+            console.log(categorys)
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+        });
+    }else{
     axios.get('http://localhost:8000/api/products')
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
@@ -43,10 +65,13 @@ useEffect(() => {
     .catch(error => {
         console.error('Error fetching data: ', error);
     });
+    }
+
+    
      // Thiết lập mặc định
    
 
-}, []);
+}, [category_Id]);
 useEffect(() => {
     setSelectedFilter("all");
     // Khi vào trang, thiết lập sản phẩm hiển thị là tất cả
@@ -147,14 +172,14 @@ const shortenText = (text, maxLength) => {
                         <span id="closeButton" onClick={closeMenu}>×</span>
                         <ul className="list-group">
                             <li className="list-group-item active" style={{backgroundColor: '#e5677d', border: 'none'}}>DANH MỤC SẢN PHẨM</li>
-                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/icon11.png" alt /><Link to=''>Sữa rửa mặt</Link></li>
-                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/trang-diem-2.png" alt /><Link to=''>Tẩy trang</Link></li>
-                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/salon-toc.png" alt /><Link to=''>Mặt nạ</Link></li>
-                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/duong-the.png" alt /><Link to=''>Nước hoa hồng</Link></li>
-                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/nuoc-hoa-1.png" alt /><Link to=''>Dưỡng ẩm</Link></li>
-                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/dac-tri.png" alt /><Link to=''>Dưỡng thể</Link></li>
-                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/icon11.png" alt /><Link to=''>Trang điểm</Link></li>
-                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/trang-diem-2.png" alt /><Link to=''>Chăm sóc tóc</Link></li>
+                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/icon11.png" alt='' /><Link to="/Product/2">Sữa rửa mặt</Link></li>
+                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/trang-diem-2.png" alt='' /><Link to="/Product/1">Tẩy trang</Link></li>
+                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/salon-toc.png" alt='' /><Link to="/Product/3">Mặt nạ</Link></li>
+                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/duong-the.png" alt='' /><Link to="/Product/4">Nước hoa hồng</Link></li>
+                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/nuoc-hoa-1.png" alt='' /><Link to="/Product/5">Dưỡng ẩm</Link></li>
+                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/dac-tri.png" alt='' /><Link to="/Product/8">Chăm sóc tóc</Link></li>
+                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/icon11.png" alt='' /><Link to="/Product/7">Trang điểm</Link></li>
+                            <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/trang-diem-2.png" alt='' /><Link to="/Product/6">Dưỡng thể</Link> </li>
                         </ul>
                 </div>
             {/* main */}

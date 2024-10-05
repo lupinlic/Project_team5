@@ -13,7 +13,9 @@ const Product_detail = () => {
     const [quantity, setQuantity] = useState(1);
     const [categorys, setCategory] = useState([]);
     const [userId, setUserId] = useState(null);
+    const [isMessageVisible, setIsMessageVisible] = useState(false);
     const userData = localStorage.getItem('user');
+
     useEffect(() => {
         
         const parsedUser = JSON.parse(userData);
@@ -74,6 +76,11 @@ const Product_detail = () => {
         setQuantity(quantity - 1);
         }
     };
+
+    // tạo hiệu ứng thêm giỏ hàng
+    // end
+
+
     let price= product.product_price
     const num = Number(product_id)
     let total= price*quantity
@@ -97,6 +104,12 @@ const Product_detail = () => {
           .catch(error => {
             console.error('Lỗi khi thêm vào giỏ hàng:', error);
           });
+          setIsMessageVisible(true);
+
+        // Ẩn thông báo sau 3 giây
+        setTimeout(() => {
+            setIsMessageVisible(false);
+        }, 3000);
       };
     
     return ( 
@@ -148,6 +161,7 @@ const Product_detail = () => {
                             onClick={addToCart}>
                             Thêm vào giỏ hàng
                             </Button></Link>
+                            {isMessageVisible && <div className="success-message">Thêm vào giỏ hàng thành công!</div>}
                         </div>
                         <div className='col-md-2'>
 
