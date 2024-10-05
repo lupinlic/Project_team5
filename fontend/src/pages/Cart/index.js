@@ -2,38 +2,39 @@ import React, { useState ,useEffect } from 'react';
 import {Link  } from 'react-router-dom';
 import axios from 'axios';
 
-const Cart =() =>{
+const Cart = () => {
     const [carts, setData] = useState([]);
     const [userId, setUserId] = useState(null);
     const [products, setProducts] = useState([]);
 
     const userData = localStorage.getItem('user');
+    
     useEffect(() => {
-        
         const parsedUser = JSON.parse(userData);
-        setUserId(parsedUser.user_id);
-      }, []);
+        if (parsedUser && parsedUser.user_id) {
+            setUserId(parsedUser.user_id);
+        }
+    }, [userData]); // Thêm userData vào dependency để theo dõi
 
-      
     useEffect(() => {
+        if (userId !== null) { // Thay đổi điều kiện để kiểm tra userId
+
             axios.get(`http://localhost:8000/api/users/${userId}/carts`)
-            // console.log(`http://localhost:8000/api/users/${userId}/carts`)
-            .then(response => {
-                setData(response.data.data);
-            })
-            .catch(error => {
-                console.error('Error fetching data: ', error);
-            });
+                .then(response => {
+                    setData(response.data.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching data: ', error);
+                });
 
             axios.get('http://localhost:8000/api/products')
-            .then(response => {
-                // Truy cập vào phần "data" của API trả về và đặt vào state
-                setProducts(response.data.data);
-            })
-            .catch(error => {
-                console.error('Error fetching data: ', error);
-            });
-        
+                .then(response => {
+                    setProducts(response.data.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching data: ', error);
+                });
+        }
     }, [userId]);
 
     
@@ -99,7 +100,8 @@ const Cart =() =>{
                                 <p style={{float: 'right'}} />
                             </div>
                         </div>
-                        {carts.map(item =>(
+
+                        {carts && carts.length > 0 ? carts.map(item => (
                         <div className="row" style={{borderBottom: '1px solid darkgrey',padding:'12px 0'}} key={item.id}>
                             <div className="col-1">
                                 <input type='checkbox' name='' id='cart_check' ></input>
@@ -119,7 +121,8 @@ const Cart =() =>{
                             <div className="col-1">
                                 <button style={{float: 'right',color:'red',border:'none'}} >xóa</button>
                             </div>
-                        </div>))}
+                        </div>)) : <p>Chưa có sản phẩm nào đc mua.</p>
+                        }
                     </div>
                     
                     <div className="py-3">

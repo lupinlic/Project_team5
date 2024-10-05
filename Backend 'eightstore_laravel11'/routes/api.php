@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function(){
     
     //  --2. show ra các thông tin mà customer có thể thấy
     Route::apiResource('users',UserController::class)->only('index','show','update','destroy');
-    Route::get('users/{user}/carts', [UserController::class,'ShowCarts']);
+    Route::get('users/{user}/carts', [UserController::class,'HandleCart']);
     Route::get('users/{user}/receivers',[UserController::class,'ShowReceivers']);
     Route::get('users/{user}/receivers/type',[UserController::class,'showByType']);
     Route::get('users/{user}/vouchers',[UserController::class,'ShowVouchers']);

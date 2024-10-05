@@ -133,15 +133,17 @@ class UserController extends Controller
             );
     }
 
-    public function ShowCarts(User $user)
+    public function HandleCart(User $user)
     {
         $get_cart = $user->carts()->with('product')->get();
+        $count_cart = $user->carts()->with('product')->count('cart_id');
 
         if(count($get_cart)>0){
             return response()->json(
                 [
                     "message" => "đã lấy dữ liệu thành công",
                     "data" => $get_cart,
+                    "count_cart" => $count_cart,
                 ]
             );
         }else{

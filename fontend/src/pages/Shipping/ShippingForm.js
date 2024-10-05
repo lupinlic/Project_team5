@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef} from 'react';
 import axios from 'axios';
 const ShippingForm = ({receiverId, onUpdate, onClose}) => {
   // console.log(receiverId)
@@ -10,17 +10,22 @@ const ShippingForm = ({receiverId, onUpdate, onClose}) => {
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [selectedCommune, setSelectedCommune] = useState('');
    const type= 0;
+   const checkboxRef = useRef(null);
+
     // const [receiver_name, setreceiver_name] = useState('');
     // const [receiver_phone, setreceiver_phone] = useState('');
     // const [receiver_dsc, setreceiver_dsc] = useState('');
-    const userData = localStorage.getItem('user');
     useEffect(() => {
-          
+      const userData = localStorage.getItem('user');
       const parsedUser = JSON.parse(userData);
-      setUserId(parsedUser.user_id);
+      if (parsedUser && (parsedUser.user_id !== null)) {
+        setUserId(parsedUser.user_id); 
+        console.log('user_id'+userId)
+    }
 
     }, []);
     
+
     const [receiver, setReceiver] = useState({
       user_id : userId,
       receiver_name: '',
@@ -149,46 +154,45 @@ const handleChange = (e) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   
-    
-    if (receiverId) {
+    if(checkboxRef.current.checked){
+      receiver.receiver_type = 1;
+    }
+    if (receiverId && receiverId !== null) {
       // Gọi API sửa nhà cung cấp
-      setTimeout(() => {
-        console.log(receiver)
-        axios.put(`http://localhost:8000/api/receivers/${receiverId}`, receiver)
-        .then(response => {
-          onUpdate(); 
-          onClose(); // Cập nhật danh sách sau khi sửa
-        })
-      },3000);
-     
-        
+      console.log(receiver)
+      axios.put(`http://localhost:8000/api/receivers/${receiverId}`, receiver)
+      .then(response => {
+        onUpdate(); 
+        onClose(); // Cập nhật danh sách sau khi sửa
+      })
     } else {
       // Gọi API thêm nhà cung cấp mới
-      setTimeout(() => {
-        console.log(userId)
-        console.log(receiver)
-  
-      axios.post('http://localhost:8000/api/receivers', receiver)
-        .then(response => {
         
-          setReceiver({
-            user_id : userId,
-            receiver_name: '',
-            receiver_phone: '',
-            receiver_city: '',
-            receiver_district: '',
-            receiver_commune: '',
-            receiver_dsc: '',
-            receiver_type: type,
-          });
-          onUpdate(); 
-          onClose(); // Cập nhật danh sách sau khi thêm
-        })
-      }, 3000); 
+      if (userId !== null && receiver.receiver_name !=='' && receiver.receiver_phone !==''
+        && receiver.receiver_city !=='' && receiver.receiver_commune !=='' && receiver.receiver_district !==''
+        && receiver.receiver_dsc !=='') {
+        //khi ấn lưu thì lấy userId đã đc set
+
+        receiver.user_id=userId;
+
+        axios.post('http://localhost:8000/api/receivers', receiver)
+          .then(response => {
+          
+            setReceiver({
+              user_id : userId,
+              receiver_name: '',
+              receiver_phone: '',
+              receiver_city: '',
+              receiver_district: '',
+              receiver_commune: '',
+              receiver_dsc: '',
+              receiver_type: type,
+            });
+            onUpdate(); 
+            onClose(); // Cập nhật danh sách sau khi thêm
+          })
+      }
     }
-  
-    
   };
  
 
@@ -229,7 +233,7 @@ const handleChange = (e) => {
             <div className="bt-them"><button>+ Thêm vị trí</button></div>
 
             <div className="d-flex">
-                <input className="form-check-input me-2" type="checkbox" defaultValue id="squareCheckbox" />
+                <input className="form-check-input me-2" type="checkbox" defaultValue id="squareCheckbox" ref={checkboxRef}/>
                 <p>Đặt làm địa chỉ mặc định</p>
             </div>
 
