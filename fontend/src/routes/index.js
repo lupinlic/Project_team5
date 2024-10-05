@@ -22,7 +22,7 @@ const publicRoutes = [
         path:'/', component: Home
     },
     {
-        path:'/Product', component: Product
+        path:'/Product/:category_Id?', component: Product
     },
     {
         path:'/Product_detail/:product_id', component: Product_detail

@@ -97,14 +97,14 @@ function Home (){
             <div className="col-md-3">
                 <ul className="list-group">
                     <li className="list-group-item active" style={{backgroundColor: 'rgb(240, 61, 207)', border: 'none',color:'#fff'}}>DANH MỤC SẢN PHẨM</li>
-                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/icon11.png" alt /><a href="">Sữa rửa mặt</a></li>
-                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/trang-diem-2.png" alt /><a href="">Tẩy trang</a></li>
-                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/salon-toc.png" alt /><a href="">Mặt nạ</a></li>
-                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/duong-the.png" alt /><a href="">Nước hoa hồng</a></li>
-                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/nuoc-hoa-1.png" alt /><a href="">Dưỡng ẩm</a></li>
-                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/dac-tri.png" alt /><a href="">Chăm sóc tóc</a></li>
-                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/icon11.png" alt /><a href="">Trang điểm</a></li>
-                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/trang-diem-2.png" alt /><a href="">Dưỡng thể</a> </li>
+                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/icon11.png" alt ='' /><Link to="/Product/2">Sữa rửa mặt</Link></li>
+                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/trang-diem-2.png" alt ='' /><Link to="/Product/1">Tẩy trang</Link></li>
+                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/salon-toc.png" alt ='' /><Link to="/Product/3">Mặt nạ</Link></li>
+                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/duong-the.png" alt ='' /><Link to="/Product/4">Nước hoa hồng</Link></li>
+                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/nuoc-hoa-1.png" alt ='' /><Link to="/Product/5">Dưỡng ẩm</Link></li>
+                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/dac-tri.png" alt ='' /><Link to="/Product/8">Chăm sóc tóc</Link></li>
+                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/icon11.png" alt ='' /><Link to="/Product/7">Trang điểm</Link></li>
+                    <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/trang-diem-2.png" alt ='' /><Link to="/Product/6">Dưỡng thể</Link> </li>
                 </ul>
             </div>
             <div className="col-md-9" style={{margin:'30px 0'}}>

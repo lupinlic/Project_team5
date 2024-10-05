@@ -17,3 +17,33 @@
 .deal{
     /* background-color: aqua; */
 }
+.success-message {
+    position: fixed; /* Đặt vị trí cố định */
+    top: 50%; /* Giữa màn hình theo chiều dọc */
+    left: 50%; /* Giữa màn hình theo chiều ngang */
+    transform: translate(-50%, -50%); /* Dịch chuyển để căn giữa */
+    background-color: rgba(255, 255, 255, 0.8); /* Nền trắng với độ trong suốt */
+    color: red; /* Màu chữ đỏ */
+    padding: 20px; /* Khoảng cách bên trong */
+    border: 2px solid red; /* Đường viền đỏ */
+    border-radius: 5px; /* Bo góc */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+    z-index: 1000; /* Đặt z-index để nằm trên các thành phần khác */
+    opacity: 1; /* Độ mờ ban đầu */
+    transition: opacity 1s ease-in-out; /* Hiệu ứng chuyển đổi độ mờ */
+}
+.success-message.fade-out {
+    opacity: 0; /* Độ mờ biến mất */
+}
+.cart-notification {
+    position: absolute; /* Đặt vị trí tuyệt đối */
+    color: red; /* Màu chữ đỏ */
+    font-size: 20px; /* Kích thước chữ */
+    opacity: 1; /* Độ mờ ban đầu */
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out; /* Hiệu ứng chuyển đổi cho chuyển động và độ mờ */
+    pointer-events: none; /* Ngăn không cho người dùng tương tác với nó */
+    z-index: 1000; /* Đặt z-index để nằm trên các thành phần khác */
+}
+.cart-notification.fade-out {
+    opacity: 0; /* Độ mờ biến mất */
+}

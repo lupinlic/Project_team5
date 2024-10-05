@@ -100,7 +100,7 @@ function Header() {
                             </div>
                             <div className="col-md">
                                 <Link to="/cart" className="  position-relative">
-                                <span className="fs-3 text-dark"><FontAwesomeIcon icon={faShoppingCart} />
+                                <span className="fs-3 text-dark cart-icon"><FontAwesomeIcon icon={faShoppingCart} />
                                 </span>
                                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">1
                                 </span>
