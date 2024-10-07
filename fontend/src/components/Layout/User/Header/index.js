@@ -48,21 +48,28 @@ function Header() {
     const settingsRef = useRef(null);
     const toggleSettings = () => {
         setIsSettingsOpen(prev => !prev);
-        
       };
       const handleClickOutside = (event) => {
         if (settingsRef.current && !settingsRef.current.contains(event.target)) {
           setIsSettingsOpen(false);
         }
       };
+
+
+    // document.addEventListener('click', (e) => {
+    //     if(isclick_Profile == true){
+    //         handleClickOutside();
+    //     }
+    // });
     
       // Thêm và gỡ bỏ sự kiện click ngoài khi component mount/unmount
-    //   useEffect(() => {
-    //     document.addEventListener('mousedown', handleClickOutside);
-    //     return () => {
-    //       document.removeEventListener('mousedown', handleClickOutside);
-    //     };
-    //   }, []);
+      useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, []);
+
     return (
         <div>
             <Helmet>
@@ -93,7 +100,7 @@ function Header() {
                                         <strong className="text-danger">0328443736</strong></div>
                                     </div>
                             </div>
-                            <div className="col-md" onClick={toggleSettings} ref={settingsRef} style={{position:'relative'}}>
+                            <div className="col-md" onClick={toggleSettings} ref={settingsRef} style={{position:'relative',cursor:'pointer'}}>
                                 <div className="row">
                                     <div className="col-3">
                                         <div className="fs-3 text-danger"> <FontAwesomeIcon icon={faUser} /> </div>
@@ -103,7 +110,9 @@ function Header() {
                                     </div>
                                 </div>
                                 {isSettingsOpen && (
-                                    <div className='account_child' style={{zIndex:'1',position:'absolute' ,backdropFilter: 'blur(18px)', padding:'20px',width:'250px'}}>
+                                    <div className='account_child' style={{zIndex:'1',position:'absolute' ,backdropFilter: 'blur(18px)', padding:'20px',width:'250px'}}
+                                    
+                                    >
                                         <h6>Welcome!</h6>
                                         <ul>
                                             <li><Link to='' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faUser}/>Thông tin cá nhân</Link></li>
@@ -111,7 +120,6 @@ function Header() {
                                             <li><Link to='/Shipping' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faLock}/>Địa chỉ giao hàng</Link></li>
                                             <li className='pt-2' ><Link to='/Login' style={{color:'black'}} 
                                                 onClick={(e) => { 
-                                                    e.stopPropagation();  // Ngăn sự kiện nổi bọt lên thẻ cha
                                                     handleLogout();
                                                     }}>
                                                 <FontAwesomeIcon style={{paddingRight:'8px'}} icon={faSignOutAlt}/>Đăng xuất</Link>

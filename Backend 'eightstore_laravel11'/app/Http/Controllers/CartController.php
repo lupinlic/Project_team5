@@ -44,9 +44,22 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request)
     {
+        $user = $request->user();
+        $cart = $user->carts()->where('product_id',$request->product_id)->first();
+        if($cart){
+            $newquantity = $request->cart_quantity + $cart->cart_quantity;
+            $cart->cart_quantity = $newquantity;
+
+            $cart->save();
+            return response()->json(
+                [
+                    "message" => "đã update dữ liệu thành công do sản phẩm này đã đc mua rồi",
+                    "data" => $cart,
+                ]
+            );
+        }else{
         $get_cart = new Cart();
        
-        if($get_cart){
             $get_cart->user_id = $request->user_id;
             $get_cart->product_id = $request->product_id;
             $get_cart->cart_quantity = $request->cart_quantity;
@@ -57,13 +70,7 @@ class CartController extends Controller
             return response()->json(
                 [
                     "message" => "đã thêm dữ liệu thành công",
-                    "data" => $get_cart,
-                ]
-            );
-        }else{
-            return response()->json(
-                [
-                    "message" => "thêm dữ liệu thất bại",
+                    "data" => $cart,
                 ]
             );
         }

@@ -50,13 +50,14 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('auth/profile', [LoginController::class, 'ShowProfile']);
     
     //  --2. show ra các thông tin mà customer có thể thấy
-    Route::apiResource('users',UserController::class)->only('index','show','update','destroy');;
-    Route::get('users/{user}/carts', [UserController::class,'ShowCarts']);
+    Route::apiResource('users',UserController::class)->only('index','show','update','destroy');
+    Route::get('users/{user}/carts', [UserController::class,'HandleCart']);
     Route::get('users/{user}/receivers',[UserController::class,'ShowReceivers']);
     Route::get('users/{user}/receivers/type',[UserController::class,'showByType']);
     Route::get('users/{user}/vouchers',[UserController::class,'ShowVouchers']);
     Route::apiResource('carts',CartController::class); 
     Route::apiResource('receivers',ReceiverController::class);
+    Route::get('users/{user}/receivers/{receiver}/status',[ReceiverController::class,'HandleStatus']);
     
     Route::apiResource('categorys',CategoryController::class)->only('index','show');
     Route::apiResource('products',ProductController::class)->only('index','show');
@@ -68,9 +69,10 @@ Route::middleware('auth:sanctum')->group(function(){
     //  --nd đăng nhập xog thì ms đăng xuất đc
     Route::get('user/logout',[LogoutController::class,'User_Logout']);
     
+    
     //admin
     Route::middleware('admin')->group(function(){
-        Route::apiResource('users',UserController::class)->only('store');;
+        Route::apiResource('users',UserController::class)->only('store');
         Route::apiResource('categorys',CategoryController::class)->only('store','update','destroy');
         Route::apiResource('products',ProductController::class)->only('store','update','destroy');
         Route::apiResource('suppliers',SupplierController::class)->only('store','update','destroy');
@@ -88,7 +90,6 @@ Route::middleware('auth:sanctum')->group(function(){
 });
 Route::post('user/login',[LoginController::class,'User_Login']);
 Route::post('user/regester',[RegesterController::class,'User_Regester']);
-
 
 
 

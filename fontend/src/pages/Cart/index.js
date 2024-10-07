@@ -11,6 +11,10 @@ const Cart = () => {
     const [products, setProducts] = useState([]);
     const [categorys, setCategory] = useState([]);
 
+    const [selectProducts, setSelectProducts] = useState([]);
+    const [ischeckProductAll, setischeckProductAll] = useState(false); // Theo dõi trạng thái chỉnh sửa
+
+
     const userData = localStorage.getItem('user');
     
     useEffect(() => {
@@ -18,10 +22,17 @@ const Cart = () => {
         if (parsedUser && parsedUser.user_id) {
             setUserId(parsedUser.user_id);
         }
-    }, [userData]); // Thêm userData vào dependency để theo dõi
+    },[userData]); // Thêm userData vào dependency để theo dõi
+    
+    const parsedSelectCart = JSON.parse(sessionStorage.getItem('Carts'));
+    useEffect(()=>{
+        if(parsedSelectCart){
+            setSelectProducts(parsedSelectCart);
+            parsedSelectCart.length==carts.length ? setischeckProductAll(true) : setischeckProductAll(false);         
+        }
+    },[carts])
 
-    useEffect(() => {
-        if (userId !== null) { // Thay đổi điều kiện để kiểm tra userId
+    const HandleGetCarts = () => {
 
             axios.get(`http://localhost:8000/api/users/${userId}/carts`)
                 .then(response => {
@@ -38,8 +49,11 @@ const Cart = () => {
                 .catch(error => {
                     console.error('Error fetching data: ', error);
                 });
-        }
-    }, [userId]);
+    };
+
+    useEffect(()=>{
+        HandleGetCarts();
+    },[userId])
 
     
     const getProductName = (product_id) => {
@@ -61,17 +75,18 @@ const Cart = () => {
         return productPrice;
       };
 
-    //   const deleteProduct = (cartId) => {
-    //     if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?')) {
-    //       axios.delete(`http://localhost:8000/api/carts/${cartId}`)
-    //         .then(response => {
-    //             updateCart(); // Cập nhật lại danh sách sau khi xóa
-    //         })
-    //     }
-    //   };
+      const deleteProduct = (cartId) => {
+        if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?')) {
+          axios.delete(`http://localhost:8000/api/carts/${cartId}`)
+            .then(response => {
+                HandleGetCarts(); // Cập nhật lại danh sách sau khi xóa
+            })
+        }
+      };
       const shortenText = (text, maxLength) => {
         return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
       };
+
 
     //   danh mục
       useEffect(() => {
@@ -125,70 +140,148 @@ const Cart = () => {
           window.removeEventListener("scroll", handleScroll);
         };
       }, []);
-
-    //   số lượng
-    
-        const [quantity, setQuantity] = useState(1); // Khởi tạo số lượng sản phẩm
-      
-        const handleIncrease = () => {
-          setQuantity((prev) => prev + 1); // Tăng số lượng
-        };
-      
-        const handleDecrease = () => {
-          setQuantity((prev) => (prev > 1 ? prev - 1 : 1)); // Giảm số lượng, không cho phép nhỏ hơn 1
-        };
         // lấy 12sanr phẩm
         const displayedProducts = products.slice(0, 12);
       
 
 
+        
+      const HandleUpdateCartQuantity = (operator,cart,event)=> {
+        let new_quantity=0;
+        if(operator=='-'){
+            //nếu là th - thì gọi api update giá trị trừ 1 vào và update lại giá mới
+            new_quantity = (cart.cart_quantity-1);
+        }else if(operator=='+'){
+            //nếu là th - thì gọi api update giá trị trừ 1 vào và update lại giá mới
+            new_quantity = (cart.cart_quantity+1);
+        }else{
+            new_quantity = event.target.value;
+        }
+        let newtotal = new_quantity*(cart.product.product_price);
+            axios.put(`http://localhost:8000/api/carts/${cart.cart_id}`, {
+                user_id : userId,
+                product_id : cart.product_id,
+                cart_quantity : new_quantity,
+                cart_totalmoney : newtotal,
+            })
+            .then(response=>{
+                HandleGetCarts();
+            })
+            .catch(error=>{
+                console.error('lỗi từ server')
+            })
+      }
+
+      const HandleOnchange = (event,cart_id) => {
+        // khi onchange vào input thì cần pai thay đổi state thì nó ms hiển thị nhìn thấy đc
+        if(isNaN(event.target.value) || event.target.value === ""){
+            event.target.value = "1";
+        }
+        let carts_coppy = [...carts];
+
+        carts_coppy.forEach(cart => {
+            if(cart.cart_id==cart_id){
+                let pasint_quantity = parseInt(event.target.value)
+                cart.cart_quantity = pasint_quantity;
+            }
+        });
+        setData(carts_coppy);
+    };
+
+    const HandleSelectCarts = (cart,event) => {
+        //kiểm tra nếu nd click vào thì sẽ set thêm vào mảng
+        let carts_coppy=null;
+        if(event.target.checked){
+            carts_coppy = [...selectProducts,cart];
+            setSelectProducts(carts_coppy);
+        }else{
+        //còn nếu nd mà hủy bỏ click thì đơn giản là xóa cái cart đó khỏi mảng
+            carts_coppy = selectProducts.filter(product => product.cart_id !== cart.cart_id)
+            console.log(carts_coppy)
+            setSelectProducts(carts_coppy);
+        }
+        if(carts_coppy.length==carts.length){
+            setischeckProductAll(true);
+        }else{
+            setischeckProductAll(false);
+        }
+        HandleTotalMoney();
+        saveSessionCart(carts_coppy);
+    };
+
+    const HandleTotalMoney = () => {
+        let list_price = selectProducts.map(cart => cart.cart_totalmoney);
+        let sumtotal = list_price.reduce((sum,value)=>sum + value,0)
+        return sumtotal;
+    }
+
+    const handleSelectAll = (event) => {
+        setischeckProductAll(true);
+
+        let carts_coppy=[];
+        if(event.target.checked){
+            carts_coppy = [...carts];
+            setSelectProducts(carts_coppy);
+        }else{
+            setSelectProducts([]);
+        }
+        saveSessionCart(carts_coppy)
+    }
+
+    const saveSessionCart = (carts_coppy) =>{
+        sessionStorage.setItem('Carts',JSON.stringify(carts_coppy));
+    }
+
+
     return ( 
-        <div style={{margin:'20px 0'}} className='container'>
-            <p style={{color: 'darkgrey'}}>Trang chủ &gt; Giỏ hàng</p>   
-            <div className='row' style={{height:'50px', backgroundColor:'rgb(254, 223, 249)', alignItems:'center'}}>
-                <div className='col-md-6'>
-                    <input type='checkbox' style={{margin:'0 8px'}}></input>
-                    Sản Phẩm
-                </div>
-                <div className='col-md-2'>Đơn giá</div>
-                <div className='col-md-2'>Số lượng</div>
-                <div className='col-md-1'>Tổng tiền</div>
-                <div className='col-md-1'>Thao tác</div>
-
-            </div>
-            <div className='product-list'>
-            {carts && carts.length > 0 ? carts.map(item => (  
-                <div style={{margin:'20px 0', boxShadow:'0 -4px 10px rgba(0, 0, 0, 0.1)'}}>
-                    <div className='row mt-4' style={{height:'120px', alignItems:'center',borderBottom:'1px solid rgb(210, 209, 210)'}}>
-                        <div className='col-md-6 d-flex align-items-center'>
-                            <input id='cart_check' type='checkbox' style={{margin:'0 8px'}}></input>
-                            <img src='https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lyddlh37mzpp26@resize_w80_nl.webp' style={{width:'60px',height:'80px',margin:'0 8px'}}/>
-                            <h6>{shortenText(getProductName(item.product_id),50)}</h6>
-                        </div>
-                        <div className='col-md-2'>{getProductPrice(item.product_id)}</div>
-                        <div className='col-md-2 d-flex'> 
-                                <button style={{border:'none'}} onClick={handleDecrease} >-</button>
-                                <input type="number" value={quantity} defaultValue={1} style={{width:'40px'}}>{item.cart_quantity}</input>
-                                <button style={{border:'none'}} onClick={handleIncrease} >+</button>
-                        </div>
-                        <div className='col-md-1'>{item.cart_totalmoney}</div>
-                        <div className='col-md-1'><button style={{border:'none', color:'red'}}>Xóa</button></div>
+            <div style={{margin:'20px 0'}} className='container'>
+                <p style={{color: 'darkgrey'}}>Trang chủ &gt; Giỏ hàng</p>   
+                <div className='row' style={{height:'50px', backgroundColor:'rgb(254, 223, 249)', alignItems:'center'}}>
+                    <div className='col-md-6'>
+                        <input type='checkbox' style={{margin:'0 8px'}} checked={ischeckProductAll} onClick={(e)=>handleSelectAll(e)} ></input>
+                        Sản Phẩm
                     </div>
-                    <div style={{height:'50px', padding:'20px 0',borderBottom:'1px solid rgb(210, 209, 210)'}}>
-                        <img style={{width:"30px", height:'30px'}} src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/cart/d9e992985b18d96aab90.png'/>
-                        Giảm ₫300.000 phí vận chuyển đơn tối thiểu ₫0; Giảm ₫500.000 phí vận chuyển đơn tối thiểu ₫500.000
-                    </div>
+                    <div className='col-md-2'>Đơn giá</div>
+                    <div className='col-md-2'>Số lượng</div>
+                    <div className='col-md-1'>Tổng tiền</div>
+                    <div className='col-md-1'>Thao tác</div>
                 </div>
-                )) : <p>Chưa có sản phẩm nào đc mua.</p>
-                        }
+                <div className='product-list'>
+                {carts && carts.length > 0 ? carts.map(item => (  
+                    <div style={{margin:'20px 0', boxShadow:'0 -4px 10px rgba(0, 0, 0, 0.1)'}}>
+                        <div className='row mt-4' style={{height:'120px', alignItems:'center',borderBottom:'1px solid rgb(210, 209, 210)'}}>
+                            <div className='col-md-6 d-flex align-items-center'>
+                                <input id='cart_check' type='checkbox' style={{margin:'0 8px'}}  onChange={(e)=>HandleSelectCarts(item,e)}
+                                    checked={selectProducts.some(cart=>cart.cart_id==item.cart_id)}></input>
+                                <img src='https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lyddlh37mzpp26@resize_w80_nl.webp' style={{width:'60px',height:'80px',margin:'0 8px'}}/>
+                                <h6>{shortenText(getProductName(item.product_id),50)}</h6>
+                            </div>
+                            <div className='col-md-2'>{getProductPrice(item.product_id)}</div>
+                            <div className='col-md-2 d-flex'> 
+                                    <button style={{border:'none'}} onClick={()=> HandleUpdateCartQuantity('-',item)}>-</button>
+                                    <input type='text' name='cart_quantity' 
+                                        value={item.cart_quantity} style={{width: '40px'}}
+                                        onChange={(e)=>HandleOnchange(e,item.cart_id)}
+                                        onBlur={(e)=>HandleUpdateCartQuantity(1,item,e)}/>
+                                    <button style={{border:'none'}} onClick={()=> HandleUpdateCartQuantity('+',item)} >+</button>
+                            </div>
+                            <div className='col-md-1'>{item.cart_totalmoney}</div>
+                            <div className='col-md-1'><button style={{border:'none', color:'red'}} onClick={() => deleteProduct(item.cart_id)}>Xóa</button></div>
+                        </div>
+                        <div style={{height:'50px', padding:'20px 0',borderBottom:'1px solid rgb(210, 209, 210)'}}>
+                            <img style={{width:"30px", height:'30px'}} src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/cart/d9e992985b18d96aab90.png'/>
+                            Giảm ₫300.000 phí vận chuyển đơn tối thiểu ₫0; Giảm ₫500.000 phí vận chuyển đơn tối thiểu ₫500.000
+                        </div>
+                    </div>
+                )) : <p>Chưa có sản phẩm nào đc mua.</p> }
 
-               
-            </div>
+                
+                </div>
             {/* mua hàng */}
             <div className={ isFixed ? "fixed-checkout-bar bar" : "static-checkout-bar bar"}>
                     <div className='col-md-6 ' >
                         <div className='d-flex align-items-center' style={{margin:'0 12px'}}>
-                            <input type='checkbox' style={{margin:'0  16px 12px 16px'}}></input>
+                            <input type='checkbox' style={{margin:'0  16px 12px 16px'}} checked={ischeckProductAll} onClick={(e)=>handleSelectAll(e)}></input>
                             <p style={{marginRight:'20px'}}>Chọn tất cả</p>
                             <p>Xóa</p>
                         </div>
@@ -224,7 +317,6 @@ const Cart = () => {
                         </div>
                     </Link>
                     </div> ))}
-                    
                     
                 </div>
             </div>
