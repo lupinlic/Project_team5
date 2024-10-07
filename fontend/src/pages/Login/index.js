@@ -8,6 +8,7 @@ function Login() {
     const [user_password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [user, setUser] = useState(null);
+    const [cartCount, setCartCount] = useState(0);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -35,7 +36,9 @@ function Login() {
         .catch(error => {
             console.error('Lỗi khi đăng nhập:', error);
         });
+        
         if (user) {
+            
             
             if (user.user_role == 1) {
               window.location.href = '/Admin/Home';
@@ -43,6 +46,7 @@ function Login() {
               window.location.href = '/';
             }
         }
+        
     }; 
 
      

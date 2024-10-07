@@ -9,6 +9,14 @@ import { faSearch, faUser, faSignOutAlt, faShoppingCart , faPhone ,faHome, faCog
 
 function Header() {
     const [cartCount, setCartCount] = useState(0);
+    const [userId, setUserId] = useState(null);
+    // const userData = localStorage.getItem('user');
+
+    // useEffect(() => {
+        
+    //     const parsedUser = JSON.parse(userData);
+    //     setUserId(parsedUser.user_id);
+    //   }, []);
     const handleLogout = () => {
         axios.get('http://localhost:8000/api/user/logout')
         localStorage.removeItem('authToken');
@@ -16,6 +24,26 @@ function Header() {
         // Chuyển hướng về trang đăng nhập
         // window.location.href = '/Login';
     };
+
+    // useEffect(()=>{
+    //     axios.get(`http://localhost:8000/api/users/${userId}/carts`)
+    //             .then(response => {
+    //                 setCartCount(response.data.count_cart);
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error fetching data: ', error);
+    //             });
+
+    // },[userId]);
+
+    
+
+
+    // const Addcart=()=>{
+    //     setCartCount(prevCount => prevCount + 1); 
+    // }
+
+    
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const settingsRef = useRef(null);
     const toggleSettings = () => {
@@ -102,7 +130,8 @@ function Header() {
                                 <Link to="/cart" className="  position-relative">
                                 <span className="fs-3 text-dark cart-icon"><FontAwesomeIcon icon={faShoppingCart} />
                                 </span>
-                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">1
+                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {cartCount}
                                 </span>
                                 </Link>
                             </div>

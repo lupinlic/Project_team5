@@ -1,0 +1,31 @@
+/* head{
+    color: rgb(210, 209, 210);
+} */
+.fixed-checkout-bar{
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    background-color: rgb(254, 223, 249);
+    height: 100px;
+    width: 83.8%;
+}
+.static-checkout-bar {
+    position: static;
+    background-color: rgb(254, 223, 249);
+    height: 100px;
+    margin-bottom: 20px;
+  }
+  .bar{
+    display: flex;
+    align-items: center;
+  }
+  .bar button{
+   background-color:rgb(190, 23, 157);
+  }
+  .bar button:hover{
+    background-color:rgb(124, 14, 102);
+   }
+   .product_like:hover .product_like-div{
+    transform: translateY(-5px); /* Nhấc thẻ lên khi hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+   }
