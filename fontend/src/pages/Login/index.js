@@ -22,29 +22,30 @@ function Login() {
 
         .then(response => {
             // Lưu token vào localStorage
-            const token = response.data.token;
+            let token = response.data.token;
             localStorage.setItem('authToken', token);
             
             // Lưu thông tin người dùng trong state (hoặc context)
             setUser(response.data.user);
-            console.log(response.data.user)
+
             localStorage.setItem('user', JSON.stringify(response.data.user));
             
             // console.log('Đăng nhập thành công!', response.data);
+
         })
         .catch(error => {
             console.error('Lỗi khi đăng nhập:', error);
         });
+    }; 
+    useEffect(()=>{
         if (user) {
-            
             if (user.user_role == 1) {
               window.location.href = '/Admin/Home';
             } else {
               window.location.href = '/';
             }
         }
-    }; 
-
+    },[user])
      
     return ( 
         <div>
