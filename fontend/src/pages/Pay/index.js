@@ -8,7 +8,8 @@ import VoucherForm from '../Voucher/VoucherForm';
 function Pay() {
     
     const [isFormVisible, setIsFormVisible] = useState(false);
-    const [isFormVisible1, setIsFormVisible1] = useState(false);
+    const [isFormVisible_products, setisFormVisible_products] = useState([]);
+    const [isFormVisible_shop, setIsFormVisible_shop] = useState(false);
     const [receiver, setData] = useState([]);
     const [userId, setUserId] = useState(null);
     const [carts, setCarts] = useState([]);
@@ -63,8 +64,24 @@ function Pay() {
         }
     },[carts])
 
-    const openForm = () => {
-        
+    const openFormProducts = (product_id) => {
+        console.log('da vao')
+        setisFormVisible_products((prevstate => ({
+            ...prevstate,
+            [product_id]:true,
+        })));
+      };
+    
+    //   Đóng form
+      const closeFormProducts = (product_id) => {
+        setisFormVisible_products((prevstate => ({
+            ...prevstate,
+            [product_id]:false,
+        })));      
+    };
+
+      const openForm = () => {
+        // setSelectedSupplierId(supplierId);
         setIsFormVisible(true);
       };
     
@@ -72,15 +89,16 @@ function Pay() {
       const closeForm = () => {
         setIsFormVisible(false);
       };
-      const openForm1 = () => {
-        // setSelectedSupplierId(supplierId);
-        setIsFormVisible1(true);
+      
+      const openForm_shop = () => {
+        setIsFormVisible_shop(true);
       };
     
       // Đóng form
-      const closeForm1 = () => {
-        setIsFormVisible1(false);
+      const closeForm_shop = () => {
+        setIsFormVisible_shop(false);
       };
+
 
     //hành động set lại receiver 
     const setReceiver = (receiver) =>{
@@ -145,6 +163,7 @@ function Pay() {
                     </div>
                 
                     {carts.map(item => (
+                        <>
                         <div className="row" key={item.cart_id}>
                             <div className="col-6" style={{display:'flex'}}>
                                 <img style={{width:'50px',height:'50px',marginLeft:'12px'}} src={item.product.product_img}></img>
@@ -160,28 +179,31 @@ function Pay() {
                                 <p style={{float: 'right',color:'#62677399'}}>{item.product.product_price*item.cart_quantity}</p>
                             </div>
                         </div>
+                        <div className="voucher" style={{padding:'20px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                        <div style={{display:'flex'}}>
+                            <img style={{width:'30px',height:'30px'}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIX6EDRHQ50N9bS7vXmD7tze7adcyO_bhsTg&s"></img>
+                            <h5 style={{marginLeft:'8px',fontWeight:'400',marginRight:'23px'}}>EightStore Voucher của nhóm sản phẩm</h5>
+                            <p style={{position:'relative'}}>giảm 10%
+                            <button style={{border:'none',color:'red',position:'absolute',top:'-10px',background:'#fff'}}>X</button></p>
+                        </div>
+                        <button style={{border:'none', color:'blue'}} onClick={() => openFormProducts(item.product.product_id)}> Chọn voucher</button>
+                        {isFormVisible_products[item.product.product_id] && (
+                                    <>
+                                        <div className="overlay"></div> 
+                                        <VoucherForm 
+                                        onClose={closeFormProducts}
+                                        getProduct_id={item.product.product_id}
+                                        getCategory_id={null}
+                                        />
+                                    </>
+                    
+                                    )}
+                        </div>
+                        </>
                     ))}
                     
                 </div>
-                <div className="voucher" style={{padding:'20px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                <div style={{display:'flex'}}>
-                    <img style={{width:'30px',height:'30px'}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIX6EDRHQ50N9bS7vXmD7tze7adcyO_bhsTg&s"></img>
-                    <h5 style={{marginLeft:'8px',fontWeight:'400',marginRight:'20px'}}>EightStore Voucher của nhóm sản phẩm</h5>
-                    <p style={{position:'relative'}}>giảm 10%
-                    <button style={{border:'none',color:'red',position:'absolute',top:'-10px',background:'#fff'}}>X</button></p>
-                </div>
-                <button style={{border:'none', color:'blue'}} onClick={() => openForm1()}> Chọn voucher</button>
-                {isFormVisible1 && (
-                            <>
-                                <div className="overlay"></div> 
-                                <VoucherForm 
-                                onClose={closeForm1}
-                                getCategory={category}
-                                />
-                             </>
-              
-                            )}
-                </div>
+                
                 <div className="row" style={{borderTop:'1px dashed #000', marginTop:'20px',borderBottom:'1px dashed #000'}}>
                     <div className="col-md-5 d-flex " style={{marginTop:'20px'}}>
                         <p style={{color:'#000'}}>Lời nhắn:</p>
@@ -210,14 +232,18 @@ function Pay() {
                     <p style={{position:'relative'}}>giảm 10%
                     <button style={{border:'none',color:'red',position:'absolute',top:'-10px',background:'#fff'}}>X</button></p>
                 </div>
-                <button style={{border:'none', color:'blue'}}> Chọn voucher</button>
-                {/* {isFormVisible1 && (
+                <button style={{border:'none', color:'blue'}} onClick={() => openForm_shop()}> Chọn voucher</button>
+                {isFormVisible_shop && (
                             <>
                                 <div className="overlay"></div> 
-                                <VoucherForm onClose={closeForm1}  />
+                                <VoucherForm 
+                                onClose={closeForm_shop}
+                                getProduct_id={null}
+                                getCategory_id={category}  
+                                />
                              </>
               
-                            )} */}
+                            )}
             </div>
 
             {/*  */}

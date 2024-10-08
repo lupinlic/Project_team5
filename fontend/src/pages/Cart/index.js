@@ -217,7 +217,7 @@ const Cart = () => {
     }
 
     const handleSelectAll = (event) => {
-        setischeckProductAll(true);
+        setischeckProductAll(!ischeckProductAll);
 
         let carts_coppy=[];
         if(event.target.checked){
@@ -289,12 +289,14 @@ const Cart = () => {
                     </div>
                     <div className='col-md-4'>
                         <p>
-                            <span>Tổng thanh toán( 0 sản phẩm): </span>
-                            <span style={{color:'red'}}> 20000</span>
+                            <span>Tổng thanh toán( {selectProducts.length} sản phẩm): </span>
+                            <span style={{color:'red'}}>{HandleTotalMoney()}</span>
                         </p>
                     </div>
                     <div className='col-md-2'>
-                        <button style={{height:'40px', width:'80%', color:'#fff', border:'none'}}>Mua hàng</button>
+                        <Link to='/pay' >
+                            <button style={{height:'40px', width:'80%', color:'#fff', border:'none'}}>Mua hàng</button>
+                        </Link>
                     </div>
             </div>
             {/* có thể cũng thích */}
