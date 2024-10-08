@@ -10,31 +10,36 @@ import { faSearch, faUser, faSignOutAlt, faShoppingCart , faPhone ,faHome, faCog
 function Header() {
     const [cartCount, setCartCount] = useState(0);
     const [userId, setUserId] = useState(null);
-    // const userData = localStorage.getItem('user');
+    const userData = localStorage.getItem('user');
 
-    // useEffect(() => {
-        
-    //     const parsedUser = JSON.parse(userData);
-    //     setUserId(parsedUser.user_id);
-    //   }, []);
+    
     const handleLogout = () => {
         axios.get('http://localhost:8000/api/user/logout')
         localStorage.removeItem('authToken');
         localStorage.removeItem('user');
+        setCartCount(0)
+        
+        
         // Chuyển hướng về trang đăng nhập
         // window.location.href = '/Login';
     };
+useEffect(() => {
+        
+        const parsedUser = JSON.parse(userData);
+        setUserId(parsedUser.user_id);
+      }, []);
+    useEffect(()=>{
+        if(userId){
+        axios.get(`http://localhost:8000/api/users/${userId}/carts`)
+                .then(response => {
+                    setCartCount(response.data.count_cart);
+                })
+                .catch(error => {
+                    console.error('Error fetching data: ', error);
+                });
+            }
 
-    // useEffect(()=>{
-    //     axios.get(`http://localhost:8000/api/users/${userId}/carts`)
-    //             .then(response => {
-    //                 setCartCount(response.data.count_cart);
-    //             })
-    //             .catch(error => {
-    //                 console.error('Error fetching data: ', error);
-    //             });
-
-    // },[userId]);
+    },[userId]);
 
     
 
