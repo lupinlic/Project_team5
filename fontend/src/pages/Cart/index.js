@@ -1,13 +1,19 @@
 import React, { useState ,useEffect } from 'react';
 import {Link  } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import {faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import './style.css'
 
 const Cart = () => {
     const [carts, setData] = useState([]);
     const [userId, setUserId] = useState(null);
     const [products, setProducts] = useState([]);
+    const [categorys, setCategory] = useState([]);
+
     const [selectProducts, setSelectProducts] = useState([]);
     const [ischeckProductAll, setischeckProductAll] = useState(false); // Theo dõi trạng thái chỉnh sửa
+
 
     const userData = localStorage.getItem('user');
     
@@ -81,6 +87,65 @@ const Cart = () => {
         return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
       };
 
+
+    //   danh mục
+      useEffect(() => {
+        axios.get('http://localhost:8000/api/categorys')
+        .then(response => {
+            // Truy cập vào phần "data" của API trả về và đặt vào state
+            setCategory(response.data.data);
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+        });
+    }, []);
+
+      const getCategoryName = (categoryId) => {
+        let categoryName = 'Không xác định';
+        categorys.forEach(category => {
+          if (category.category_id === categoryId) {
+            categoryName = category.category_name;
+          }
+        });
+        return categoryName;
+      };
+      const getImagePath = (categoryId, productImg) => {
+        const categoryName = getCategoryName(categoryId);
+        try {
+          return `/assets/img/${categoryName}/${productImg}`;
+        } catch (error) {
+          console.error('Error loading image:', error);
+          return null; // Hoặc có thể trả về một hình ảnh mặc định
+        }
+      };
+
+    //   cuộn
+    const [isFixed, setIsFixed] = useState(true);
+    useEffect(() => {
+        const handleScroll = () => {
+          const productList = document.querySelector(".product-list");
+          const productBottom = productList.getBoundingClientRect().bottom;
+          const windowHeight = window.innerHeight;
+    
+          if (productBottom <= windowHeight) {
+            setIsFixed(false); // Thanh không còn dính nữa khi chạm tới cuối danh sách
+          } else {
+            setIsFixed(true); // Giữ thanh ở vị trí cố định dưới cùng
+          }
+        };
+    
+        window.addEventListener("scroll", handleScroll);
+    
+        return () => {
+          window.removeEventListener("scroll", handleScroll);
+        };
+      }, []);
+        // lấy 12sanr phẩm
+        const displayedProducts = products.slice(0, 12);
+      
+
+
+        
       const HandleUpdateCartQuantity = (operator,cart,event)=> {
         let new_quantity=0;
         if(operator=='-'){
@@ -170,122 +235,90 @@ const Cart = () => {
 
 
     return ( 
-        <div style={{margin:'20px 0'}}>
-            <div>
-                <p style={{color: 'darkgrey'}}>Trang chủ &gt; Giỏ hàng</p>
-                <div style={{display: 'flex'}}>
-                    <p style={{fontSize: 20, marginLeft: 8}}>Sản phẩm</p>
-                    {/* <p style="color: red; margin-left: 4px;font-size: 20px; "> 1</p> */}
+            <div style={{margin:'20px 0'}} className='container'>
+                <p style={{color: 'darkgrey'}}>Trang chủ &gt; Giỏ hàng</p>   
+                <div className='row' style={{height:'50px', backgroundColor:'rgb(254, 223, 249)', alignItems:'center'}}>
+                    <div className='col-md-6'>
+                        <input type='checkbox' style={{margin:'0 8px'}} checked={ischeckProductAll} onClick={(e)=>handleSelectAll(e)} ></input>
+                        Sản Phẩm
+                    </div>
+                    <div className='col-md-2'>Đơn giá</div>
+                    <div className='col-md-2'>Số lượng</div>
+                    <div className='col-md-1'>Tổng tiền</div>
+                    <div className='col-md-1'>Thao tác</div>
                 </div>
-                <div className="row">
-                    <div className="left col-9">
-                    <div className="container py-1 " >
-                        <div className="row" style={{backgroundColor: '#cccaca'}}>
-                            <div className="col-2">
-                                <div style={{float: 'left'}}>
-                                <input type='checkbox' name='' id='selectAllCarts' 
-                                checked={ischeckProductAll}
-                                onClick={(e)=>handleSelectAll(e)}
-                                ></input>
-                                <span>--Chọn tất cả</span>  
-                                </div>
+                <div className='product-list'>
+                {carts && carts.length > 0 ? carts.map(item => (  
+                    <div style={{margin:'20px 0', boxShadow:'0 -4px 10px rgba(0, 0, 0, 0.1)'}}>
+                        <div className='row mt-4' style={{height:'120px', alignItems:'center',borderBottom:'1px solid rgb(210, 209, 210)'}}>
+                            <div className='col-md-6 d-flex align-items-center'>
+                                <input id='cart_check' type='checkbox' style={{margin:'0 8px'}}  onChange={(e)=>HandleSelectCarts(item,e)}
+                                    checked={selectProducts.some(cart=>cart.cart_id==item.cart_id)}></input>
+                                <img src='https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lyddlh37mzpp26@resize_w80_nl.webp' style={{width:'60px',height:'80px',margin:'0 8px'}}/>
+                                <h6>{shortenText(getProductName(item.product_id),50)}</h6>
                             </div>
-                            <div className="col-3">
-                                <p>Sản phẩm</p>
+                            <div className='col-md-2'>{getProductPrice(item.product_id)}</div>
+                            <div className='col-md-2 d-flex'> 
+                                    <button style={{border:'none'}} onClick={()=> HandleUpdateCartQuantity('-',item)}>-</button>
+                                    <input type='text' name='cart_quantity' 
+                                        value={item.cart_quantity} style={{width: '40px'}}
+                                        onChange={(e)=>HandleOnchange(e,item.cart_id)}
+                                        onBlur={(e)=>HandleUpdateCartQuantity(1,item,e)}/>
+                                    <button style={{border:'none'}} onClick={()=> HandleUpdateCartQuantity('+',item)} >+</button>
                             </div>
-                            <div className="col-2">
-                                <p style={{float: 'right'}}>Giá tiền</p>
-                            </div>
-                            <div className="col-2">
-                                <p style={{float: 'right'}}>Số lượng</p>
-                            </div>
-                            <div className="col-2">
-                                <p style={{float: 'right'}}>Thành tiền</p>
-                            </div>
-                            <div className="col-1">
-                                <p style={{float: 'right'}} />
-                            </div>
+                            <div className='col-md-1'>{item.cart_totalmoney}</div>
+                            <div className='col-md-1'><button style={{border:'none', color:'red'}} onClick={() => deleteProduct(item.cart_id)}>Xóa</button></div>
                         </div>
-
-                        {/* renderCarts */}
-
-                        {carts && carts.length > 0 ? carts.map(item => (
-                        <div className="row" style={{borderBottom: '1px solid darkgrey',padding:'12px 0'}} key={item.id}>
-                            <div className="col-2">
-                                <input type='checkbox' name='' id='cart_check' 
-                                onChange={(e)=>HandleSelectCarts(item,e)}
-                                checked={selectProducts.some(cart=>cart.cart_id==item.cart_id)}
-                                ></input>
-                            </div>
-                            <div className="col-3">
-                                <p>{shortenText(getProductName(item.product_id),50)}</p>
-                            </div>
-                            <div className="col-2">
-                                <p style={{float: 'right'}}>{getProductPrice(item.product_id)}</p>
-                            </div>
-                            <div className="col-2">
-                                <div style={{float: 'right'}}>
-                                <button style={{marginRight: '5px'}} onClick={()=> HandleUpdateCartQuantity('-',item)}>- </button>
-                                <input 
-                                type='text' name='cart_quantity' 
-                                value={item.cart_quantity} style={{width: '40px'}}
-                                onChange={(e)=>HandleOnchange(e,item.cart_id)}
-                                onBlur={(e)=>HandleUpdateCartQuantity(1,item,e)}
-                                ></input>
-                                <button style={{marginLeft: '5px'}} onClick={()=> HandleUpdateCartQuantity('+',item)}> +</button>
-                                </div>
-                            </div>
-                            <div className="col-2">
-                                <p style={{float: 'right'}}>{item.cart_totalmoney}</p>
-                            </div>
-                            <div className="col-1">
-                                <button style={{float: 'right',color:'red',border:'none'}} 
-                                onClick={() => deleteProduct(item.cart_id)}
-                                >xóa</button>
-                            </div>
-                        </div>)) : <p>Chưa có sản phẩm nào đc mua.</p>
-                        }
+                        <div style={{height:'50px', padding:'20px 0',borderBottom:'1px solid rgb(210, 209, 210)'}}>
+                            <img style={{width:"30px", height:'30px'}} src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/cart/d9e992985b18d96aab90.png'/>
+                            Giảm ₫300.000 phí vận chuyển đơn tối thiểu ₫0; Giảm ₫500.000 phí vận chuyển đơn tối thiểu ₫500.000
+                        </div>
                     </div>
+                )) : <p>Chưa có sản phẩm nào đc mua.</p> }
+
+                
+                </div>
+            {/* mua hàng */}
+            <div className={ isFixed ? "fixed-checkout-bar bar" : "static-checkout-bar bar"}>
+                    <div className='col-md-6 ' >
+                        <div className='d-flex align-items-center' style={{margin:'0 12px'}}>
+                            <input type='checkbox' style={{margin:'0  16px 12px 16px'}} checked={ischeckProductAll} onClick={(e)=>handleSelectAll(e)}></input>
+                            <p style={{marginRight:'20px'}}>Chọn tất cả</p>
+                            <p>Xóa</p>
+                        </div>
+                    </div>
+                    <div className='col-md-4'>
+                        <p>
+                            <span>Tổng thanh toán( 0 sản phẩm): </span>
+                            <span style={{color:'red'}}> 20000</span>
+                        </p>
+                    </div>
+                    <div className='col-md-2'>
+                        <button style={{height:'40px', width:'80%', color:'#fff', border:'none'}}>Mua hàng</button>
+                    </div>
+            </div>
+            {/* có thể cũng thích */}
+            <div className='mt-5 '>
+                <div className='row'>
+                    <div className='col-md-10'>
+                        <h6>CÓ THỂ BẠN CŨNG THÍCH</h6>
+                    </div>
+                    <div className='col-md-2'>
+                        <Link to='/Product' style={{color:'red',textDecoration:'none'}}>Xem Tất Cả <FontAwesomeIcon icon={faAngleRight} /></Link>
+                    </div>
+                </div>
+                <div className='row mt-2'>
+                {displayedProducts.map(product => (
+                    <div className='col-md-2 p-1 ' key={product.id}>
+                    <Link to={`/Product_detail/${product.product_id}`} style={{textDecoration:'none'}} className='product_like'>
+                        <div className='border product_like-div' style={{height:'330px',boxShadow:'0 -4px 10px rgba(0, 0, 0, 0.1)'}}>
+                            <img className='w-100' src={getImagePath(product.category_id, product.product_img)}/>
+                            <p style={{margin:'16px 8px',color:'black'}}>{shortenText(product.product_name,30)}</p>
+                            <p  style={{color:'red',margin:'0 8px '}}>{product.product_price} đ</p>
+                        </div>
+                    </Link>
+                    </div> ))}
                     
-                    <div className="py-3">
-                        <Link to="/" className="tieptuc" style={{color: 'darkgrey'}}><i className="ti-arrow-left" />Tiếp tục mua hàng</Link>
-                    </div>
-                    </div>
-                    {/* right */}
-                    <div className="right col-3">
-                    <div className="py-1" style={{borderBottom: '1px solid darkgrey'}}><p style={{fontSize: 18, marginLeft: 8, fontWeight: 500}}>Hóa đơn của bạn</p></div>
-                    <div className="py-1" style={{borderBottom: '1px solid darkgrey'}}>
-                        <div className="row">
-                        <div className="col">
-                            <p style={{}}>số sản phẩm:</p>
-                        </div>
-                        <div className="col">
-                            <p style={{float: 'right', fontWeight: 500}} className="cart_sosp">{selectProducts.length}</p>
-                        </div>
-                        </div>
-                        <div className="row">
-                        <div className="col">
-                            <p>Giảm giá:</p>
-                        </div>
-                        <div className="col">
-                            <p style={{float: 'right', fontWeight: 500}}>0</p>
-                        </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="row py-1">
-                        <div className="col">
-                            <p>Tổng cộng:</p>
-                        </div>
-                        <div className="col">
-                            <p style={{color: '#fa7551', float: 'right'}} className="cart_tongcong">
-                                {HandleTotalMoney()}
-                            </p>
-                        </div> 
-                        </div>
-                    </div>
-                    <button style={{backgroundColor: '#fa7551', width: '100%', border: 'none', borderRadius: 5}} className="py-2"><Link to='/Pay' style={{textDecoration:'none',color:'#fff'}}>Tiến hành đặt hàng</Link></button>
-                    </div>
                 </div>
             </div>
         </div>

@@ -99,11 +99,12 @@ const Product_detail = () => {
         axios.post('http://localhost:8000/api/carts', cartItem)
           .then(response => {
             console.log('Thêm vào giỏ hàng thành công:');
-            // Bạn có thể thực hiện thêm các hành động khác, như thông báo cho người dùng
+            
           })
           .catch(error => {
             console.error('Lỗi khi thêm vào giỏ hàng:', error);
           });
+        //   Addcart();
           setIsMessageVisible(true);
 
         // Ẩn thông báo sau 3 giây
