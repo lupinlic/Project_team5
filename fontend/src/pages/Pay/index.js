@@ -11,6 +11,57 @@ function Pay() {
     const [isFormVisible1, setIsFormVisible1] = useState(false);
     const [receiver, setData] = useState([]);
     const [userId, setUserId] = useState(null);
+    const [carts, setCarts] = useState([]);
+    const [carts_total, setcarts_total] = useState(0);
+    const [category, setcategory] = useState(null);
+
+    //form thanh toán
+    /**
+     * 1.các đối tượng cần đc ưu tiên lấy trước
+     *      user_id , receiver,Carts(cart này đc select từ bên mua hàng)
+     * 
+     */
+
+     //   1.các đối tượng cần đc ưu tiên lấy trước
+        // user_id
+        useEffect(() => {
+         const userData = localStorage.getItem('user');
+         const carts_session = sessionStorage.getItem('Carts');
+         const carts_total = sessionStorage.getItem('carts_total');
+         
+         const parsedUser = JSON.parse(userData);
+         const parsedCarts = JSON.parse(carts_session);
+         const parsedcarts_total = JSON.parse(carts_total);
+         setUserId(parsedUser.user_id);
+         setCarts(parsedCarts);
+         setcarts_total(parsedcarts_total)
+       }, []);
+
+        // receiver : lấy receiver mặc định và show các form như bên receiver
+       useEffect(() => {       
+          axios.get(`http://localhost:8000/api/users/${userId}/receivers/type`)
+              .then(response => {
+                  // Truy cập vào phần "data" của API trả về và đặt vào state
+                  setData(response.data.data);
+                  console.log(response.data.data)
+              })
+              .catch(error => {
+                  console.error('Error fetching data: ', error);
+              });
+            
+    }, [userId]);
+
+    //sau khi render và các đói tượng cần thiết đc khởi tạo thì logic kiểm tra xem các sp này có cx 1 nhóm ko
+    useEffect(()=>{
+        if(carts.length>0){
+            if(carts.length==1){
+                setcategory(carts[0].product.category_id)
+            }else{
+                let firt_category = carts[0].product.category_id;
+                carts.every(cart => cart.product.category_id == firt_category) ? setcategory(firt_category) : console.warn('các sản phẩm ko trùng nhóm nào cả');
+            }
+        }
+    },[carts])
 
     const openForm = () => {
         
@@ -31,28 +82,15 @@ function Pay() {
         setIsFormVisible1(false);
       };
 
-    //   đổ địa chỉ
-    const userData = localStorage.getItem('user');
-      useEffect(() => {
-          
-          const parsedUser = JSON.parse(userData);
-          setUserId(parsedUser.user_id);
+    //hành động set lại receiver 
+    const setReceiver = (receiver) =>{
+        setData(receiver);
+    }
+    
 
-        }, []);
-        useEffect(() => {
-            console.log(userId)
-           
-              axios.get(`http://localhost:8000/api/users/${userId}/receivers/type`)
-                  .then(response => {
-                      // Truy cập vào phần "data" của API trả về và đặt vào state
-                      setData(response.data.data);
-                      console.log(response.data.data)
-                  })
-                  .catch(error => {
-                      console.error('Error fetching data: ', error);
-                  });
-                
-        }, [userId]);
+
+
+    // phần return giao diện
     return ( 
         <div style={{margin:'20px 0'}}>
             <div style={{padding:'12px'}}>
@@ -75,7 +113,10 @@ function Pay() {
                             {isFormVisible && (
                             <>
                                 <div className="overlay"></div> 
-                                <MyAddress onClose={closeForm}  />
+                                <MyAddress 
+                                onClose={closeForm}
+                                setReceiver={setReceiver}
+                                />
                              </>
               
                             )}
@@ -103,21 +144,43 @@ function Pay() {
                             </div>
                     </div>
                 
-                    <div className="row">
+                    {carts.map(item => (
+                        <div className="row" key={item.cart_id}>
                             <div className="col-6" style={{display:'flex'}}>
-                                <img style={{width:'50px',height:'50px',marginLeft:'12px'}} src="https://down-vn.img.susercontent.com/file/9a6666e3f8f4cbf2a4d8ac05b85e7be5@resize_w80_nl.webp"></img>
-                                <p style={{fontSize:'18px',marginLeft:'12px'}}>kem dưỡng da</p>
+                                <img style={{width:'50px',height:'50px',marginLeft:'12px'}} src={item.product.product_img}></img>
+                                <p style={{fontSize:'18px',marginLeft:'12px'}}>{item.product.product_name}</p>
                             </div>
                             <div className="col-2">
-                                <p style={{float: 'right',color:'#62677399'}}>100000</p>
+                                <p style={{float: 'right',color:'#62677399'}}>{item.product.product_price}</p>
                             </div>
                             <div className="col-2">
-                                <p style={{float: 'right',color:'#62677399'}}>5</p>
+                                <p style={{float: 'right',color:'#62677399'}}>{item.cart_quantity}</p>
                             </div>
                             <div className="col-2">
-                                <p style={{float: 'right',color:'#62677399'}}>500000</p>
+                                <p style={{float: 'right',color:'#62677399'}}>{item.product.product_price*item.cart_quantity}</p>
                             </div>
-                    </div>
+                        </div>
+                    ))}
+                    
+                </div>
+                <div className="voucher" style={{padding:'20px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                <div style={{display:'flex'}}>
+                    <img style={{width:'30px',height:'30px'}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIX6EDRHQ50N9bS7vXmD7tze7adcyO_bhsTg&s"></img>
+                    <h5 style={{marginLeft:'8px',fontWeight:'400',marginRight:'20px'}}>EightStore Voucher của nhóm sản phẩm</h5>
+                    <p style={{position:'relative'}}>giảm 10%
+                    <button style={{border:'none',color:'red',position:'absolute',top:'-10px',background:'#fff'}}>X</button></p>
+                </div>
+                <button style={{border:'none', color:'blue'}} onClick={() => openForm1()}> Chọn voucher</button>
+                {isFormVisible1 && (
+                            <>
+                                <div className="overlay"></div> 
+                                <VoucherForm 
+                                onClose={closeForm1}
+                                getCategory={category}
+                                />
+                             </>
+              
+                            )}
                 </div>
                 <div className="row" style={{borderTop:'1px dashed #000', marginTop:'20px',borderBottom:'1px dashed #000'}}>
                     <div className="col-md-5 d-flex " style={{marginTop:'20px'}}>
@@ -134,10 +197,11 @@ function Pay() {
                 </div>
                 <div style={{textAlign:'right',marginTop:'12px'}}>
                     <p>Tổng số tiền :
-                        <span style={{color:'red',marginLeft:'8px'}}>100.000Đ</span>
+                        <span style={{color:'red',marginLeft:'8px'}}>{carts_total}</span>
                     </p>
                 </div>
             </div>
+            
             {/* voucher */}
             <div className="voucher" style={{padding:'20px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                 <div style={{display:'flex'}}>
@@ -146,14 +210,14 @@ function Pay() {
                     <p style={{position:'relative'}}>giảm 10%
                     <button style={{border:'none',color:'red',position:'absolute',top:'-10px',background:'#fff'}}>X</button></p>
                 </div>
-                <button style={{border:'none', color:'blue'}} onClick={() => openForm1()}> Chọn voucher</button>
-                {isFormVisible1 && (
+                <button style={{border:'none', color:'blue'}}> Chọn voucher</button>
+                {/* {isFormVisible1 && (
                             <>
                                 <div className="overlay"></div> 
                                 <VoucherForm onClose={closeForm1}  />
                              </>
               
-                            )}
+                            )} */}
             </div>
 
             {/*  */}

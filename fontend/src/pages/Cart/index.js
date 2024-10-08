@@ -146,7 +146,8 @@ const Cart = () => {
 
     const HandleTotalMoney = () => {
         let list_price = selectProducts.map(cart => cart.cart_totalmoney);
-        let sumtotal = list_price.reduce((sum,value)=>sum + value,0)
+        let sumtotal = list_price.reduce((sum,value)=>sum + value,0);
+        sessionStorage.setItem('carts_total',sumtotal);
         return sumtotal;
     }
 

@@ -17,4 +17,7 @@ class Category extends Model
     public function products(){
         return $this->hasMany(Product::class, 'category_id', 'category_id');
     }
+    public function category_vouchers(){
+        return $this->hasMany(CategoryVoucher::class, 'category_id', 'category_id');
+    }
 }

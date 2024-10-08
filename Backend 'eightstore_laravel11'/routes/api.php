@@ -66,6 +66,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('voucherGroups',VoucherGroupController::class)->only('index','show');
     Route::apiResource('orders',OrderController::class)->only('index','show','store');
     Route::apiResource('orderDetails',OrderDetailController::class)->only('index','show');                                       
+    Route::get('category/{category}/categoryVouchers',[CategoryController::class,'HandleShowCategoryVoucher']);                                       
     //  --nd đăng nhập xog thì ms đăng xuất đc
     Route::get('user/logout',[LogoutController::class,'User_Logout']);
     

@@ -20,7 +20,6 @@ const ShippingForm = ({receiverId, onUpdate, onClose,setDefault}) => {
       const parsedUser = JSON.parse(userData);
       if (parsedUser && (parsedUser.user_id !== null)) {
         setUserId(parsedUser.user_id); 
-        console.log('user_id'+userId)
     }
 
     }, []);
