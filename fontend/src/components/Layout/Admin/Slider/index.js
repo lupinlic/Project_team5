@@ -20,8 +20,8 @@ function Slider() {
     return ( 
         <div className="col-md-2 slider" style={{backgroundColor:'#fff',minHeight:'100vh'}}>
             <div className="pt-3">
-                <img className='' style={{width: 50, borderRadius: '50%',}} src='https://scontent.fhan5-3.fna.fbcdn.net/v/t39.30808-1/279698683_1370685343452312_7522179857961865948_n.jpg?stp=dst-jpg_s200x200&_nc_cat=110&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeHuGeJqR9elcepwO3uGRM5nALJm_VpGeukAsmb9WkZ66XDhvbDNbgkIy77tBzrsskRkEf-srbReFKAqyO3By6_R&_nc_ohc=ShMSIQiLm70Q7kNvgEf4R30&_nc_ht=scontent.fhan5-3.fna&_nc_gid=AIo0GG3GcQoddPZAyGIrFrX&oh=00_AYD55fv8sRCwkz0kNSvZFzbbeIsO4MRq1OwZBVHZskHQ0Q&oe=66EE1C35'  alt />
-                <span style={{ fontSize: 16,marginLeft:8,color:'#62677399'}}>Tùng Lâm</span>
+                <img className='' style={{width: 50, borderRadius: '50%',}} src='https://e7.pngegg.com/pngimages/754/474/png-clipart-computer-icons-system-administrator-avatar-computer-network-heroes-thumbnail.png'  alt />
+                <span style={{ fontSize: 16,marginLeft:8,color:'#62677399'}}>Admin</span>
             </div>
             <h6 className="mt-4" style={{color:'#62677399'}}>NAVIGATION</h6>
             <ul className='navigation m-0 p-0'>
