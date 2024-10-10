@@ -79,8 +79,8 @@ function Header() {
                         <FontAwesomeIcon icon={faBell} style={{color:'#62677399'}}/>
                     </div>
                     <div className="col-md-2 account " onClick={toggleSettings} ref={settingsRef} style={{position:'relative'}}>
-                        <img className='' style={{width: 50, borderRadius: '50%',}} src='https://scontent.fhan5-3.fna.fbcdn.net/v/t39.30808-1/279698683_1370685343452312_7522179857961865948_n.jpg?stp=dst-jpg_s200x200&_nc_cat=110&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeHuGeJqR9elcepwO3uGRM5nALJm_VpGeukAsmb9WkZ66XDhvbDNbgkIy77tBzrsskRkEf-srbReFKAqyO3By6_R&_nc_ohc=ShMSIQiLm70Q7kNvgEf4R30&_nc_ht=scontent.fhan5-3.fna&_nc_gid=AIo0GG3GcQoddPZAyGIrFrX&oh=00_AYD55fv8sRCwkz0kNSvZFzbbeIsO4MRq1OwZBVHZskHQ0Q&oe=66EE1C35'  alt />
-                        <span style={{ fontSize: 16,color:'#62677399',marginLeft:'4px'}}>Tùng Lâm</span>
+                        <img className='' style={{width: 50, borderRadius: '50%',}} src='https://e7.pngegg.com/pngimages/754/474/png-clipart-computer-icons-system-administrator-avatar-computer-network-heroes-thumbnail.png'  alt />
+                        <span style={{ fontSize: 16,color:'#62677399',marginLeft:'4px'}}>Admin</span>
                         <span style={{ fontSize: 16,color:'#62677399',marginLeft:'4px'}}><FontAwesomeIcon icon={faChevronDown}/></span>
                         {isSettingsOpen && (
                             <div className='account_child' style={{position:'absolute',marginTop:'12px',padding:'8px'}}>

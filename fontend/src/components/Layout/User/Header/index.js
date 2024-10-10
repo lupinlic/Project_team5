@@ -114,7 +114,12 @@ function Header() {
                                         <div className="fs-3 text-danger"> <FontAwesomeIcon icon={faUser} /> </div>
                                     </div>
                                     <div className="col-9">Xin chào!<br />
-                                        <strong className="text-danger">Hế lô</strong>
+                                        {userId ? (
+                                        <strong className="text-danger">Lupin</strong>
+                                        ) : (
+                                            // Nếu chưa đăng nhập
+                                            <Link to="/Login" style={{textDecoration:'none', color:'red', fontWeight:'500'}}>Đăng nhập</Link>
+                                        )}
                                     </div>
                                 </div>
                                 {isSettingsOpen && (
