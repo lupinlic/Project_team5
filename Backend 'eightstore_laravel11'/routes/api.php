@@ -65,8 +65,12 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('vouchers',VoucherController::class)->only('index','show');
     Route::apiResource('voucherGroups',VoucherGroupController::class)->only('index','show');
     Route::apiResource('orders',OrderController::class)->only('index','show','store');
-    Route::apiResource('orderDetails',OrderDetailController::class)->only('index','show');                                       
+    Route::apiResource('orderDetails',OrderDetailController::class)->only('index','show','store');                                       
     Route::get('category/{category}/categoryVouchers',[CategoryController::class,'HandleShowCategoryVoucher']);                                       
+    Route::get('product/{product}/productVouchers',[ProductController::class,'HandleShowProductVoucher']);                                       
+    Route::get('voucherGroup/vouchersOfGroupShop',[VoucherGroupController::class,'HandleShowVoucherOfShop']);                                       
+    Route::get('voucherGroup/vouchersOfShip',[VoucherGroupController::class,'HandleShowVoucherOfShip']);                                       
+    Route::get('shipping',[ShippingController::class,'HandleShowShippingByName']);                                       
     //  --nd đăng nhập xog thì ms đăng xuất đc
     Route::get('user/logout',[LogoutController::class,'User_Logout']);
     
@@ -80,7 +84,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::apiResource('vouchers',VoucherController::class)->only('store','update','destroy');
         Route::apiResource('voucherGroups',VoucherGroupController::class)->only('store','update','destroy');
         Route::apiResource('orders',OrderController::class)->only('update','destroy');
-        Route::apiResource('orderDetails',OrderDetailController::class)->only('store','update','destroy');                                       
+        Route::apiResource('orderDetails',OrderDetailController::class)->only('update','destroy');                                       
         
         Route::apiResource('shippings',ShippingController::class);
         Route::apiResource('voucherUsers',VoucherUserController::class);

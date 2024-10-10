@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\VoucherGroup;
 use App\Http\Requests\StoreVoucherGroupRequest;
 use App\Http\Requests\UpdateVoucherGroupRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 
 class VoucherGroupController extends Controller
@@ -122,5 +124,57 @@ class VoucherGroupController extends Controller
                     "data" => $voucherGroup,
                 ]
             );
+    }
+
+    public function HandleShowVoucherOfShop(Request $request ,VoucherGroup $voucherGroup)
+    {
+        $vouchersOfGroupShop =
+        $request->user()->voucherUsers()->join('tbl_voucher', 'tbl_voucher.voucher_id', '=', 'tbl_voucher_user.voucher_id') 
+        ->join('tbl_voucher_group','tbl_voucher_group.voucherGroup_id','=','tbl_voucher.voucherGroup_id')
+        ->where('tbl_voucher_user.voucherUser_status', 0)
+        ->where('tbl_voucher_group.voucherGroup_id', 2)
+        ->select('tbl_voucher.*') // Chỉ lấy các cột từ tbl_voucher
+        ->get();
+
+        if(count($vouchersOfGroupShop)>0){
+            return response()->json(
+                [
+                    "message" => "đã lấy dữ liệu thành công",
+                    "data" => $vouchersOfGroupShop,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoac ko co",
+                ]
+            );
+        }
+    }
+
+    public function HandleShowVoucherOfShip(Request $request)
+    {
+        $vouchersOfGroupShop =
+        $request->user()->voucherUsers()->join('tbl_voucher', 'tbl_voucher.voucher_id', '=', 'tbl_voucher_user.voucher_id') 
+        ->join('tbl_voucher_group','tbl_voucher_group.voucherGroup_id','=','tbl_voucher.voucherGroup_id')
+        ->where('tbl_voucher_user.voucherUser_status', 0)
+        ->where('tbl_voucher_group.voucherGroup_id', 1)
+        ->select('tbl_voucher.*') // Chỉ lấy các cột từ tbl_voucher
+        ->get();
+
+        if(count($vouchersOfGroupShop)>0){
+            return response()->json(
+                [
+                    "message" => "đã lấy dữ liệu thành công",
+                    "data" => $vouchersOfGroupShop,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoac ko co",
+                ]
+            );
+        }
     }
 }
