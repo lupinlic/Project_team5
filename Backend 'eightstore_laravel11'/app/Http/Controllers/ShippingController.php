@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Shipping;
 use App\Http\Requests\StoreShippingRequest;
 use App\Http\Requests\UpdateShippingRequest;
+use Illuminate\Http\Request;
 
 class ShippingController extends Controller
 {
@@ -125,6 +126,22 @@ class ShippingController extends Controller
                 [
                     "message" => "đã xóa thành công",
                     "data" => $shipping,
+                ]
+            );
+    }
+
+    
+    public function HandleShowShippingByName(Request $request)
+    {
+        $shipping = Shipping::where('shipping_cityName',$request->receiver_city)
+        ->where('shipping_districtName',$request->receiver_district)
+        ->where('shipping_communeName',$request->receiver_commune)
+        ->get();
+
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                    "data" => $request->all(),
                 ]
             );
     }

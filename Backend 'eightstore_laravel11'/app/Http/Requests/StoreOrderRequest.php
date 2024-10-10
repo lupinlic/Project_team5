@@ -22,7 +22,7 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "order_date" => 'required|numeric|min:7',
+            "order_date" => 'required|string|min:5',
             "order_status" => 'required|numeric',
             "order_totalmoney" => 'required|numeric',
             "user_id" => 'required|numeric|exists:tbl_user,user_id',

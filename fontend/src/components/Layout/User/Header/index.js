@@ -23,15 +23,16 @@ function Header() {
         // Chuyển hướng về trang đăng nhập
         // window.location.href = '/Login';
     };
-useEffect(() => {
+    useEffect(() => {
         
         const parsedUser = JSON.parse(userData);
-        if(parsedUser!==null && parsedUser!==undefined ){
-        setUserId(parsedUser.user_id);
+        if(parsedUser!==null && parsedUser!== undefined){
+            setUserId(parsedUser.user_id);
         }
       }, []);
+
     useEffect(()=>{
-        if(userId){
+        if(userId!== null && userId!==undefined){
         axios.get(`http://localhost:8000/api/users/${userId}/carts`)
                 .then(response => {
                     setCartCount(response.data.count_cart);

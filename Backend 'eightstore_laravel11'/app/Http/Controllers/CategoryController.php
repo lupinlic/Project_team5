@@ -149,6 +149,7 @@ class CategoryController extends Controller
         ->join('tbl_voucher', 'tbl_voucher.voucher_id', '=', 'tbl_category_voucher.voucher_id') 
         ->join('tbl_voucher_group','tbl_voucher_group.voucherGroup_id','=','tbl_voucher.voucherGroup_id')
         ->where('tbl_category.category_id',$category->category_id)
+        ->select('tbl_voucher.*') // Chỉ lấy các cột từ tbl_voucher
         ->get();
 
         // Lấy ra danh sách các voucher từ category_vouchers

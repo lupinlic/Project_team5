@@ -15,6 +15,7 @@ const Cart = () => {
     const [ischeckProductAll, setischeckProductAll] = useState(false); // Theo dõi trạng thái chỉnh sửa
 
 
+
     const userData = localStorage.getItem('user');
     
     useEffect(() => {
@@ -28,7 +29,7 @@ const Cart = () => {
     useEffect(()=>{
         if(parsedSelectCart){
             setSelectProducts(parsedSelectCart);
-            parsedSelectCart.length==carts.length ? setischeckProductAll(true) : setischeckProductAll(false);         
+            parsedSelectCart?.length==carts?.length ? setischeckProductAll(true) : setischeckProductAll(false);         
         }
     },[carts])
 
@@ -84,7 +85,7 @@ const Cart = () => {
         }
       };
       const shortenText = (text, maxLength) => {
-        return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+        return text?.length > maxLength ? text.substring(0, maxLength) + '...' : text;
       };
 
 
@@ -190,7 +191,7 @@ const Cart = () => {
 
     const HandleSelectCarts = (cart,event) => {
         //kiểm tra nếu nd click vào thì sẽ set thêm vào mảng
-        let carts_coppy=null;
+        let carts_coppy=[];
         if(event.target.checked){
             carts_coppy = [...selectProducts,cart];
             setSelectProducts(carts_coppy);
@@ -248,13 +249,13 @@ const Cart = () => {
                     <div className='col-md-1'>Thao tác</div>
                 </div>
                 <div className='product-list'>
-                {carts && carts.length > 0 ? carts.map(item => (  
+                {carts && carts?.length > 0 ? carts.map(item => (  
                     <div style={{margin:'20px 0', boxShadow:'0 -4px 10px rgba(0, 0, 0, 0.1)'}}>
                         <div className='row mt-4' style={{height:'120px', alignItems:'center',borderBottom:'1px solid rgb(210, 209, 210)'}}>
                             <div className='col-md-6 d-flex align-items-center'>
                                 <input id='cart_check' type='checkbox' style={{margin:'0 8px'}}  onChange={(e)=>HandleSelectCarts(item,e)}
                                     checked={selectProducts.some(cart=>cart.cart_id==item.cart_id)}></input>
-                                <img src='https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lyddlh37mzpp26@resize_w80_nl.webp' style={{width:'60px',height:'80px',margin:'0 8px'}}/>
+                                <img src={item.product_img} style={{width:'60px',height:'80px',margin:'0 8px'}}/>
                                 <h6>{shortenText(getProductName(item.product_id),50)}</h6>
                             </div>
                             <div className='col-md-2'>{getProductPrice(item.product_id)}</div>
@@ -289,7 +290,7 @@ const Cart = () => {
                     </div>
                     <div className='col-md-4'>
                         <p>
-                            <span>Tổng thanh toán( {selectProducts.length} sản phẩm): </span>
+                            <span>Tổng thanh toán( {selectProducts?.length} sản phẩm): </span>
                             <span style={{color:'red'}}>{HandleTotalMoney()}</span>
                         </p>
                     </div>
