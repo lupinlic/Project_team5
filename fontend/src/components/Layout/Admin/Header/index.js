@@ -3,10 +3,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {Link } from 'react-router-dom';
 import { faList,faSearch,faBell,faChevronDown,faCog,faUser,faLock,faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
 import './style.css'
+import axios from 'axios';
 import React, { useState, useEffect, useRef  } from 'react';
 // import logo from '../../../../assets/img/logo8.png';
 
 function Header() {
+
+    // đăng xuất
+    const handleLogout = () => {
+        axios.get('http://localhost:8000/api/user/logout')
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('user');
+        
+        
+        // Chuyển hướng về trang đăng nhập
+        // window.location.href = '/Login';
+    };
 
     // account
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -89,7 +101,11 @@ function Header() {
                                     <li><Link to=''><FontAwesomeIcon style={{paddingRight:'8px' ,color:'#62677399',textDecoration:'none'}} icon={faUser}/>Profile</Link></li>
                                     <li><Link to=''><FontAwesomeIcon style={{paddingRight:'8px' ,color:'#62677399',textDecoration:'none'}} icon={faCog}/>Settings</Link></li>
                                     <li><Link to=''><FontAwesomeIcon style={{paddingRight:'8px' ,color:'#62677399',textDecoration:'none'}} icon={faLock}/>Lock Screen</Link></li>
-                                    <li className='pt-2'><Link to=''><FontAwesomeIcon style={{paddingRight:'8px' ,color:'#62677399',textDecoration:'none'}} icon={faSignOutAlt}/>Logout</Link></li>
+                                    <li className='pt-2'><Link to='/Login'><FontAwesomeIcon style={{paddingRight:'8px' ,color:'#62677399',textDecoration:'none'}} icon={faSignOutAlt}
+                                        onClick={(e) => { 
+                                        handleLogout();
+                                        }}
+                                    />Logout</Link></li>
                                 </ul>
                             </div>
                         )}
