@@ -10,12 +10,15 @@ import Category from '../pages/Admin/Category';
 import Supplier from '../pages/Admin/Supplier';
 import Account from '../pages/Admin/Account';
 import AdProduct from '../pages/Admin/Product';
-// import Order from '../pages/Admin/Order';
+import OrderAd from '../pages/Admin/Order';
 import Shipping from '../pages/Shipping';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Introduce from '../pages/introduce'
 import Voucher from '../pages/Admin/Voucher';
+import ShippingAd from '../pages/Admin/Shipping';
+import Order from '../pages/Order';
+import Order_details from '../pages/Order_details';
 
 const publicRoutes = [
     {
@@ -26,6 +29,9 @@ const publicRoutes = [
     },
     {
         path:'/Product_detail/:product_id', component: Product_detail
+    },
+    {
+        path:'/Order_details', component: Order_details
     },
     {
         path:'/Pay', component: Pay
@@ -46,6 +52,9 @@ const publicRoutes = [
         path:'/Introduce', component: Introduce
     },
     {
+        path:'/Order', component: Order
+    },
+    {
         path:'/Admin/Home', component: AdHome, layout:Admin
     },
     {
@@ -63,9 +72,12 @@ const publicRoutes = [
     {
         path:'/Admin/Voucher', component: Voucher, layout:Admin
     },
-    // {
-    //     path:'/Admin/Order', component: Order, layout:Admin
-    // },
+    {
+        path:'/Admin/Order', component: OrderAd, layout:Admin
+    },
+    {
+        path:'/Admin/Shipping', component: ShippingAd, layout:Admin
+    },
 ];
 
 const privateRoutes= [];
