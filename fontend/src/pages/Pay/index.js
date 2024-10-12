@@ -240,7 +240,9 @@ function Pay() {
         .then(response => {
             HandleOrderDetail(response.data.data.order_id);
             HandleDeleteCart();
+            HandleSetStatusVoucherOfUser()
             setisfinishOrder(!isfinishOrder);
+
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
@@ -274,6 +276,34 @@ function Pay() {
             })
             .catch(error => {
                 console.error('Error fetching data: ', error);
+            });
+        })
+    }
+
+    const HandleSetStatusVoucherOfUser = () => {
+        // thực hiện set trạng thái sử dụng vouhcer của người dùng thành 1 tức là đã sd rồi
+        // tham số nhận vào sẽ là voucher và thực hiện chuyển đổi
+        let vouchers = [];
+
+        let lscart = carts.map(item => {
+            if(item.voucher){
+                return item.voucher
+            }
+        })
+        vouchers = lscart[0]!==undefined ? [...lscart] : [];
+        if(Voucher_freeship?.voucher_id){
+            vouchers = [...vouchers,Voucher_freeship];
+        }
+        if(Voucher_shop?.voucher_id){
+            vouchers = [...vouchers,Voucher_shop];
+        }
+
+        vouchers.map(voucher=> {
+            axios.get(`http://localhost:8000/api/voucherUser/${voucher.voucher_id}/status`)
+            .then(response => {
+            })
+            .catch(error => {
+                console.error('có lỗi trong cập nhập trạng thái sử dụng voucher: ', error);
             });
         })
     }

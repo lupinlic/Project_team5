@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Voucher from '.';
 
 
-const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,onClose}) =>{
+const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,sendvoucher_id,onClose}) =>{
     const [voucherGroup_id,setvoucherGroup_id] = useState(null);
     const [voucher_type,setvoucher_type] = useState(0);
     const [voucher_discount,setvoucher_discount] = useState(null);
@@ -13,15 +14,43 @@ const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,onClose}) =>{
     const [voucher_dsc,setvoucher_dsc] = useState(null);
     const [start_date,setstart_date] = useState(null);
     const [end_date,setend_date] = useState(null);
+    const [voucher_id,setvoucher_id] = useState(null);
+    const [voucher,setvoucher] = useState(null);
 
     useEffect(()=>{
         setvoucherGroup_id(sendvoucherGroup_id);
+        setvoucher_id(sendvoucher_id);
     })
 
-    const HandleSaveVoucher = (e) => {
+    useEffect(()=>{
+        if(voucherGroup_id!==null){
+            axios.get(`http://localhost:8000/api/vouchers/${voucher_id}`)
+            .then(response =>{
+                setvoucher(response.data.data);
+            } )
+            .catch(error => console.error('Có lỗi trong việc lấy voucher:', error));
+        }
+    },[voucher_id])
+
+    useEffect(()=>{
+        if(voucher!==null){
+            let getvoucher = voucher[0];
+            setvoucher_type(getvoucher.voucher_type);
+            setvoucher_discount(getvoucher.voucher_discount);
+            setvoucher_minOrder(getvoucher.voucher_minOrder);
+            setvoucher_maxDiscount(getvoucher.voucher_maxDiscount);
+            setvoucher_code(getvoucher.voucher_code);
+            setvoucher_quantity(getvoucher.voucher_quantity);
+            setvoucher_dsc(getvoucher.voucher_dsc);
+            setstart_date(getvoucher.start_date);
+            setend_date(getvoucher.end_date);
+        }
+    },[voucher])
+
+    const HandleUpdateVoucher = (e) => {
         e.preventDefault();
 
-        axios.post(`http://localhost:8000/api/vouchers`,{
+        axios.put(`http://localhost:8000/api/vouchers/${voucher_id}`,{
             voucherGroup_id :voucherGroup_id,
             voucher_type :voucher_type,
             voucher_discount :voucher_discount,
@@ -42,9 +71,13 @@ const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,onClose}) =>{
 
     return ( 
         <div className="form-popup">
-            <form onSubmit={(e)=>HandleSaveVoucher(e)} className="form-container"> 
+            
+            <form onSubmit={(e)=>HandleUpdateVoucher(e)} className="form-container"> 
             <h4>Thông tin voucher</h4>
-            <div className='row align-items-center'>
+            {voucher!==null ? 
+            voucher.map(item => (
+                <>
+            <div className='row align-items-center' key={item.voucher_id}>
                 <div className='col-md-4'>
                     <label className="name"><b>Mã voucher</b></label>
                 </div>
@@ -192,12 +225,16 @@ const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,onClose}) =>{
                     />
                 </div>
             </div>
-            
-           
+            </>
+            ))
+            :
+            <p>Có lỗi trong việc lấy thông tin của voucher</p>
+            }
 
                 <button type="submit" className="btn btn-primary">Lưu</button>
                 <button type="button" className="btn btn-secondary"  onClick={onClose}>Đóng</button>
             </form>
+            
         </div>
   );
 }
