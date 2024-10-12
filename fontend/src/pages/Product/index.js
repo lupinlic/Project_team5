@@ -165,6 +165,7 @@ const shortenText = (text, maxLength) => {
             </div>
                 <div id="menuContainer" 
                 style={{
+                    overflowY: 'auto',overflowX: 'hidden',
                     position: 'fixed',
                     top: 0,
                     left: isMenuOpen ? '0' : '-300px',
@@ -175,7 +176,72 @@ const shortenText = (text, maxLength) => {
                     zIndex: '20'
                 }}>
                         <span id="closeButton" onClick={closeMenu}>×</span>
-                        <ul className="list-group">
+
+                        <div className='container col-md-2 main-left border-end d-block d-md-none mt-4'>
+                            <h6>MỨC GIÁ</h6>
+                            <form>
+                                <div className="form-check m-2">
+                                    <input className="form-check-input custom-checkbox" type="checkbox" defaultValue value="all" defaultChecked
+                                        checked={selectedFilter === "all"} // Kiểm tra checkbox đã chọn
+                                        onChange={() => handleCheckboxChange("all")} id="all" />
+                                    <label className="form-check-label" htmlFor="checkbox1" style={{fontSize:'17px',margin:'0'}}>
+                                    Tất cả sản phẩm
+                                    </label>
+                                </div>
+                                
+                                <div className="form-check m-2">
+                                    <input className="form-check-input custom-checkbox" type="checkbox" defaultValue value="under_100"
+                                        checked={selectedFilter === "under_100"} // Kiểm tra checkbox đã chọn
+                                        onChange={() => handleCheckboxChange("under_100")} id="under_100" />
+                                    <label className="form-check-label" htmlFor="checkbox1" style={{fontSize:'17px',margin:'0'}}>
+                                    Giá dưới 100.000đ
+                                    </label>
+                                </div>
+                                <div className="form-check m-2">
+                                <input className="form-check-input custom-checkbox" type="checkbox" defaultValue value="between_100_200"
+                                        checked={selectedFilter === "between_100_200"} // Kiểm tra checkbox đã chọn
+                                        onChange={() => handleCheckboxChange("between_100_200")} id="between_100_200" />
+                                    <label className="form-check-label" htmlFor="checkbox2" style={{fontSize:'17px',margin:'0'}}>
+                                    100.000-200.000đ
+                                    </label>
+                                </div>
+                                <div className="form-check m-2">
+                                <input className="form-check-input custom-checkbox" type="checkbox" defaultValue value="between_200_300"
+                                        checked={selectedFilter === "between_200_300"} // Kiểm tra checkbox đã chọn
+                                        onChange={() => handleCheckboxChange("between_200_300")} id="between_200_300" />
+                                    <label className="form-check-label" htmlFor="checkbox3" style={{fontSize:'17px',margin:'0'}}>
+                                    200.000-300.000đ
+                                    </label>
+                                </div>
+                                <div className="form-check m-2">
+                                <input className="form-check-input custom-checkbox" type="checkbox" defaultValue value="between_300_500"
+                                        checked={selectedFilter === "between_300_500"} // Kiểm tra checkbox đã chọn
+                                        onChange={() => handleCheckboxChange("between_300_500")} id="between_300_500" />
+                                    <label className="form-check-label" htmlFor="checkbox4" style={{fontSize:'17px',margin:'0'}}>
+                                    300.000-500.000đ
+                                    </label>
+                                </div>
+                                <div className="form-check m-2">
+                                <input className="form-check-input custom-checkbox" type="checkbox" defaultValue value="between_500_1000"
+                                        checked={selectedFilter === "between_500_1000"} // Kiểm tra checkbox đã chọn
+                                        onChange={() => handleCheckboxChange("between_500_1000")} id="between_500_1000" />
+                                    <label className="form-check-label" htmlFor="checkbox5" style={{fontSize:'17px',margin:'0'}}>
+                                    500.000-1.000.000đ
+                                    </label>
+                                </div>
+                                <div className="form-check m-2">
+                                <input className="form-check-input custom-checkbox" type="checkbox" defaultValue value="above_1000"
+                                    checked={selectedFilter === "above_1000"} // Kiểm tra checkbox đã chọn
+                                        onChange={() => handleCheckboxChange("above_1000")} id="above_1000" />
+                                    <label className="form-check-label" htmlFor="checkbox6" style={{fontSize:'17px',margin:'0'}}>
+                                    Giá trên 1.000.000đ
+                                    </label>
+                                </div>
+                            </form>
+
+                        </div>
+
+                        <ul className="list-group mb-3">
                             <li className="list-group-item active" style={{backgroundColor: '#e5677d', border: 'none'}}>DANH MỤC SẢN PHẨM</li>
                             <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/icon11.png" alt='' /><Link to="/Product/2">Sữa rửa mặt</Link></li>
                             <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/trang-diem-2.png" alt='' /><Link to="/Product/1">Tẩy trang</Link></li>
@@ -189,7 +255,7 @@ const shortenText = (text, maxLength) => {
                 </div>
             {/* main */}
             <div className='row mt-4' id='main'>
-                <div className='col-md-2 main-left border-end'>
+                <div className='col-md-2 main-left border-end d-none d-md-block'>
                     <h6>MỨC GIÁ</h6>
                     <form>
                         <div className="form-check m-2">
@@ -259,10 +325,10 @@ const shortenText = (text, maxLength) => {
                         <h5>{category.category_name}</h5>
                         {filteredProducts.length > 0 ? (
                             filteredProducts.filter(product => product.category_id === category.category_id).map(item =>(
-                            <div className='col-md-3 p-3' key={item.id}>
+                            <div className='col-md-3 p-3 col-6' key={item.id}>
                             <Link to={`/Product_detail/${item.product_id}`} style={{textDecoration:'none'}}>
                                 <img src={getImagePath(item.category_id, item.product_img)} style={{width:'100%'}}/>
-                                <Link to={`/Product_detail/${item.product_id}`} className='pro-name' style={{marginLeft:'16px'}}>{shortenText(item.product_name, 20)}</Link>
+                                <Link to={`/Product_detail/${item.product_id}`} className='pro-name' style={{marginLeft:'16px'}}>{shortenText(item.product_name, 25)}</Link>
                                 <div className='d-flex justify-content-between' style={{marginLeft:'16px'}}>
                                     <p style={{color:'red'}}>{item.product_price} đ</p>
                                     <Link to={`/Product_detail/${item.product_id}`}><FontAwesomeIcon icon={faShoppingCart}  style={{color:'red'}}/></Link>

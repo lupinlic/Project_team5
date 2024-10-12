@@ -29,15 +29,15 @@ function Introducue() {
             <div className="snow" />
             <div className=" main_gt p-3">
                 <div className="row">
-                <div className="col-5"><p>Trang chủ&gt; Giới thiệu</p></div>
-                <div className="col-7">
+                <div className="col-md-5"><p>Trang chủ&gt; Giới thiệu</p></div>
+                <div className="col-md-7">
                     {/* <img style="height:50px; width:300px" src="../../css/img/noel/GIAY HOA.png" alt=""> */}
                 </div>
                 </div>
             </div>
             <div className=" gt p-3">
                 <div className="row">
-                <div className="col-6">
+                <div className="col-md-6">
                     <p style={{fontWeight: 500, fontSize: 20}}>Giới thiệu</p>
                     <p style={{fontWeight: 500}}>EIGHT STORE - Mỹ phẩm chính hãng tại Triều Khúc: LAN TỎA ĐIỀU ĐẸP ĐẼ</p>
                     <p>Dù chỉ là cửa hàng nhỏ nhắn thuộc Triều Khúc xinh đẹp nhưng Eight Store
@@ -49,15 +49,15 @@ function Introducue() {
                     <p>Chúng tớ không chỉ yêu mỹ phẩm, mê làm đẹp mà còn khao khát mang những điều đẹp đẽ đến với bạn – những cô nàng giống tớ và luôn muốn bản thân tự tin, xinh đẹp mỗi ngày!</p>
                     <p>Tất cả đều là những brand đình đám, có bảng thành phần tuyệt vời và siêu thân thiện với làn da.</p>
                 </div>
-                <div className="col-6">
-                    <img style={{height: 'px', width: 'px'}} src="/assets/img/noel/pngtree-exquisite-christmas-tree-gift-box-png-image_6211227-removebg-preview.png" alt />
+                <div className="col-md-6">
+                    <img style={{height: '', width: '100%'}} src="https://png.pngtree.com/png-vector/20240527/ourmid/pngtree-christmas-tree-vector-png-image_12538882.png" alt />
                 </div>
                 </div>
                 <div className="row">
-                <div className="col-6">
-                    <img style={{height: 'px', width: 'px'}} src="/assets/img/noel/lovepik-christmas-tree-png-image_401650324_wh1200-removebg-preview.png" alt />
+                <div className="col-md-6 d-none d-md-block">
+                    <img style={{height: 'px', width: '100%'}} src="https://png.pngtree.com/png-clipart/20220923/ourlarge/pngtree-exquisite-christmas-tree-gift-box-png-image_6211227.png" alt />
                 </div>
-                <div className="col-6">
+                <div className="col-md-6">
                     <p style={{fontWeight: 500, fontStyle: 'italic'}}>Eight Store lựa chọn phân phối chính hãng, mua tận gốc, uy tín tận răng</p>
                     <p>Ban đầu, Eight Store chỉ là order thêm một vài sản phẩm cho người quen và bạn bè thân thiết.
                     Lâu dần thì Eight Store bắt đầu có khách hàng và nhu cầu cũng tăng rất nhiều. Vẫn theo định hướng ban đầu, 

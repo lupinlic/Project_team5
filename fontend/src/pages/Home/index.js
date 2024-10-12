@@ -94,7 +94,7 @@ function Home (){
 
     {/* start */}
         <div className="category row" >
-            <div className="col-md-3">
+            <div className="col-md-3 d-none d-md-block">
                 <ul className="list-group">
                     <li className="list-group-item active" style={{backgroundColor: 'rgb(240, 61, 207)', border: 'none',color:'#fff'}}>DANH MỤC SẢN PHẨM</li>
                     <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/icon11.png" alt ='' /><Link to="/Product/2">Sữa rửa mặt</Link></li>
@@ -107,7 +107,7 @@ function Home (){
                     <li className="list-group-item"><img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/trang-diem-2.png" alt ='' /><Link to="/Product/6">Dưỡng thể</Link> </li>
                 </ul>
             </div>
-            <div className="col-md-9" style={{margin:'30px 0'}}>
+            <div className="col-md-9 col-12 banner1" style={{margin:'30px 0'}}>
                 <div id="demo" className="carousel slide" data-bs-ride="carousel">
                 
                     <div className="carousel-indicators">
@@ -117,10 +117,10 @@ function Home (){
                     
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img style={{height: 370}} src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/sls4.jpg" alt="Los Angeles" className="d-block w-100" />
+                            <img  src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/sls4.jpg" alt="Los Angeles" className="d-block w-100" />
                         </div>
                         <div className="carousel-item">
-                            <img style={{height: 370}} src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/bannerdd.jpg" alt="Chicago" className="d-block w-100" />
+                            <img  src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/bannerdd.jpg" alt="Chicago" className="d-block w-100" />
                         </div>
                     </div>
                     
@@ -158,6 +158,14 @@ function Home (){
                 <button className="run" id="next" onClick={handleNext}>›</button>
    
             </div>
+            <div className='d-block d-md-none row align-items-center d-flex'>
+                <div className='col-4'></div>
+                <div className='col-4'>
+                    <button  style={{border:'none', backgroundColor:'rgb(254, 223, 249)'}}>Xem thêm</button>
+                </div>
+                <div className='col-4'></div>
+                
+            </div>
         </div>
         {/* thương hiệu*/}
         <div>
@@ -177,25 +185,25 @@ function Home (){
         <div style={{margin:'20px 0'}}>
             <h4>Beauty Tip</h4>
             <div className='row'>
-                <div className='col-md-3 tip' >
+                <div className='col-md-3 tip mb-4' >
                     <img src='https://file.hstatic.net/200000551679/article/20h30-15.09-480x320_37693a78e5d04998ad5b621caff9b081_large.png' alt='' style={{width:'100%'}}/>
                     <a  href=''><h5 style={{margin:'4px 0'}}>Tưới nước cho da căng mọng cùng top tonner ẩm sâu</h5></a>
                     <p>Bí kíp giữ làn da không tuổi tràn đầy sức sống....</p>
                     <Link to='' style={{color:'#f067bc'}} >Đọc tiếp</Link>
                 </div>
-                <div className='col-md-3 tip'>
+                <div className='col-md-3 tip mb-4'>
                     <img src='https://file.hstatic.net/200000551679/article/480x320_390c2498e2f34b1abc9c1761b5e8aadb_large.png' alt='' style={{width:'100%'}}/>
                     <a href=''><h5 style={{margin:'4px 0'}}>Chăm da dịu lành từ 4 dược liệu trứ danh xứ hàn</h5></a>
-                    <p>Thiên nhiên hàn quốc đa dạng và xanh tươi chính là....</p>
+                    <p>Thiên nhiên hàn quốc đa dạng và xanh tươi....</p>
                     <Link to='' style={{color:'#f067bc'}} >Đọc tiếp</Link>
                 </div>
-                <div className='col-md-3 tip'>
+                <div className='col-md-3 tip mb-4'>
                     <img src='https://file.hstatic.net/200000551679/article/20h30-12.09-480x320_4f6d4a444c8548df8d4f0307e9a21f15_large.png' alt='' style={{width:'100%'}}/>
                     <a href=''><h5 style={{margin:'4px 0'}}>Bạn biết gì về Directo Pi ??</h5></a>
                     <p>Chưa biết đến directo pi là sự thiếu sót vô cùng lớn...</p>
                     <Link to='' style={{color:'#f067bc'}} >Đọc tiếp</Link>
                 </div>
-                <div className='col-md-3 tip'>
+                <div className='col-md-3 tip mb-4'>
                     <img src='https://file.hstatic.net/200000551679/article/topic-kem-duong-da-kho-480x320_7961f07cc4924196a58004b61a3864ab_large.png' alt='' style={{width:'100%'}}/>
                     <a href=''><h5 style={{margin:'4px 0'}}>Tạm biệt da khô bong chóc với top kem dưỡng tại eightstore</h5></a>
                     <p>Cứ thay đổi thời tiết một tí là da liền cầu cứu khắp mọi nơi...</p>
@@ -204,7 +212,7 @@ function Home (){
             </div>
         </div>
         {/* feedback */}
-        <div id="feedback " className style={{height: 100, backgroundColor: 'rgb(240, 61, 207)', margin: '30px 0',borderRadius:'20px'}}>
+        <div id="feedback " className='d-none d-md-block' style={{height: 100, backgroundColor: 'rgb(240, 61, 207)', margin: '30px 0',borderRadius:'20px'}}>
             <div className="row">
                 <div className="col-md-9 fb9" style={{display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 12}}>
                 <h3>ĐĂNG KÍ TƯ VẤN</h3>
@@ -218,7 +226,7 @@ function Home (){
 
 
 
-        <div id="in4 " className="" style={{height:"100px",}}>
+        <div id="in4 " className="d-none d-md-block" style={{height:"100px",}}>
             <div className='row' >
                 <div className='col-md-3 d-flex' style={{alignItems:'center',justifyContent:'center'}}>
                     <img src="https://duocpham1.haiphongweb.com/wp-content/uploads/2017/09/icon1.jpg" alt />

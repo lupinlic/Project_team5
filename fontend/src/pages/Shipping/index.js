@@ -105,7 +105,7 @@ function Shipping() {
         {receiver && receiver.length > 0 ? receiver.map(item => (
           <div className="mt-4 row" key={item.receiver_id}>
             {/* Nội dung hiển thị cho từng địa chỉ */}
-            <div className="col-md-10 address">
+            <div className="col-md-10 address col-12">
               <p>
                 <span className="name">{item.receiver_name}</span>
                 <span className="sđt">{item.receiver_phone}</span>
@@ -114,14 +114,14 @@ function Shipping() {
               <p>{item.receiver_commune}, {item.receiver_district},{item.receiver_city}</p>
               <p className="macd" style={{color: 'red', display: item.receiver_type == 1 ? 'inline-block' : 'none'}}>Mặc định</p>
             </div>
-            <div className="col-md-2 sp-bt">
-              <div>
-                <button className="sp-bt_capnhat" onClick={() => openForm(item.receiver_id)}>Cập nhật</button>
-                <button className="sp-bt_capnhat" onClick={() => deleteReceiver(item.receiver_id)}
+            <div className="col-md-2 sp-bt ">
+              <div className=''>
+                <button className="sp-bt_capnhat " onClick={() => openForm(item.receiver_id)}>Cập nhật</button>
+                <button className="sp-bt_capnhat " onClick={() => deleteReceiver(item.receiver_id)}
                   style={item.receiver_type == 1 ? style_noDelete : {} }
                   >Xóa</button>
               </div>
-              <button className="sp-bt_md" onClick={() => HandlesetDefault(item)} 
+              <button className="sp-bt_md " onClick={() => HandlesetDefault(item)} 
               style={item.receiver_type == 1 ? style_receiverType : {} }
                 >Thiết lập mặc định</button>
             </div>

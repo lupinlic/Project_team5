@@ -17,7 +17,6 @@
 /*  */
 
 .sellings,.sellings2,.sellings3, #news{
-    margin-top: 40px;
     border-top: 3px solid rgb(240, 61, 207);
     position: relative;
 }
@@ -175,4 +174,33 @@
 }
 .tip a:hover{
     color: #64b457;
+}
+@media (max-width: 768px) {
+    .banner1 img{
+        height: 150px;
+    }
+    .sellings{
+        margin-top: 12px;
+    }
+    .sellings >p{
+        color: black;
+        font-weight: 450;
+        position: absolute;
+        left: 30%;
+        top: -16px;
+        font-size: 18px;
+        background-color: white;
+    }
+    .sell .sell-child{
+        min-width: 60%;
+    }
+}
+@media (min-width: 768px) {
+    .banner1 img{
+        height: 370px;
+    }
+    .sellings{
+        margin-top: 40px;
+    }
+    
 }

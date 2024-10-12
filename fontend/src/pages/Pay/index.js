@@ -355,16 +355,16 @@ function Pay() {
             <div style={{marginTop:'12px',padding:'20px'}}>
                 <div>
                     <div className="row">
-                            <div className="col-6">
+                            <div className="col-md-6 col-12">
                                 <p style={{fontSize:'18px'}}>Sản phẩm</p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-md-2 col-12 d-none d-md-block">
                                 <p style={{float: 'right',color:'#62677399'}}>Đơn giá</p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-md-2 col-12 d-none d-md-block">
                                 <p style={{float: 'right',color:'#62677399'}}>Số lượng</p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-md-2 col-12 d-none d-md-block">
                                 <p style={{float: 'right',color:'#62677399'}}>Thành tiền</p>
                             </div>
                     </div>
@@ -372,29 +372,39 @@ function Pay() {
                     {carts?.map(item => (
                         <>
                         <div className="row" key={item.cart_id}>
-                            <div className="col-6" style={{display:'flex'}}>
+                            <div className="col-md-6" style={{display:'flex'}}>
                                 <img style={{width:'50px',height:'50px',marginLeft:'12px'}} src={item.product.product_img}></img>
                                 <p style={{fontSize:'18px',marginLeft:'12px'}}>{item.product.product_name}</p>
                             </div>
-                            <div className="col-2">
-                                <p style={{float: 'right',color:'#62677399'}}>{item.product.product_price}</p>
+                            <div className="col-md-2 col-12">
+                                
+                                <p className='d-flex' style={{float: 'right',color:'#62677399'}}>
+                                    <span className='d-block d-md-none'>Đơn giá:</span>
+                                    <span> {item.product.product_price}</span>
+                                </p>
                             </div>
-                            <div className="col-2">
-                                <p style={{float: 'right',color:'#62677399'}}>{item.cart_quantity}</p>
+                            <div className="col-md-2">
+                                <p className='d-flex' style={{float: 'right',color:'#62677399'}}>
+                                    <span className='d-block d-md-none'>Số lượng:</span>
+                                    <span> {item.cart_quantity}</span>
+                                </p>
                             </div>
-                            <div className="col-2">
-                                <p style={{float: 'right',color:'#62677399'}}>{item.product.product_price*item.cart_quantity}</p>
+                            <div className="col-md-2">
+                                <p className='d-flex' style={{float: 'right',color:'#62677399'}}>
+                                    <span className='d-block d-md-none'>Thành tiền :</span>
+                                    <span> {item.product.product_price*item.cart_quantity}</span>
+                                </p>
                             </div>
                         </div>
-                        <div className="voucher" style={{padding:'20px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                        <div style={{display:'flex'}}>
+                        <div className="voucher row" style={{padding:'20px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                        <div style={{display:'flex'}} className='col-12 col-md-10'>
                             <img style={{width:'30px',height:'30px'}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIX6EDRHQ50N9bS7vXmD7tze7adcyO_bhsTg&s"></img>
-                            <h5 style={{marginLeft:'8px',fontWeight:'400',marginRight:'23px'}}>EightStore Voucher sản phẩm</h5>
+                            <h5 style={{marginLeft:'8px',fontWeight:'400',marginRight:'23px'}}>Voucher sản phẩm</h5>
                             <p style={{position:'relative'}}>
                                 {item.voucher? 'giảm '+ item.discount_product +'VNĐ':'' }
                             <button style={{border:'none',color:'red',position:'absolute',top:'-10px',background:'#fff'}}>X</button></p>
                         </div>
-                        <button style={{border:'none', color:'blue'}} onClick={() => openFormProducts(item.product.product_id)}> Chọn voucher</button>
+                        <button className='col-md-2' style={{border:'none', color:'blue'}} onClick={() => openFormProducts(item.product.product_id)}> Chọn voucher</button>
                         {isFormVisible_products[item.product.product_id] && (
                                     <>
                                         <div className="overlay"></div> 
@@ -433,7 +443,7 @@ function Pay() {
                         >
                         </input>
                     </div>
-                    <div className="col-md-7" style={{borderLeft:'1px dashed #000',paddingTop:'20px'}}>
+                    <div className="col-md-7 d-none d-md-block" style={{borderLeft:'1px dashed #000',paddingTop:'20px'}}>
                         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                             <p>Đơn vị vận chuyển:
                             <span style={{color:'#000',fontSize:'18px',marginLeft:'8px'}}> Vận chuyển nhanh</span></p>
@@ -444,8 +454,8 @@ function Pay() {
             </div>
             
             {/* voucher */}
-            <div className="voucher" style={{padding:'20px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                <div style={{display:'flex'}}>
+            <div className="voucher row" style={{padding:'20px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                <div style={{display:'flex'}} className='col-12 col-md-10'>
                     <img style={{width:'30px',height:'30px'}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIX6EDRHQ50N9bS7vXmD7tze7adcyO_bhsTg&s"></img>
                     <h5 style={{marginLeft:'8px',fontWeight:'400',marginRight:'20px'}}>EightStore Voucher</h5>
                     <p style={{position:'relative'}}>
@@ -457,7 +467,7 @@ function Pay() {
                         {Voucher_freeship.voucher_id ? 'free ship':'' }
 
                         </span>
-                    <button style={{border:'none',color:'red',position:'absolute',top:'-10px',background:'#fff'}}>X</button></p>
+                    <button className='col-md-2' style={{border:'none',color:'red',position:'absolute',top:'-10px',background:'#fff'}}>X</button></p>
                 </div>
                 <button style={{border:'none', color:'blue'}} onClick={() => openForm_shop()}> Chọn voucher</button>
                 {isFormVisible_shop && (
@@ -482,36 +492,37 @@ function Pay() {
                     <div className="col-md-9"></div>
                     <div className="col-md-3 " style={{textAlign:'right'}}>
                         <div className="row pb-2">
-                            <div className="col-md-6">Tổng tiền hàng</div>
-                            <div className="col-md-6">{carts_total}</div>
+                            <div className="col-md-6 col-6">Tổng tiền hàng</div>
+                            <div className="col-md-6 col-6">{carts_total}</div>
                         </div>
                         <div className="row pb-2">
-                            <div className="col-md-6">Phí vận chuyển</div>
-                            <div className="col-md-6">{Shipping_price}</div>
+                            <div className="col-md-6 col-6">Phí vận chuyển</div>
+                            <div className="col-md-6 col-6">{Shipping_price}</div>
                         </div>
                         {Voucher_freeship.voucher_id ?
                          <div className="row pb-2">
-                         <div className="col-md-6">Giảm giá phí vận chuyển</div>
-                         <div className="col-md-6">{discountShipping}</div>
+                         <div className="col-md-6 col-6">Giảm giá phí vận chuyển</div>
+                         <div className="col-md-6 col-6">{discountShipping}</div>
                         </div>
                         :''}
                         
                         {discountTotal >0 ?
                          <div className="row pb-2">
-                         <div className="col-md-6">Tổng voucher giảm</div>
-                         <div className="col-md-6">{discountTotal}</div>
+                         <div className="col-md-6 col-6">Tổng voucher giảm</div>
+                         <div className="col-md-6 col-6">{discountTotal}</div>
                         </div>
                         :''}
                         <div className="row pb-2">
-                            <div className="col-md-6">Tổng thanh toán</div>
-                            <div className="col-md-6" style={{color:'red', fontSize:'18px'}}>{totalPayMent}</div>
+                            <div className="col-md-6 col-6">Tổng thanh toán</div>
+                            <div className="col-md-6 col-6" style={{color:'red', fontSize:'18px'}}>{totalPayMent}</div>
                         </div>
                     </div>
 
                 </div>
                 <div className="row" style={{padding:'12px 0',borderBottom:'1px dashed #000'}}>
-                    <div className="col-md-9">Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo Điều khoản EightStore</div>
-                    <div className="col-md-3 " style={{textAlign:'right'}}>
+                    <div className="col-md-9 col-12">Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo Điều khoản EightStore</div>
+                    <div className='col-6 d-block d-md-none'></div>
+                    <div className="col-md-3 col-6 pt-2" style={{textAlign:'right'}}>
                         <button 
                         style={{border:'none', background:'red',width:'90%',height:'50px',color:'#fff'}}
                         onClick={()=>HandleOrder()}

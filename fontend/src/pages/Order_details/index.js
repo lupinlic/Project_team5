@@ -21,35 +21,35 @@ function Order_detail() {
                     <div className='col-md-2'>Mã đơn hàng: 1tgwydg</div>
                 </div>
                 <div className='row m-0 border-bottom p-3 align-items-center' >
-                    <div className='col-md-1'>
+                    <div className='col-md-1 col-4'>
                         <img src='https://down-vn.img.susercontent.com/file/f825aedc54e76790a12ba99c5c72cc0b_tn' style={{width:'80px'}}/>
                     </div>
-                    <div className='col-md-5'>
+                    <div className='col-md-5 col-8'>
                         <p>Tên sản phẩm</p>
                         <p>Số lượng</p>
                     </div>
                     <div className='col-md-5'></div>
                     <div className='col-md-1 text-danger' >100000đ</div>
                 </div>
-                <div className='row pt-3'>
+                <div className='row pt-2 pt-md-3 container'>
                     <div className='col-md-8'></div>
-                    <div className='col-md-2'>Tổng tiền</div>
-                    <div className='col-md-2' style={{fontWeight:'500',color:'red'}}>100</div>
+                    <div className='col-md-2 col-5'>Tổng tiền</div>
+                    <div className='col-md-2 col-7' style={{fontWeight:'500',color:'red'}}>100</div>
                 </div>
-                <div className='row pt-3'>
+                <div className='row pt-2 pt-md-3 container'>
                     <div className='col-md-8'></div>
-                    <div className='col-md-2'>Phí vận chuyển</div>
-                    <div className='col-md-2' style={{fontWeight:'500'}}>100</div>
+                    <div className='col-md-2 col-5'>Phí vận chuyển</div>
+                    <div className='col-md-2 col-7' style={{fontWeight:'500'}}>100</div>
                 </div>
-                <div className='row pt-3'>
+                <div className='row pt-2 pt-md-3 container'>
                     <div className='col-md-8'></div>
-                    <div className='col-md-2'>Thành tiền</div>
-                    <div className='col-md-2' style={{fontWeight:'500',color:'red',fontSize:'20px'}}>100</div>
+                    <div className='col-md-2 col-5'>Thành tiền</div>
+                    <div className='col-md-2 col-7' style={{fontWeight:'500',color:'red',fontSize:'20px'}}>100</div>
                 </div>
-                <div className='row pt-3'>
+                <div className='row pt-2 pt-md-3 container'>
                     <div className='col-md-8'></div>
-                    <div className='col-md-2'>Phương thức thanh toán</div>
-                    <div className='col-md-2' style={{fontWeight:'500'}}>Thanh toán khi nhận hàng</div>
+                    <div className='col-md-2 col-5'>Phương thức thanh toán</div>
+                    <div className='col-md-2 col-7' style={{fontWeight:'500'}}>Thanh toán khi nhận hàng</div>
                 </div>
             </div>
         </div>

@@ -206,9 +206,9 @@ const handleChange = (e) => {
         <div className="form-popup">
         <form onSubmit={handleSubmit}>
             <h5>Địa chỉ mới</h5>
-            <div className="d-flex mt-3 form-popup1" style={{justifyContent:'space-between'}}>
-                <input type="text" placeholder="Họ tên" name='receiver_name' value={receiver.receiver_name} onChange={handleChange}></input>
-                <input type="text" placeholder="Số điện thoại" name='receiver_phone' value={receiver.receiver_phone} onChange={handleChange}></input>
+            <div className=" d-flex mt-3 form-popup1 profile" style={{justifyContent:'space-between'}}>
+                <input className='' type="text" placeholder="Họ tên" name='receiver_name' value={receiver.receiver_name} onChange={handleChange}></input>
+                <input className='' type="text" placeholder="Số điện thoại" name='receiver_phone' value={receiver.receiver_phone} onChange={handleChange}></input>
             </div>
             <div className="mt-3 form-popup2" >
                 <select id="city" name="receiver_city" class="form-control" value={selectedProvince} onChange={handleProvinceChange}>

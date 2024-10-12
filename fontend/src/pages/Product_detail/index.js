@@ -127,7 +127,7 @@ const Product_detail = () => {
                     <p>(Tiết kiệm <span style={{color:'red'}}>75,000đ</span> )</p>
                     <div className='deal p-3'>
                         <h4 style={{textAlign:'center',color:'red'}}>Siêu deal mua 1 tặng 1</h4>
-                        <div className="App">
+                        <div className="CountdownTimer">
                             <CountdownTimer targetDate="2024-12-31T23:59:59" />
                         </div>
                     </div>

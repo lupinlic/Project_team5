@@ -47,3 +47,8 @@
 .cart-notification.fade-out {
     opacity: 0; /* Độ mờ biến mất */
 }
+@media (max-width: 768px) {
+    .CountdownTimer{
+        text-align: center;
+    }
+}

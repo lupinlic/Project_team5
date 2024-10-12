@@ -85,3 +85,9 @@
     justify-content: center;
     margin: 16px 0;
   }
+  @media (max-width: 768px) {
+    .form-popup .form-popup1 input{
+      width: 160px;
+    height: 40px;
+    }
+  }
