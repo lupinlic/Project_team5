@@ -243,23 +243,23 @@ const Cart = () => {
                         <input type='checkbox' style={{margin:'0 8px'}} checked={ischeckProductAll} onClick={(e)=>handleSelectAll(e)} ></input>
                         Sản Phẩm
                     </div>
-                    <div className='col-md-2'>Đơn giá</div>
-                    <div className='col-md-2'>Số lượng</div>
-                    <div className='col-md-1'>Tổng tiền</div>
-                    <div className='col-md-1'>Thao tác</div>
+                    <div className='col-md-2 d-none d-md-block'>Đơn giá</div>
+                    <div className='col-md-2 d-none d-md-block'>Số lượng</div>
+                    <div className='col-md-1 d-none d-md-block'>Tổng tiền</div>
+                    <div className='col-md-1 d-none d-md-block'>Thao tác</div>
                 </div>
                 <div className='product-list'>
                 {carts && carts?.length > 0 ? carts.map(item => (  
                     <div style={{margin:'20px 0', boxShadow:'0 -4px 10px rgba(0, 0, 0, 0.1)'}}>
-                        <div className='row mt-4' style={{height:'120px', alignItems:'center',borderBottom:'1px solid rgb(210, 209, 210)'}}>
-                            <div className='col-md-6 d-flex align-items-center'>
+                        <div className='row mt-4 pb-2' style={{height:'120px', alignItems:'center',borderBottom:'1px solid rgb(210, 209, 210)'}}>
+                            <div className='col-md-6 d-flex align-items-center col-12'>
                                 <input id='cart_check' type='checkbox' style={{margin:'0 8px'}}  onChange={(e)=>HandleSelectCarts(item,e)}
                                     checked={selectProducts.some(cart=>cart.cart_id==item.cart_id)}></input>
-                                <img src={item.product_img} style={{width:'60px',height:'80px',margin:'0 8px'}}/>
-                                <h6>{shortenText(getProductName(item.product_id),50)}</h6>
+                                <img src={item.product_img} style={{width:'60px',height:'80px',margin:'4px 8px'}}/>
+                                <h6>{shortenText(getProductName(item.product_id),30)}</h6>
                             </div>
-                            <div className='col-md-2'>{getProductPrice(item.product_id)}</div>
-                            <div className='col-md-2 d-flex'> 
+                            <div className='col-md-2 col-4'>{getProductPrice(item.product_id)}</div>
+                            <div className='col-md-2 d-flex col-6'> 
                                     <button style={{border:'none'}} onClick={()=> HandleUpdateCartQuantity('-',item)}>-</button>
                                     <input type='text' name='cart_quantity' 
                                         value={item.cart_quantity} style={{width: '40px'}}
@@ -267,10 +267,10 @@ const Cart = () => {
                                         onBlur={(e)=>HandleUpdateCartQuantity(1,item,e)}/>
                                     <button style={{border:'none'}} onClick={()=> HandleUpdateCartQuantity('+',item)} >+</button>
                             </div>
-                            <div className='col-md-1'>{item.cart_totalmoney}</div>
-                            <div className='col-md-1'><button style={{border:'none', color:'red'}} onClick={() => deleteProduct(item.cart_id)}>Xóa</button></div>
+                            <div className='col-md-1 d-none d-md-block'>{item.cart_totalmoney}</div>
+                            <div className='col-md-1 col-2'><button style={{border:'none', color:'red'}} onClick={() => deleteProduct(item.cart_id)}>Xóa</button></div>
                         </div>
-                        <div style={{height:'50px', padding:'20px 0',borderBottom:'1px solid rgb(210, 209, 210)'}}>
+                        <div style={{height:'50px', padding:'20px 0',borderBottom:'1px solid rgb(210, 209, 210)'}} className='d-none d-md-block'>
                             <img style={{width:"30px", height:'30px'}} src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/cart/d9e992985b18d96aab90.png'/>
                             Giảm ₫300.000 phí vận chuyển đơn tối thiểu ₫0; Giảm ₫500.000 phí vận chuyển đơn tối thiểu ₫500.000
                         </div>
@@ -281,20 +281,21 @@ const Cart = () => {
                 </div>
             {/* mua hàng */}
             <div className={ isFixed ? "fixed-checkout-bar bar" : "static-checkout-bar bar"}>
-                    <div className='col-md-6 ' >
+                    <div className='col-md-6 d-none d-md-block' >
                         <div className='d-flex align-items-center' style={{margin:'0 12px'}}>
                             <input type='checkbox' style={{margin:'0  16px 12px 16px'}} checked={ischeckProductAll} onClick={(e)=>handleSelectAll(e)}></input>
-                            <p style={{marginRight:'20px'}}>Chọn tất cả</p>
+                            <p style={{marginRight:'20px'}} className='d-none d-md-block'>Chọn tất cả</p>
                             <p>Xóa</p>
                         </div>
                     </div>
-                    <div className='col-md-4'>
-                        <p>
-                            <span>Tổng thanh toán( {selectProducts?.length} sản phẩm): </span>
+                    <div className='col-md-4 col-6'>
+                        <p className='d-flex'>
+                            <span className='d-block d-md-none' style={{marginLeft:'8px'}}>Tổng( {selectProducts?.length} sp):</span>
+                            <span className='d-none d-md-block'>Tổng thanh toán( {selectProducts?.length} sản phẩm): </span>
                             <span style={{color:'red'}}>{HandleTotalMoney()}</span>
                         </p>
                     </div>
-                    <div className='col-md-2'>
+                    <div className='col-md-2 col-6'>
                         <Link to='/pay' >
                             <button style={{height:'40px', width:'80%', color:'#fff', border:'none'}}>Mua hàng</button>
                         </Link>
@@ -312,7 +313,7 @@ const Cart = () => {
                 </div>
                 <div className='row mt-2'>
                 {displayedProducts.map(product => (
-                    <div className='col-md-2 p-1 ' key={product.id}>
+                    <div className='col-md-2 p-1 col-6' key={product.id}>
                     <Link to={`/Product_detail/${product.product_id}`} style={{textDecoration:'none'}} className='product_like'>
                         <div className='border product_like-div' style={{height:'330px',boxShadow:'0 -4px 10px rgba(0, 0, 0, 0.1)'}}>
                             <img className='w-100' src={getImagePath(product.category_id, product.product_img)}/>

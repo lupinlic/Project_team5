@@ -122,7 +122,7 @@ const MyAddress = ({onClose,setReceiver}) =>{
 
                     </div> ))}
                 </div>
-                <button style={{width:'200px', height:'50px',margin:'20px'}} onClick={() => openForm()}> + Thêm địa chỉ mới</button>
+                <button style={{width:'200px', height:'50px',margin:'20px 0 50px 0'}} onClick={() => openForm()}> + Thêm địa chỉ mới</button>
                 {isFormVisible && (
                     <>
                     <ShippingForm 

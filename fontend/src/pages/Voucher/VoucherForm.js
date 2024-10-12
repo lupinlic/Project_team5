@@ -226,11 +226,11 @@ const VoucherForm =({onClose,getProduct_id,getCategory_id,HandleVoucher}) =>{
              <div className="form-popup" style={{padding:'20px'}}>
                 <h5>Chọn EightStore Voucher</h5>
                 <div className='row mt-4'>
-                    <div className='col-md-3'>Mã Voucher </div>
-                    <div className='col-md-6'>
+                    <div className='col-md-3 col-4'>Mã Voucher </div>
+                    <div className='col-md-6 col-8'>
                         <input type='text' placeholder='Mã EightStore Voucher' style={{marginLeft:'8px',border:'1px solid'}}></input>
                     </div>
-                    <div className='col-md-3'>
+                    <div className='col-md-3 col-12'>
                         <button >Áp dụng</button>
                     </div>
                 </div>
@@ -250,14 +250,14 @@ const VoucherForm =({onClose,getProduct_id,getCategory_id,HandleVoucher}) =>{
                             key={item?.voucher_id}
                             onClick={() => handleSelectVoucher(item,setVoucherShipSelected,VoucherShipSelected)}
                             >
-                                <div className='col-md-4'>
+                                <div className='col-md-4 col-4'>
                                     <img style={{ width: '100%', height: '100%' }} src='https://storage.googleapis.com/ops-shopee-files-live/live/shopee-blog/2024/03/96c7b0ba-1140x800-1.jpg' alt={`Voucher ${item.voucher_id}`} />
                                 </div>
-                                <div className='col-md-7'>
+                                <div className='col-md-7 col-7'>
                                     <p>Giảm tối đa {item.voucher_maxDiscount}</p>
                                     <p>Đơn tối thiểu 0Đ</p>
                                 </div>
-                                <div className='col-md-1'>
+                                <div className='col-md-1 col-1'>
                                     <input 
                                         type='radio' name='selectVoucherShip'
                                         checked={VoucherShipSelected.some(voucher => voucher?.voucher_id==item?.voucher_id)}
