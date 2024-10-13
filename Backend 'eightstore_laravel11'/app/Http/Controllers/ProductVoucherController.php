@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ProductVoucher;
 use App\Http\Requests\StoreProductVoucherRequest;
 use App\Http\Requests\UpdateProductVoucherRequest;
+use App\Models\Voucher;
 
 class ProductVoucherController extends Controller
 {
@@ -120,6 +121,19 @@ class ProductVoucherController extends Controller
                 [
                     "message" => "đã xóa thành công",
                     "data" => $productVoucher,
+                ]
+            );
+    }
+    
+    public function GetProductByVoucher(Voucher $voucher)
+    {
+            $lsProduct_id = $voucher->voucherProducts()
+            ->join('tbl_product','tbl_product.product_id','=','tbl_product_voucher.product_id')
+            ->get('tbl_product.*');
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                    "data" => $lsProduct_id,
                 ]
             );
     }

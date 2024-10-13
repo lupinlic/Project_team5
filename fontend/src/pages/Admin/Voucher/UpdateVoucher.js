@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Voucher from '.';
-
 
 const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,sendvoucher_id,onClose}) =>{
     const [voucherGroup_id,setvoucherGroup_id] = useState(null);

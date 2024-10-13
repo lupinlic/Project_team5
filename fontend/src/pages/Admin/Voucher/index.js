@@ -2,18 +2,23 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import VoucherFormAd from './VoucherFormAd';
 import FormUpdateVoucher from './UpdateVoucher';
+import FormaddVoucherCategory from './VoucherCategory';
+import FormaddVoucherProduct from './VoucherProduct';
+
 function Voucher() {
     const [voucherGroup, setVoucherGroup] = useState([]);
     const [selectedVoucherGroup_id, setselectedVoucherGroup_id] = useState('');
     const [vouchers, setVouchers] = useState([]);
     const [isFormUpdateVoucher, setisFormUpdateVoucher] = useState(false);
+    const [isFormaddVoucherProduct, setisFormaddVoucherProduct] = useState(false);
+    const [isFormaddVoucherCategory, setisFormaddVoucherCategory] = useState(false);
 
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/voucherGroups')
           .then(response => setVoucherGroup(response.data.data))
           .catch(error => console.error('Error fetching categories:', error));
-    });
+    },[]);
 
     useEffect(() => {
         if(selectedVoucherGroup_id > 0){
@@ -46,20 +51,40 @@ function Voucher() {
 
         const openFormUpdate = () => {
             //   setSelectedSupplierId(supplierId);
-            console.log('sửa')
-              setisFormUpdateVoucher(true);
-            };
+            setisFormUpdateVoucher(true);
+        };
           
             // Đóng form
-            const closeFormUpdate = () => {
-              setisFormUpdateVoucher(false);
-            };
+        const closeFormUpdate = () => {
+          setisFormUpdateVoucher(false);
+        };
 
-            const HandleDeleteVoucher = (voucher_id) => {
-                axios.delete(`http://localhost:8000/api/vouchers/${voucher_id}`)
-                .then(response => GetAllVoucherByGroup())
-                .catch(error => console.error('có lỗi trong quá trình xóa voucher:', error));
-            }
+        const openFormaddVoucherCategory = () => {
+            //   setSelectedSupplierId(supplierId);
+            setisFormaddVoucherCategory(true);
+        };
+          
+            // Đóng form
+        const closeFormaddVoucherCategory = () => {
+            setisFormaddVoucherCategory(false);
+        };
+
+        const openFormaddVoucherProduct = () => {
+            //   setSelectedSupplierId(supplierId);
+            console.log('sửa')
+            setisFormaddVoucherProduct(true);
+        };
+          
+            // Đóng form
+        const closeFormaddVoucherProduct = () => {
+            setisFormaddVoucherProduct(false);
+        };
+
+        const HandleDeleteVoucher = (voucher_id) => {
+            axios.delete(`http://localhost:8000/api/vouchers/${voucher_id}`)
+            .then(response => GetAllVoucherByGroup())
+            .catch(error => console.error('có lỗi trong quá trình xóa voucher:', error));
+        }
 
     return ( 
         <>
@@ -96,6 +121,7 @@ function Voucher() {
                         
                        {vouchers?.length > 0 ? 
                        vouchers.map(voucher=>(
+                        <>
                         <tr key={voucher.voucher_id}>
                             <td>{voucher.voucher_code}</td>
                             <td>{voucher.voucher_group.voucherGroup_name}</td>
@@ -132,7 +158,47 @@ function Voucher() {
                                 Xóa
                             </button>
                             </td>
+                        </tr>
+                        <tr>
+                            <td colSpan={4}>đối tượng áp dụng voucher:</td>
+                            {selectedVoucherGroup_id ==1 || selectedVoucherGroup_id==2 ? 
+                            <td colSpan={5}>Áp dụng cho toàn bộ sản phẩm</td>
+                            :
+                            <><td colSpan={2}><button
+                                onClick={() => openFormaddVoucherProduct()}
+
+                            >Sản phẩm</button>
+                            {isFormaddVoucherProduct && (
+                                <>
+                                <div className="overlay"></div> {/* Lớp overlay */}
+                                {isFormaddVoucherProduct && (
+                                <FormaddVoucherProduct 
+                                sendVoucher_id = {voucher.voucher_id}
+                                onClose={closeFormaddVoucherProduct} 
+                                />
+                                )}
+                                </>
+                            )}
+                            </td>
+                            <td colSpan={3}><button
+                                onClick={() => openFormaddVoucherCategory()}
+                            >Nhóm sản phẩm</button>
+                            {isFormaddVoucherCategory && (
+                                <>
+                                <div className="overlay"></div> {/* Lớp overlay */}
+                                {isFormaddVoucherCategory && (
+                                <FormaddVoucherCategory 
+                                sendVoucher_id = {voucher.voucher_id}
+                                onClose={closeFormaddVoucherCategory} 
+                                />
+                                )}
+                                </>
+                            )}
+                            </td></>
+                            
+                            }
                         </tr> 
+                        </>
                        ))
                        :
                        <p>hiện tại chưa có voucher nào thuộc nhóm này vui lòng thêm voucher</p>

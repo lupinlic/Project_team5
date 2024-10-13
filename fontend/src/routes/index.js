@@ -31,7 +31,7 @@ const publicRoutes = [
         path:'/Product_detail/:product_id', component: Product_detail
     },
     {
-        path:'/Order_details', component: Order_details
+        path:'/Order_details/:order_id', component: Order_details
     },
     {
         path:'/Pay', component: Pay
