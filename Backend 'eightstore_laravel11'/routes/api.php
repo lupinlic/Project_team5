@@ -64,7 +64,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('suppliers',SupplierController::class)->only('index','show');
     Route::apiResource('vouchers',VoucherController::class)->only('index','show');
     Route::apiResource('voucherGroups',VoucherGroupController::class)->only('index','show');
-    Route::apiResource('orders',OrderController::class)->only('index','show','store');
+    Route::apiResource('orders',OrderController::class)->only('index','show','store','destroy');
     Route::apiResource('orderDetails',OrderDetailController::class)->only('index','show','store');                                       
     Route::get('category/{category}/categoryVouchers',[CategoryController::class,'HandleShowCategoryVoucher']);                                       
     Route::get('product/{product}/productVouchers',[ProductController::class,'HandleShowProductVoucher']);                                       
@@ -75,6 +75,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('voucherUser/{voucher}/status',[VoucherUserController::class,'HandleStatus']);
     Route::get('order/{order}/orderDetail',[OrderController::class,'GetOrderDetailByOrder']);
     Route::get('order/{order}/status',[OrderController::class,'SetStatusOrder']);                                       
+    Route::get('order/{order}/shipping',[OrderController::class,'GetShippingByOrder']);                                       
+    Route::get('order/{order}/orderVoucher',[OrderController::class,'GetOrderVoucherByOrder']);                                       
     Route::get('user/{user}/orders',[UserController::class,'GetOrderByUser']);
     
 
@@ -91,7 +93,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::apiResource('suppliers',SupplierController::class)->only('store','update','destroy');
         Route::apiResource('vouchers',VoucherController::class)->only('store','update','destroy');
         Route::apiResource('voucherGroups',VoucherGroupController::class)->only('store','update','destroy');
-        Route::apiResource('orders',OrderController::class)->only('update','destroy');
+        Route::apiResource('orders',OrderController::class)->only('update');
         Route::apiResource('orderDetails',OrderDetailController::class)->only('update','destroy');                                       
         
         Route::apiResource('shippings',ShippingController::class);

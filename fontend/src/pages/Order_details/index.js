@@ -3,12 +3,19 @@ import './style.css'
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 function Order_detail() {
+    const navigate = useNavigate(); // Khởi tạo hook để điều hướng
+
     const [orderDetails, setorderDetails] = useState(null);
     const [order_id, setorder_id] = useState(null);
     const [receiver, setreceiver] = useState(null);
     const [order, setorder] = useState(null);
+    const [shipping, setshipping] = useState(null);
+    const [orderVouchers, setorderVouchers] = useState(null);
+    const [totalVoucherOrder, settotalVoucherOrder] = useState(null);
 
     const getOrder_id = useParams().order_id;
 
@@ -46,19 +53,54 @@ function Order_detail() {
             }
     },[order_id])
 
-    const DeleteOrderDetail = (order_detail_id)=>{
-        axios.get(`http://localhost:8000/api/orderDetails/${order_detail_id}`)
-        .then(response => {
-        })
-        .catch(error => console.error('có lỗi trong việc xóa orderDetail:', error));
-    }
+    useEffect(()=>{
+        if(order_id!==null){
+            axios.get(`http://localhost:8000/api/order/${order_id}/shipping`)
+            .then(response => {
+                setshipping(...response.data.data); // assume response data has a 'data' field
+            })
+            .catch(error => console.error('Error fetching orders:', error));
+            }
+    },[order_id])
+
+    useEffect(()=>{
+        if(order_id!==null){
+            axios.get(`http://localhost:8000/api/order/${order_id}/orderVoucher`)
+            .then(response => {
+                setorderVouchers(response.data.data); // assume response data has a 'data' field
+            })
+            .catch(error => console.error('Error fetching orders:', error));
+            }
+    },[order_id])
+
+    useEffect(()=>{
+        if(orderVouchers!==null){
+            let lsVucherPrices = orderVouchers.map(orderVoucher => {
+                return orderVoucher.orderVoucher_price;
+            });
+            let total = lsVucherPrices.reduce((total,Price)=>{
+                return total+Price;
+            },0)
+            settotalVoucherOrder(total);
+            }
+    },[orderVouchers])
+
+    const DeleteOrder = ()=> {
+        axios.delete(`http://localhost:8000/api/orders/${order_id}`)
+            .then(response => {
+                navigate('/Order')
+            })
+            .catch(error => console.error('Error fetching orders:', error));
+        }
 
     return ( 
         <div className='mt-4 mb-4'>
             <div className='row pb-4 mb-4' style={{borderBottom:'1px dashed'}}>
                 <div className='col-md-10'></div>
                 <div className='col-md-2'>
-                    <button style={{height:'40px', width:'150px', border:'none',backgroundColor:'rgb(254, 223, 249)' }}>Hủy đơn hàng</button>
+                    <button style={{height:'40px', width:'150px', border:'none',backgroundColor:'rgb(254, 223, 249)' }}
+                    onClick={()=>DeleteOrder()}
+                    >Hủy đơn hàng</button>
                 </div>
             </div>
             <h6>Địa Chỉ Nhận Hàng</h6>
@@ -83,17 +125,15 @@ function Order_detail() {
                     <div className='col-md-1 col-4'>
                         <img src={orderDetail.product.product_img} style={{width:'80px'}}/>
                     </div>
-                    <div className='col-md-5 col-4'>
+                    <div className='col-md-6 col-4'>
                         <p>Tên sản phẩm: {orderDetail.product.product_name}</p>
                         <p>Số lượng: {orderDetail.orderDetail_quantity}</p>
                     </div>
-                    <div className='col-md-4 col-4'>
+                    <div className='col-md-5 col-4'>
                         <p>Đơn giá:{orderDetail.product.product_price}</p>
                         <p>Tổng cộng:{orderDetail.orderDetail_total}</p>
                     </div>
-                    <div className='col-md-2 col-2'>
-                        <button onClick={()=>DeleteOrderDetail(orderDetail.orderDetail_id)}>Hủy sản phẩm</button>
-                    </div>
+                    
                 </div>
                 ))
                 :
@@ -111,17 +151,19 @@ function Order_detail() {
                 <div className='row pt-2 pt-md-3 container'>
                     <div className='col-md-8'></div>
                     <div className='col-md-2 col-5'>Phí vận chuyển</div>
-                    <div className='col-md-2 col-7' style={{fontWeight:'500'}}>100</div>
+                    <div className='col-md-2 col-7' style={{fontWeight:'500'}}>{shipping?.shipping_price}</div>
                 </div>
                 <div className='row pt-2 pt-md-3 container'>
                     <div className='col-md-8'></div>
                     <div className='col-md-2 col-5'>Tổng tiền voucher áp dụng</div>
-                    <div className='col-md-2 col-7' style={{fontWeight:'500',color:'red',fontSize:'20px'}}>100</div>
+                    <div className='col-md-2 col-7' style={{fontWeight:'500',color:'red',fontSize:'20px'}}>{totalVoucherOrder}</div>
                 </div>
                 <div className='row pt-2 pt-md-3 container'>
                     <div className='col-md-8'></div>
                     <div className='col-md-2 col-5'>Thành tiền</div>
-                    <div className='col-md-2 col-7' style={{fontWeight:'500',color:'red',fontSize:'20px'}}>100</div>
+                    <div className='col-md-2 col-7' style={{fontWeight:'500',color:'red',fontSize:'20px'}}>
+                        {order.order_totalmoney+shipping?.shipping_price-totalVoucherOrder}
+                    </div>
                 </div>
                 <div className='row pt-2 pt-md-3 container'>
                     <div className='col-md-8'></div>

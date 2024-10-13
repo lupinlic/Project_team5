@@ -172,4 +172,28 @@ class OrderController extends Controller
                 ]
             );
     }
+
+    public function GetShippingByOrder(Order $order)
+    {
+        $Shipping = $order->shipping()->get();
+
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                    "data" => $Shipping,
+                ]
+            );
+    }
+
+    public function GetOrderVoucherByOrder(Order $order)
+    {
+        $OrderVouchers = $order->orderVouchers()->get();
+
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                    "data" => $OrderVouchers,
+                ]
+            );
+    }
 }
