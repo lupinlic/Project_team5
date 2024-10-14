@@ -10,19 +10,26 @@ function Pay() {
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [isFormVisible_products, setisFormVisible_products] = useState([]);
     const [isFormVisible_shop, setIsFormVisible_shop] = useState(false);
-    const [receiver, setData] = useState([]);
+    const [receiver, setData] = useState(null);
     const [userId, setUserId] = useState(null);
     const [carts, setCarts] = useState([]);
     const [carts_total, setcarts_total] = useState(0);
     const [category, setcategory] = useState(null);
     const [Voucher_shop, setVoucher_shop] = useState([]);
     const [Voucher_freeship, setVoucher_freeship] = useState([]);
-    const [Shipping_price, setShipping_price] = useState(30000);
+    const [Shipping, setShipping] = useState(null);
     const [discountShipping, setdiscountShipping] = useState(0);
     const [discountTotal, setdiscountTotal] = useState(0);
     const [totalPayMent, settotalPayMent] = useState(0);
     const [ordercontent, setordercontent] = useState('');
     const [isfinishOrder, setisfinishOrder] = useState(false);
+
+
+    const [Vouchers, setVouchers] = useState(null);
+    const [Order_id, setOrder_id] = useState(null);
+
+
+
 
 
     //form thanh toán
@@ -35,20 +42,22 @@ function Pay() {
      //   1.các đối tượng cần đc ưu tiên lấy trước
         // user_id
         useEffect(() => {
-         const userData = localStorage.getItem('user');
-         const carts_session = sessionStorage.getItem('Carts');
-         const carts_total = sessionStorage.getItem('carts_total');
-         
-         const parsedUser = JSON.parse(userData);
-         const parsedCarts = JSON.parse(carts_session);
-         const parsedcarts_total = JSON.parse(carts_total);
-         setUserId(parsedUser.user_id);
-         setCarts(parsedCarts);
-         setcarts_total(parsedcarts_total)
-
-         settotalPayMent(carts_total-Shipping_price)
-         ClearSession()
-       }, []);
+            const userData = localStorage.getItem('user');
+            const carts_session = sessionStorage.getItem('Carts');
+            const carts_total = sessionStorage.getItem('carts_total');
+            
+            const parsedUser = JSON.parse(userData);
+            const parsedCarts = JSON.parse(carts_session);
+            const parsedcarts_total = JSON.parse(carts_total);
+            setUserId(parsedUser.user_id);
+            setCarts(parsedCarts);
+            setcarts_total(parsedcarts_total)
+            ClearSession()
+            if(Shipping!==null){
+       
+                settotalPayMent(carts_total-Shipping?.shipping_price)
+            }
+       }, [Shipping]);
 
         // receiver : lấy receiver mặc định và show các form như bên receiver
        useEffect(() => {       
@@ -62,6 +71,23 @@ function Pay() {
               });
             
     }, [userId]);
+
+    useEffect(() => {       
+        if(receiver!==null &&receiver?.length>0){
+            axios.post(`http://localhost:8000/api/shipping`,{
+                receiver_city:receiver[0].receiver_city,
+                receiver_district:receiver[0].receiver_district,
+                receiver_commune:receiver[0].receiver_commune,
+            })
+            .then(response => {
+                // Truy cập vào phần "data" của API trả về và đặt vào state
+                setShipping(...response.data.data);
+            })
+            .catch(error => {
+                console.error('Error fetching data: ', error);
+            });
+        }
+  }, [receiver]);
 
     //sau khi render và các đói tượng cần thiết đc khởi tạo thì logic kiểm tra xem các sp này có cx 1 nhóm ko
     useEffect(()=>{
@@ -116,7 +142,7 @@ function Pay() {
     }
     
 
-    const HandleSeveVoucher = (voucher,product_id,isCancelVoucher) => {
+    const HandleSaveVoucher = (voucher,product_id,isCancelVoucher) => {
         if(isCancelVoucher){
             if(product_id!==null){
                 HandleVoucherToProduct(voucher,product_id,isCancelVoucher)
@@ -196,7 +222,7 @@ function Pay() {
 
     useEffect(() =>{
         if(Voucher_freeship?.voucher_id){
-            setdiscountShipping(handelVoucher_Type(Voucher_freeship,Shipping_price));
+            setdiscountShipping(handelVoucher_Type(Voucher_freeship,Shipping?.shipping_price));
         }
     },[Voucher_freeship])
 
@@ -209,7 +235,7 @@ function Pay() {
 
     useEffect(()=>{
         if(discountTotal>0 || discountShipping>0){
-            settotalPayMent(carts_total+Shipping_price-discountShipping-discountTotal);
+            settotalPayMent(carts_total+Shipping?.shipping_price-discountShipping-discountTotal);
         }
     },[discountTotal,discountShipping])
 
@@ -225,6 +251,7 @@ function Pay() {
     }
 
     const HandleOrder = () => {
+        HandleSetVouchers()
         let order = {
             order_date: formatDate(new Date()),       // Lấy timestamp hiện tại
             order_status: 0,              // Trạng thái đơn hàng
@@ -232,7 +259,7 @@ function Pay() {
             user_id: userId,              // ID người dùng
             order_content: ordercontent,  // Nội dung đơn hàng
             receiver_id: receiver[0].receiver_id, // ID người nhận
-            shipping_id: 1                // ID phương thức giao hàng
+            shipping_id: Shipping.shipping_id            // ID phương thức giao hàng
         };
         axios.post(`http://localhost:8000/api/orders`,
             order
@@ -240,9 +267,9 @@ function Pay() {
         .then(response => {
             HandleOrderDetail(response.data.data.order_id);
             HandleDeleteCart();
-            HandleSetStatusVoucherOfUser()
+            setOrder_id(response.data.data.order_id);
+            
             setisfinishOrder(!isfinishOrder);
-
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
@@ -278,28 +305,14 @@ function Pay() {
                 console.error('Error fetching data: ', error);
             });
         })
+
     }
 
     const HandleSetStatusVoucherOfUser = () => {
         // thực hiện set trạng thái sử dụng vouhcer của người dùng thành 1 tức là đã sd rồi
         // tham số nhận vào sẽ là voucher và thực hiện chuyển đổi
-        let vouchers = [];
-
-        let lscart = carts.map(item => {
-            if(item.voucher){
-                return item.voucher
-            }
-        })
-        vouchers = lscart[0]!==undefined ? [...lscart] : [];
-        if(Voucher_freeship?.voucher_id){
-            vouchers = [...vouchers,Voucher_freeship];
-        }
-        if(Voucher_shop?.voucher_id){
-            vouchers = [...vouchers,Voucher_shop];
-        }
-
-        vouchers.map(voucher=> {
-            axios.get(`http://localhost:8000/api/voucherUser/${voucher.voucher_id}/status`)
+        Vouchers.map(data=> {
+            axios.get(`http://localhost:8000/api/voucherUser/${data.voucher.voucher_id}/status`)
             .then(response => {
             })
             .catch(error => {
@@ -307,12 +320,64 @@ function Pay() {
             });
         })
     }
+    const AddVoucherOrders = (order_id) => {
+        // thực hiện set trạng thái sử dụng vouhcer của người dùng thành 1 tức là đã sd rồi
+        // tham số nhận vào sẽ là voucher và thực hiện chuyển đổi
+        Vouchers.map(data=> {
+            axios.post(`http://localhost:8000/api/orderVouchers`,{
+                order_id: order_id,
+                voucher_id:data.voucher.voucher_id,
+                orderVoucher_price:data.voucherdiscount
+            })
+            .then(response => {
+            })
+            .catch(error => {
+                console.error('có lỗi trong việc thêm order voucher: ', error);
+            });
+        })
+    }
+
+    const HandleSetVouchers = ()=>{
+        let vouchers = [];
+
+        let lscart = 
+        carts
+        .filter(item => item.voucher)
+        .map(item => {
+            if(item.voucher){
+                return {
+                    voucher:item.voucher,
+                    voucherdiscount:item.discount_product,
+                }
+            }
+        })
+        vouchers = lscart[0]!==undefined ? [...lscart] : [];
+        if(Voucher_freeship?.voucher_id){
+            vouchers = [...vouchers,{
+                voucher:Voucher_freeship,
+                voucherdiscount:Voucher_freeship.Voucher_freeship
+            }];
+        }
+        if(Voucher_shop?.voucher_id){
+            vouchers = [...vouchers,{
+                voucher:Voucher_shop,
+                voucherdiscount:Voucher_shop.Voucher_shop
+            }];
+        }
+        setVouchers(vouchers)
+    }
+
+    
 
     useEffect(()=>{
-        if(isfinishOrder){
+        if(Order_id!==null && Order_id!==undefined){
+            if(Vouchers==null){
+                AddVoucherOrders(Order_id);
+                HandleSetStatusVoucherOfUser();
+            }
             sessionStorage.clear();
         }
-    },[isfinishOrder])
+    },[Order_id])
 
 
     // phần return giao diện
@@ -320,7 +385,7 @@ function Pay() {
         <div style={{margin:'20px 0'}}>
             <div style={{padding:'12px'}}>
                 <h5 style={{color:'red',fontWeight:'400',fontSize:'24px',marginBottom:'8px'}}>Địa chỉ nhận hàng</h5>
-                {receiver.map(item => (
+                {receiver?.map(item => (
                 <div className="row">
                     <div className="col-md-3" >
                         <h6>
@@ -412,7 +477,7 @@ function Pay() {
                                         onClose={closeFormProducts}
                                         getProduct_id={item.product.product_id}
                                         getCategory_id={null}
-                                        HandleVoucher={HandleSeveVoucher}
+                                        HandleVoucher={HandleSaveVoucher}
                                         />
                                     </>
                     
@@ -447,7 +512,7 @@ function Pay() {
                         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                             <p>Đơn vị vận chuyển:
                             <span style={{color:'#000',fontSize:'18px',marginLeft:'8px'}}> Vận chuyển nhanh</span></p>
-                            <p>{Shipping_price}</p>
+                            <p>{Shipping?.shipping_price}</p>
                         </div>
                     </div>
                 </div>
@@ -477,7 +542,7 @@ function Pay() {
                                 onClose={closeForm_shop}
                                 getProduct_id={null}
                                 getCategory_id={category}  
-                                HandleVoucher={HandleSeveVoucher}
+                                HandleVoucher={HandleSaveVoucher}
                                 />
                              </>
               
@@ -497,7 +562,7 @@ function Pay() {
                         </div>
                         <div className="row pb-2">
                             <div className="col-md-6 col-6">Phí vận chuyển</div>
-                            <div className="col-md-6 col-6">{Shipping_price}</div>
+                            <div className="col-md-6 col-6">{Shipping?.shipping_price}</div>
                         </div>
                         {Voucher_freeship.voucher_id ?
                          <div className="row pb-2">
