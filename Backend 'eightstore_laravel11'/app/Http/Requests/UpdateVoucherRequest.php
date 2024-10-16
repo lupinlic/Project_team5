@@ -26,12 +26,12 @@ class UpdateVoucherRequest extends FormRequest
         return [
             "voucherGroup_id" => [
                 'required',
-                'string',
+                'numeric',
                 Rule::exists('tbl_voucher_group','voucherGroup_id')
             ],
             "voucher_type" => 'required|numeric|max:1',
             "voucher_discount" => 'required|numeric|min:1',
-            "voucher_minOrder" => 'required|numeric|min:1',
+            "voucher_minOrder" => 'required|numeric|min:0',
             "voucher_maxDiscount" => 'required|numeric|min:1',
             "voucher_code" => [
                 'required',

@@ -177,4 +177,24 @@ class VoucherGroupController extends Controller
             );
         }
     }
+
+    public function HandleShowVoucherOfVoucherGroup(Request $request,VoucherGroup $voucherGroup)
+    {
+        $vouchersOfGroupShop = $voucherGroup->vouchers()->with('voucherGroup')->get();
+
+        if(count($vouchersOfGroupShop)>0){
+            return response()->json(
+                [
+                    "message" => "đã lấy dữ liệu thành công",
+                    "data" => $vouchersOfGroupShop,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoac ko co",
+                ]
+            );
+        }
+    }
 }

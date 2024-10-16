@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\VoucherUser;
 use App\Http\Requests\StoreVoucherUserRequest;
 use App\Http\Requests\UpdateVoucherUserRequest;
+use Illuminate\Http\Request;
 
 class VoucherUserController extends Controller
 {
@@ -122,6 +123,17 @@ class VoucherUserController extends Controller
                 [
                     "message" => "đã xóa thành công",
                     "data" => $voucherUser,
+                ]
+            );
+    }
+
+    public function HandleStatus(Request $request,$voucher_id)
+    {
+        $voucherUser = $request->user()->voucherUsers()->where('voucher_id',$voucher_id)->update(['voucherUser_status'=>1]);
+
+            return response()->json(
+                [
+                    "message" => "đã chuyển trạng thái thành công",
                 ]
             );
     }

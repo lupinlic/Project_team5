@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CategoryVoucher;
 use App\Http\Requests\StoreCategoryVoucherRequest;
 use App\Http\Requests\UpdateCategoryVoucherRequest;
+use App\Models\Voucher;
 
 class CategoryVoucherController extends Controller
 {
@@ -120,6 +121,19 @@ class CategoryVoucherController extends Controller
                 [
                     "message" => "đã xóa thành công",
                     "data" => $categoryVoucher,
+                ]
+            );
+    }
+
+    public function GetcategoryByVoucher(Voucher $voucher)
+    {
+            $lsCategory = $voucher->voucherCategorys()
+            ->join('tbl_category','tbl_category.category_id','=','tbl_category_voucher.category_id')
+            ->get('tbl_category.*');
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                    "data" => $lsCategory,
                 ]
             );
     }

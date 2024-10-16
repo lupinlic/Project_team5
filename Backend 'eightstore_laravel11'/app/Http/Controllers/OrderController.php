@@ -14,8 +14,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $get_VoucherUser = Order::join('tbl_receiver','tbl_order.receiver_id','=','tbl_order.receiver_id')
-                                ->join('tbl_shipping','tbl_order.receiver_id','=','tbl_order.receiver_id')
+        $get_VoucherUser = Order::join('tbl_receiver','tbl_receiver.receiver_id','=','tbl_order.receiver_id')
+                                ->join('tbl_shipping','tbl_shipping.shipping_id','=','tbl_order.shipping_id')
                                 ->get();
 
         if(count($get_VoucherUser)>0){
@@ -122,7 +122,7 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request,Order $order)
+    public function destroy(Order $order)
     {
         //$request->user()->can('delete',Order::class);
 
@@ -132,6 +132,67 @@ class OrderController extends Controller
                 [
                     "message" => "đã xóa thành công",
                     "data" => $order,
+                ]
+            );
+    }
+    
+    public function SetStatusOrder(Order $order)
+    {
+        $order->order_status=1;
+        $order->save();
+
+            return response()->json(
+                [
+                    "message" => "đã xác nhận đơn hàng thành công",
+                    "data" => $order,
+                ]
+            );
+    }
+
+    public function GetOrderDetailByOrder(Order $order)
+    {
+        $orderDetail = $order->orderDetails()->with('product')->get();
+
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                    "data" => $orderDetail,
+                ]
+            );
+    }
+
+    public function ShowReceuverByOrder(Order $order)
+    {
+        $receiver = $order->receiver()->get();
+
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                    "data" => $receiver,
+                ]
+            );
+    }
+
+    public function GetShippingByOrder(Order $order)
+    {
+        $Shipping = $order->shipping()->get();
+
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                    "data" => $Shipping,
+                ]
+            );
+    }
+
+    public function GetOrderVoucherByOrder(Order $order)
+    {
+        $OrderVouchers = $order->orderVouchers()->get();
+
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                    "data" => $OrderVouchers,
                 ]
             );
     }

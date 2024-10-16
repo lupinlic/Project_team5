@@ -1,4 +1,26 @@
-const Order_detail=({onClose})=> {
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
+
+const Order_detail=({sendOrder_id,onClose})=> {
+    const [order_id, setorder_id] = useState(null);
+    const [orderDetails, setorderDetails] = useState(null);
+
+
+    useEffect(()=>{
+        setorder_id(sendOrder_id);
+    })
+
+    useEffect(()=>{
+        if(order_id!==null){
+            axios.get(`http://localhost:8000/api/order/${order_id}/orderDetail`)
+            .then(response => {
+                setorderDetails(response.data.data); // assume response data has a 'data' field
+            })
+            .catch(error => console.error('Error fetching orders:', error));
+            }
+    },[order_id])
+
+
     return ( 
         <div>
              <div className="form-popup " style={{width:'800px'}}>
@@ -21,14 +43,21 @@ const Order_detail=({onClose})=> {
                             </tr>
                         </thead>
                         <tbody>
-                        <tr >
-                            <td>1</td>
-                            <td>Caaaaaa</td>
-                            <td>1</td>
-                            <td>1111</td>
-                            <td>1111</td>
-                            
-                        </tr>
+                            {orderDetails!==null?
+                            orderDetails.map(orderDetail=>(
+                            <tr >
+                                <td>{orderDetail.orderDetail_id}</td>
+                                <td>{orderDetail.product.product_name}</td>
+                                <td>{orderDetail.orderDetail_quantity}</td>
+                                <td>{orderDetail.product.product_price}</td>
+                                <td>{orderDetail.orderDetail_total}</td>
+                                
+                            </tr>
+                            ))
+                            :
+                            <p>ko có đơn hàng chi tiết nào cả</p>
+                            }
+                        
                         </tbody>
                     </table>
                 </div>

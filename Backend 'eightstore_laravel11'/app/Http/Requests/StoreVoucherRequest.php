@@ -25,7 +25,7 @@ class StoreVoucherRequest extends FormRequest
             "voucherGroup_id" => 'required|numeric|exists:tbl_voucher_group,voucherGroup_id',
             "voucher_type" => 'required|numeric|max:1',
             "voucher_discount" => 'required|numeric|min:1',
-            "voucher_minOrder" => 'required|numeric|min:1',
+            "voucher_minOrder" => 'required|numeric|min:0',
             "voucher_maxDiscount" => 'required|numeric|min:1',
             "voucher_code" => 'required|string|min:3|unique:tbl_voucher,voucher_code',
             "voucher_quantity" => 'required|numeric|min:1',

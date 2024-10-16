@@ -141,7 +141,7 @@ class ShippingController extends Controller
             return response()->json(
                 [
                     "message" => "đã lấy thành công",
-                    "data" => $request->all(),
+                    "data" => $shipping,
                 ]
             );
     }

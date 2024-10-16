@@ -64,13 +64,25 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('suppliers',SupplierController::class)->only('index','show');
     Route::apiResource('vouchers',VoucherController::class)->only('index','show');
     Route::apiResource('voucherGroups',VoucherGroupController::class)->only('index','show');
-    Route::apiResource('orders',OrderController::class)->only('index','show','store');
-    Route::apiResource('orderDetails',OrderDetailController::class)->only('index','show','store');                                       
+    Route::apiResource('orders',OrderController::class)->only('index','show','store','destroy');
+    Route::apiResource('orderDetails',OrderDetailController::class)->only('index','show','store'); 
+    Route::apiResource('orderVouchers',OrderVoucherController::class)->only('index','show','store');
+                                      
     Route::get('category/{category}/categoryVouchers',[CategoryController::class,'HandleShowCategoryVoucher']);                                       
     Route::get('product/{product}/productVouchers',[ProductController::class,'HandleShowProductVoucher']);                                       
     Route::get('voucherGroup/vouchersOfGroupShop',[VoucherGroupController::class,'HandleShowVoucherOfShop']);                                       
     Route::get('voucherGroup/vouchersOfShip',[VoucherGroupController::class,'HandleShowVoucherOfShip']);                                       
-    Route::get('shipping',[ShippingController::class,'HandleShowShippingByName']);                                       
+    Route::post('shipping',[ShippingController::class,'HandleShowShippingByName']);
+    Route::get('order/{order}/receiver',[OrderController::class,'ShowReceuverByOrder']);
+    Route::get('voucherUser/{voucher}/status',[VoucherUserController::class,'HandleStatus']);
+    Route::get('order/{order}/orderDetail',[OrderController::class,'GetOrderDetailByOrder']);
+    Route::get('order/{order}/status',[OrderController::class,'SetStatusOrder']);                                       
+    Route::get('order/{order}/shipping',[OrderController::class,'GetShippingByOrder']);                                       
+    Route::get('order/{order}/orderVoucher',[OrderController::class,'GetOrderVoucherByOrder']);                                       
+    Route::get('user/{user}/orders',[UserController::class,'GetOrderByUser']);
+    
+
+                                           
     //  --nd đăng nhập xog thì ms đăng xuất đc
     Route::get('user/logout',[LogoutController::class,'User_Logout']);
     
@@ -83,14 +95,19 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::apiResource('suppliers',SupplierController::class)->only('store','update','destroy');
         Route::apiResource('vouchers',VoucherController::class)->only('store','update','destroy');
         Route::apiResource('voucherGroups',VoucherGroupController::class)->only('store','update','destroy');
-        Route::apiResource('orders',OrderController::class)->only('update','destroy');
+        Route::apiResource('orders',OrderController::class)->only('update');
         Route::apiResource('orderDetails',OrderDetailController::class)->only('update','destroy');                                       
         
         Route::apiResource('shippings',ShippingController::class);
         Route::apiResource('voucherUsers',VoucherUserController::class);
         Route::apiResource('categoryVouchers',CategoryVoucherController::class);
         Route::apiResource('productVouchers',ProductVoucherController::class);
-        Route::apiResource('orderVouchers',OrderVoucherController::class);
+        Route::apiResource('orderVouchers',OrderVoucherController::class)->only('update','destroy');
+
+        Route::get('voucherGroup/{voucherGroup}/vouchers',[VoucherGroupController::class,'HandleShowVoucherOfVoucherGroup']);                                       
+        Route::get('productVouchers/{voucher}/product',[ProductVoucherController::class,'GetProductByVoucher']);                                       
+        Route::get('categoryVouchers/{voucher}/category',[CategoryVoucherController::class,'GetcategoryByVoucher']);                                       
+
     });
 });
 Route::post('user/login',[LoginController::class,'User_Login']);

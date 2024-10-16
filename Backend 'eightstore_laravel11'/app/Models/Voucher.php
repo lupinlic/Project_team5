@@ -17,4 +17,12 @@ class Voucher extends Model
     public function voucherGroup(){
         return $this->belongsTo(VoucherGroup::class,'voucherGroup_id','voucherGroup_id');
     }
+
+    public function voucherProducts(){
+        return $this->hasMany(ProductVoucher::class,'voucher_id','voucher_id');
+    }
+
+    public function voucherCategorys(){
+        return $this->hasMany(CategoryVoucher::class,'voucher_id','voucher_id');
+    }
 }

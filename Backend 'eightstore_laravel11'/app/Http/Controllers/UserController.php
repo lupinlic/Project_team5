@@ -207,4 +207,16 @@ class UserController extends Controller
             );
     }
     
+    public function GetOrderByUser(User $user)
+    {
+        $get_orders = $user->orders()->get();
+        // $receiver= Receiver::where('receiver_type',1)->get();
+
+            return response()->json(
+                [
+                    "message" => "đã get thành công",
+                    "data" => $get_orders,
+                ]
+            );
+    }
 }
