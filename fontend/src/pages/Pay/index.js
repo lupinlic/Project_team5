@@ -439,7 +439,7 @@ function Pay() {
                         </span>
                     <button className='col-md-2' style={{border:'none',color:'red',position:'absolute',top:'-10px',background:'#fff'}}>X</button></p>
                 </div>
-                <button style={{border:'none', color:'blue'}} onClick={() => openForm_shop()}> Chọn voucher</button>
+                <button className='col-md-2' style={{border:'none', color:'blue'}} onClick={() => openForm_shop()}> Chọn voucher</button>
                 {isFormVisible_shop && (
                             <>
                                 <div className="overlay"></div> 

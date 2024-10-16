@@ -4,6 +4,7 @@ import Product from '../pages/Product';
 import Product_detail from '../pages/Product_detail';
 import Cart from '../pages/Cart';
 import Pay from '../pages/Pay';
+import VoucherList from '../pages/Voucher';
 import Admin from '../components/Layout/Admin';
 import AdHome from '../pages/Admin/Home';
 import Category from '../pages/Admin/Category';
@@ -53,6 +54,9 @@ const publicRoutes = [
     },
     {
         path:'/Order', component: Order
+    },
+    {
+        path:'/VoucherList', component: VoucherList
     },
     {
         path:'/Admin/Home', component: AdHome, layout:Admin
