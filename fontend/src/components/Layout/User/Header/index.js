@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import {Link } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faUser, faSignOutAlt, faShoppingCart , faPhone ,faHome, faCog,faLock} from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faUser, faSignOutAlt, faShoppingCart , faPhone ,faHome, faCog,faLock, faMapMarkedAlt, faGift} from '@fortawesome/free-solid-svg-icons';
 // import logo from '../../../../assets/img/logo8.png';
 
 function Header() {
@@ -124,9 +124,9 @@ function Header() {
                                         )}
                                         <h6>Welcome!</h6>
                                         <ul>
-                                            <li><Link to='' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faUser}/>Thông tin cá nhân</Link></li>
-                                            <li><Link to='/Order' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faCog}/>Đơn hàng</Link></li>
-                                            <li><Link to='/Shipping' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faLock}/>Địa chỉ giao hàng</Link></li>
+                                            <li><Link to='/VoucherList' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faGift}/>Voucher của tôi</Link></li>
+                                            <li><Link to='/Order' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faLock}/>Đơn hàng</Link></li>
+                                            <li><Link to='/Shipping' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faMapMarkedAlt}/>Địa chỉ giao hàng</Link></li>
                                             <li className='pt-2' ><Link to='/Login' style={{color:'black'}} 
                                                 onClick={(e) => { 
                                                     handleLogout();
@@ -170,9 +170,9 @@ function Header() {
                                     >
                                         <h6>Welcome!</h6>
                                         <ul>
-                                            <li><Link to='' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faUser}/>Thông tin cá nhân</Link></li>
-                                            <li><Link to='/Order' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faCog}/>Đơn hàng</Link></li>
-                                            <li><Link to='/Shipping' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faLock}/>Địa chỉ giao hàng</Link></li>
+                                            <li><Link to='/VoucherList' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faGift}/>Voucher của tôi</Link></li>
+                                            <li><Link to='/Order' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faLock}/>Đơn hàng</Link></li>
+                                            <li><Link to='/Shipping' style={{color:'black'}}><FontAwesomeIcon style={{paddingRight:'8px'}} icon={faMapMarkedAlt}/>Địa chỉ giao hàng</Link></li>
                                             <li className='pt-2' ><Link to='/Login' style={{color:'black'}} 
                                                 onClick={(e) => { 
                                                     handleLogout();

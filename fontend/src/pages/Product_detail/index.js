@@ -198,7 +198,7 @@ const Product_detail = () => {
                         </div>
                     </div>
                 </div>
-                <div className='col-md-3'>
+                <div className='col-md-3 d-none d-md-block'>
                     <div className='hot'>
                         <h5 ><span style={{color:'white'}}>Ưu đãi Hot</span><FontAwesomeIcon icon={faFire} style={{ marginRight: '8px', color: 'orange' }} /></h5>
                     </div>

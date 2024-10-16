@@ -103,9 +103,9 @@ function Shipping() {
                             <button 
                                 className="btn btn-warning btn-sm mr-2" 
                                 onClick={() => openFormUpdate(item.shipping_id)}
-                            >
+                            >Sửa
                             </button>
-                                Sửa
+                                
                                 {selectedShippingId==item.shipping_id && (
                                     <>
                                     <div className="overlay"></div> {/* Lớp overlay */}
