@@ -2,11 +2,15 @@ import './style.css'
 import React, { useState ,useEffect } from 'react';
 import axios from 'axios';
 import MyAddress from './MyAddress';
-import VoucherForm from '../Voucher/VoucherForm';
+import VoucherForm from '../Voucher/VoucherShop';
+import VoucherProduct from '../Voucher/VoucherProduct';
+import { useNavigate } from 'react-router-dom';
+
 
 
 function Pay() {
-    
+    const navigate = useNavigate();
+
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [isFormVisible_products, setisFormVisible_products] = useState([]);
     const [isFormVisible_shop, setIsFormVisible_shop] = useState(false);
@@ -21,8 +25,9 @@ function Pay() {
     const [discountShipping, setdiscountShipping] = useState(0);
     const [discountTotal, setdiscountTotal] = useState(0);
     const [totalPayMent, settotalPayMent] = useState(0);
-    const [ordercontent, setordercontent] = useState('');
+    const [ordercontent, setordercontent] = useState('nhớ đóng gói cẩn thận');
     const [isfinishOrder, setisfinishOrder] = useState(false);
+    const [categorys, setCategory] = useState([]);
 
 
     const [Vouchers, setVouchers] = useState(null);
@@ -49,27 +54,34 @@ function Pay() {
             const parsedUser = JSON.parse(userData);
             const parsedCarts = JSON.parse(carts_session);
             const parsedcarts_total = JSON.parse(carts_total);
+            console.log(parsedUser)
             setUserId(parsedUser.user_id);
             setCarts(parsedCarts);
             setcarts_total(parsedcarts_total)
             ClearSession()
-            if(Shipping!==null){
+           
+       }, []);
+
+       useEffect(()=>{
+
+        if(Shipping!==null){
        
-                settotalPayMent(carts_total-Shipping?.shipping_price)
-            }
-       }, [Shipping]);
+            settotalPayMent(carts_total- (Shipping.shipping_price?Shipping.shipping_price:30000))
+        }
+       },[Shipping])
 
         // receiver : lấy receiver mặc định và show các form như bên receiver
        useEffect(() => {       
-          axios.get(`http://localhost:8000/api/users/${userId}/receivers/type`)
-              .then(response => {
-                  // Truy cập vào phần "data" của API trả về và đặt vào state
-                  setData(response.data.data);
-              })
-              .catch(error => {
-                  console.error('Error fetching data: ', error);
-              });
-            
+        if(userId!==null){
+            axios.get(`http://localhost:8000/api/users/${userId}/receivers/type`)
+            .then(response => {
+                // Truy cập vào phần "data" của API trả về và đặt vào state
+                setData(response.data.data);
+            })
+            .catch(error => {
+                console.error('Error fetching data: ', error);
+            });
+        }
     }, [userId]);
 
     useEffect(() => {       
@@ -80,6 +92,8 @@ function Pay() {
                 receiver_commune:receiver[0].receiver_commune,
             })
             .then(response => {
+                console.log(response.data.data)
+
                 // Truy cập vào phần "data" của API trả về và đặt vào state
                 setShipping(...response.data.data);
             })
@@ -270,6 +284,7 @@ function Pay() {
             setOrder_id(response.data.data.order_id);
             
             setisfinishOrder(!isfinishOrder);
+
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
@@ -367,18 +382,60 @@ function Pay() {
         setVouchers(vouchers)
     }
 
+    const HandleSetQuantityVoucher = () => {
+        Vouchers.map(data=> {
+            axios.get(`http://localhost:8000/api/voucher/${data.voucher.voucher_id}/quantity`)
+            .then(response => {
+            })
+            .catch(error => {
+                console.error('có lỗi trong việc update voucher: ', error);
+            });
+        })
+    }
     
 
     useEffect(()=>{
         if(Order_id!==null && Order_id!==undefined){
-            if(Vouchers==null){
+            if(Vouchers!==null && Vouchers?.length>0){
                 AddVoucherOrders(Order_id);
                 HandleSetStatusVoucherOfUser();
+                HandleSetQuantityVoucher();
             }
             sessionStorage.clear();
+            navigate('/')
         }
     },[Order_id])
 
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/categorys')
+        .then(response => {
+            // Truy cập vào phần "data" của API trả về và đặt vào state
+            setCategory(response.data.data);
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+        });
+    }, []);
+
+    const getImagePath = (categoryId, productImg) => {
+        const categoryName = getCategoryName(categoryId);
+        try {
+          return `/assets/img/${categoryName}/${productImg}`;
+        } catch (error) {
+          console.error('Error loading image:', error);
+          return null; // Hoặc có thể trả về một hình ảnh mặc định
+        }
+      };
+
+      const getCategoryName = (categoryId) => {
+        let categoryName = 'Không xác định';
+        categorys.forEach(category => {
+          if (category.category_id === categoryId) {
+            categoryName = category.category_name;
+          }
+        });
+        return categoryName;
+      };
 
     // phần return giao diện
     return ( 
@@ -438,7 +495,7 @@ function Pay() {
                         <>
                         <div className="row" key={item.cart_id}>
                             <div className="col-md-6" style={{display:'flex'}}>
-                                <img style={{width:'50px',height:'50px',marginLeft:'12px'}} src={item.product.product_img}></img>
+                                <img style={{width:'50px',height:'50px',marginLeft:'12px'}} src={getImagePath(item.product.category_id,item.product.product_img)}></img>
                                 <p style={{fontSize:'18px',marginLeft:'12px'}}>{item.product.product_name}</p>
                             </div>
                             <div className="col-md-2 col-12">
@@ -473,11 +530,11 @@ function Pay() {
                         {isFormVisible_products[item.product.product_id] && (
                                     <>
                                         <div className="overlay"></div> 
-                                        <VoucherForm 
+                                        <VoucherProduct
                                         onClose={closeFormProducts}
                                         getProduct_id={item.product.product_id}
-                                        getCategory_id={null}
                                         HandleVoucher={HandleSaveVoucher}
+                                        getImagePath={getImagePath}
                                         />
                                     </>
                     
@@ -540,9 +597,10 @@ function Pay() {
                                 <div className="overlay"></div> 
                                 <VoucherForm 
                                 onClose={closeForm_shop}
-                                getProduct_id={null}
                                 getCategory_id={category}  
                                 HandleVoucher={HandleSaveVoucher}
+                                getImagePath={getImagePath}
+
                                 />
                              </>
               

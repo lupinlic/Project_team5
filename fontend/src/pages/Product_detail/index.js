@@ -4,10 +4,14 @@ import {Link  } from 'react-router-dom';
 import CountdownTimer from './CountdownTimer';
 import './style.css'
 import axios from 'axios';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect,useContext } from 'react';
+import { CartContext } from '../../context/cartContext';  // Import CartContext
+
 import { useParams } from 'react-router-dom';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
 const Product_detail = () => {
+    const { cartCount, setCartCount } = useContext(CartContext);  // Truy cập cartCount và setCartCount
+
     const { product_id } = useParams(); // Lấy id sản phẩm từ URL
     const [product, setProduct] = useState([]);
     const [quantity, setQuantity] = useState(1);
@@ -99,7 +103,7 @@ const Product_detail = () => {
         axios.post('http://localhost:8000/api/carts', cartItem)
           .then(response => {
             console.log('Thêm vào giỏ hàng thành công:');
-            
+            setCartCount(cartCount+1);
           })
           .catch(error => {
             console.error('Lỗi khi thêm vào giỏ hàng:', error);

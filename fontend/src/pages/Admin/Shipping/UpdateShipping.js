@@ -26,11 +26,12 @@ const UpdateShipping = ({ shipping_send,onUpdate, onClose}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-      axios.put(`http://localhost:8000/api/shippings/${shipping_send.shipping_id}`, {
-        ...shipping,
-        shipping_name:shipping_name,
-        shipping_price:shipping_price,
-      })
+    let getshipping = {
+      ...shipping,
+      shipping_name:shipping_name,
+      shipping_price:shipping_price,
+    }
+      axios.put(`http://localhost:8000/api/shippings/${shipping_send.shipping_id}`,getshipping)
         .then(response => {
           onUpdate();
           onClose(shipping_send.shipping_id);

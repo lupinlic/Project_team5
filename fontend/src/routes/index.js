@@ -20,6 +20,8 @@ import Voucher from '../pages/Admin/Voucher';
 import ShippingAd from '../pages/Admin/Shipping';
 import Order from '../pages/Order';
 import Order_details from '../pages/Order_details';
+import VoucherGroup from '../pages/Admin/VoucherGroup';
+
 
 const publicRoutes = [
     {
@@ -75,6 +77,9 @@ const publicRoutes = [
     },
     {
         path:'/Admin/Voucher', component: Voucher, layout:Admin
+    },
+    {
+        path:'/Admin/VoucherGroup', component: VoucherGroup, layout:Admin
     },
     {
         path:'/Admin/Order', component: OrderAd, layout:Admin

@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Voucher;
 use App\Http\Requests\StoreVoucherRequest;
 use App\Http\Requests\UpdateVoucherRequest;
+use App\Models\Product;
+use App\Models\User;
+use App\Models\VoucherUser;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VoucherController extends Controller
 {
@@ -78,8 +84,9 @@ class VoucherController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Voucher $voucher)
+    public function show(Voucher $voucher,Request $request)
     {
+        
         $get_voucher = Voucher::join('tbl_voucher_group','tbl_voucher.voucherGroup_id','=','tbl_voucher_group.voucherGroup_id')
                             ->where('voucher_id',$voucher->voucher_id)->get();
 
@@ -147,4 +154,46 @@ class VoucherController extends Controller
             ]
         );
     }
+
+    //khi tạo ra 1 voucher thì sẽ add cho tất cả người dùng
+    public function HandleAddUsers(Voucher $voucher)
+    {
+        $users = User::all();
+        
+        $voucherUsers = [];
+        $currentDateTime = Carbon::now()->format('Y-m-d H:i:s');  // Lấy thời gian hiện tại
+    
+        foreach ($users as $user) {
+            $voucherUsers[] = [
+                'user_id' => $user->user_id,
+                'voucher_id' => $voucher->voucher_id,
+                'voucherUser_status' => 0,
+                'voucherUser_date' => $currentDateTime
+            ];
+        }
+    
+        // Thêm tất cả các bản ghi vào bảng VoucherUser cùng lúc
+        DB::table('tbl_voucher_user')->insert($voucherUsers);
+
+            return response()->json(
+                [
+                    "message" => "đã thêm voucher cho các user thành công",
+                ]
+            );
+    }
+
+    
+    public function HandleSetQuantityOfVoucher(Voucher $voucher)
+    {
+        $newquantity = $voucher->voucher_quantity -1;
+        $voucher->voucher_quantity = $newquantity;
+        $voucher->save();
+
+            return response()->json(
+                [
+                    "message" => "đã update quantity voucher thành công",
+                ]
+            );
+    }
+    
 }

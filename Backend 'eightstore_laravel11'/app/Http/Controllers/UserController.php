@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Policies\UserPolicy;
-
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -175,9 +175,36 @@ class UserController extends Controller
         }
     }
 
-    public function ShowVoucher(User $user)
+    public function ShowVouchers(User $user,$voucher_status)
     {
-        $get_voucher = $user->voucherUsers()->with('voucherGroup')->get();
+        switch($voucher_status){
+            case 0:
+                $get_voucher = $user->voucherUsers()
+                ->join('tbl_voucher','tbl_voucher.voucher_id','=','tbl_voucher_user.voucher_id')
+                ->join('tbl_voucher_group','tbl_voucher_group.voucherGroup_id','=','tbl_voucher.voucherGroup_id')
+                ->where('tbl_voucher_user.voucherUser_status',$voucher_status)
+                ->where('tbl_voucher.end_date','>',Carbon::now()->format('Y-m-d H:i:s'))
+                ->select('tbl_voucher.*','tbl_voucher_group.*')
+                ->get();
+                break;
+            case 1:
+                $get_voucher = $user->voucherUsers()
+                ->join('tbl_voucher','tbl_voucher.voucher_id','=','tbl_voucher_user.voucher_id')
+                ->join('tbl_voucher_group','tbl_voucher_group.voucherGroup_id','=','tbl_voucher.voucherGroup_id')
+                ->where('tbl_voucher_user.voucherUser_status',$voucher_status)
+                ->where('tbl_voucher.start_date','<',Carbon::now()->format('Y-m-d H:i:s'))
+                ->select('tbl_voucher.*','tbl_voucher_group.*')
+                ->get();
+                break;
+            case 2:
+                $get_voucher = $user->voucherUsers()
+                ->join('tbl_voucher','tbl_voucher.voucher_id','=','tbl_voucher_user.voucher_id')
+                ->join('tbl_voucher_group','tbl_voucher_group.voucherGroup_id','=','tbl_voucher.voucherGroup_id')
+                ->where('tbl_voucher.end_date','<',Carbon::now()->format('Y-m-d H:i:s'))
+                ->select('tbl_voucher.*','tbl_voucher_group.*')
+                ->get();
+                break;
+        }
 
         if(count($get_voucher)>0){
             return response()->json(

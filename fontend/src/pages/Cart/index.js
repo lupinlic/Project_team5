@@ -255,7 +255,7 @@ const Cart = () => {
                             <div className='col-md-6 d-flex align-items-center col-12'>
                                 <input id='cart_check' type='checkbox' style={{margin:'0 8px'}}  onChange={(e)=>HandleSelectCarts(item,e)}
                                     checked={selectProducts.some(cart=>cart.cart_id==item.cart_id)}></input>
-                                <img src={item.product_img} style={{width:'60px',height:'80px',margin:'4px 8px'}}/>
+                                <img src={getImagePath(item.product.category_id, item.product.product_img)} style={{width:'60px',height:'80px',margin:'4px 8px'}}/>
                                 <h6>{shortenText(getProductName(item.product_id),30)}</h6>
                             </div>
                             <div className='col-md-2 col-4'>{getProductPrice(item.product_id)}</div>

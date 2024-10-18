@@ -18,10 +18,23 @@ function Order_detail() {
     const [totalVoucherOrder, settotalVoucherOrder] = useState(null);
 
     const getOrder_id = useParams().order_id;
+    const [categorys, setCategory] = useState([]);
+
 
     useEffect(()=>{
         setorder_id(getOrder_id);
     })
+
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/categorys')
+        .then(response => {
+            // Truy cập vào phần "data" của API trả về và đặt vào state
+            setCategory(response.data.data);
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+        });
+    }, []);
 
     useEffect(()=>{
         if(order_id!==null){
@@ -93,6 +106,26 @@ function Order_detail() {
             .catch(error => console.error('Error fetching orders:', error));
         }
 
+        const getImagePath = (categoryId, productImg) => {
+            const categoryName = getCategoryName(categoryId);
+            try {
+              return `/assets/img/${categoryName}/${productImg}`;
+            } catch (error) {
+              console.error('Error loading image:', error);
+              return null; // Hoặc có thể trả về một hình ảnh mặc định
+            }
+          };
+    
+          const getCategoryName = (categoryId) => {
+            let categoryName = 'Không xác định';
+            categorys.forEach(category => {
+              if (category.category_id === categoryId) {
+                categoryName = category.category_name;
+              }
+            });
+            return categoryName;
+          };
+
     return ( 
         <div className='mt-4 mb-4'>
             <div className='row pb-4 mb-4' style={{borderBottom:'1px dashed'}}>
@@ -123,7 +156,7 @@ function Order_detail() {
                 orderDetails.map(orderDetail=>(
                 <div className='row m-0 border-bottom p-3 align-items-center' >
                     <div className='col-md-1 col-4'>
-                        <img src={orderDetail.product.product_img} style={{width:'80px'}}/>
+                        <img src={getImagePath(orderDetail.product.category_id,orderDetail.product.product_img)} style={{width:'80px'}}/>
                     </div>
                     <div className='col-md-6 col-4'>
                         <p>Tên sản phẩm: {orderDetail.product.product_name}</p>

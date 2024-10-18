@@ -6,6 +6,7 @@ use App\Models\VoucherGroup;
 use App\Http\Requests\StoreVoucherGroupRequest;
 use App\Http\Requests\UpdateVoucherGroupRequest;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 
@@ -133,7 +134,10 @@ class VoucherGroupController extends Controller
         ->join('tbl_voucher_group','tbl_voucher_group.voucherGroup_id','=','tbl_voucher.voucherGroup_id')
         ->where('tbl_voucher_user.voucherUser_status', 0)
         ->where('tbl_voucher_group.voucherGroup_id', 2)
-        ->select('tbl_voucher.*') // Chỉ lấy các cột từ tbl_voucher
+        ->where('tbl_voucher.start_date','<',Carbon::now()->format('Y-m-d H:i:s'))
+        ->where('tbl_voucher.end_date','>',Carbon::now()->format('Y-m-d H:i:s'))
+        ->where('tbl_voucher.voucher_quantity','>',0)
+        ->select('tbl_voucher.*','tbl_voucher_group.*') // Chỉ lấy các cột từ tbl_voucher
         ->get();
 
         if(count($vouchersOfGroupShop)>0){
@@ -159,7 +163,10 @@ class VoucherGroupController extends Controller
         ->join('tbl_voucher_group','tbl_voucher_group.voucherGroup_id','=','tbl_voucher.voucherGroup_id')
         ->where('tbl_voucher_user.voucherUser_status', 0)
         ->where('tbl_voucher_group.voucherGroup_id', 1)
-        ->select('tbl_voucher.*') // Chỉ lấy các cột từ tbl_voucher
+        ->where('tbl_voucher.start_date','<',Carbon::now()->format('Y-m-d H:i:s'))
+        ->where('tbl_voucher.end_date','>',Carbon::now()->format('Y-m-d H:i:s'))
+        ->where('tbl_voucher.voucher_quantity','>',0)
+        ->select('tbl_voucher.*','tbl_voucher_group.*') // Chỉ lấy các cột từ tbl_voucher
         ->get();
 
         if(count($vouchersOfGroupShop)>0){
@@ -193,6 +200,37 @@ class VoucherGroupController extends Controller
             return response()->json(
                 [
                     "message" => "lấy dữ liệu thất bại hoac ko co",
+                ]
+            );
+        }
+    }
+
+    public function showVoucherByNameOfShop(Request $request)
+    {
+        $vouchersOfGroupShop =
+        $request->user()->voucherUsers()->join('tbl_voucher', 'tbl_voucher.voucher_id', '=', 'tbl_voucher_user.voucher_id') 
+        ->join('tbl_voucher_group','tbl_voucher_group.voucherGroup_id','=','tbl_voucher.voucherGroup_id')
+        ->where('tbl_voucher_user.voucherUser_status', 0)
+        ->where('tbl_voucher.voucherGroup_id', 2)
+        ->where('tbl_voucher.start_date','<',Carbon::now()->format('Y-m-d H:i:s'))
+        ->where('tbl_voucher.end_date','>',Carbon::now()->format('Y-m-d H:i:s'))
+        ->where('tbl_voucher.voucher_quantity','>',0)
+        ->where('tbl_voucher.voucher_code',$request->voucher_code)
+    
+        ->select('tbl_voucher.*','tbl_voucher_group.*') // Chỉ lấy các cột từ tbl_voucher
+        ->get();
+
+        if(count($vouchersOfGroupShop)>0){
+            return response()->json(
+                [
+                    "message" => "đã lấy dữ liệu thành công",
+                    "data" => $vouchersOfGroupShop,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoac ko co",                    
                 ]
             );
         }

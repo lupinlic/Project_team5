@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -149,6 +150,9 @@ class CategoryController extends Controller
         ->join('tbl_voucher', 'tbl_voucher.voucher_id', '=', 'tbl_category_voucher.voucher_id') 
         ->join('tbl_voucher_group','tbl_voucher_group.voucherGroup_id','=','tbl_voucher.voucherGroup_id')
         ->where('tbl_category.category_id',$category->category_id)
+        ->where('tbl_voucher.start_date','<',Carbon::now()->format('Y-m-d H:i:s'))
+        ->where('tbl_voucher.end_date','>',Carbon::now()->format('Y-m-d H:i:s'))
+        ->where('tbl_voucher.voucher_quantity','>',0)
         ->select('tbl_voucher.*') // Chỉ lấy các cột từ tbl_voucher
         ->get();
 

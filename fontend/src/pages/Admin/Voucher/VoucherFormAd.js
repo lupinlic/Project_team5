@@ -20,8 +20,7 @@ const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,onClose}) =>{
 
     const HandleSaveVoucher = (e) => {
         e.preventDefault();
-
-        axios.post(`http://localhost:8000/api/vouchers`,{
+        let voucher = {
             voucherGroup_id :voucherGroup_id,
             voucher_type :voucher_type,
             voucher_discount :voucher_discount,
@@ -32,7 +31,8 @@ const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,onClose}) =>{
             voucher_dsc :voucher_dsc,
             start_date :start_date,
             end_date :end_date,
-        })
+        }
+        axios.post(`http://localhost:8000/api/vouchers`,voucher)
         .then(response =>{
             GetAllVoucherByGroup();
             onClose();

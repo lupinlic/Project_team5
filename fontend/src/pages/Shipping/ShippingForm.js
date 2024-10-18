@@ -74,7 +74,8 @@ const handleChange = (e) => {
     axios.get('https://api.mysupership.vn/v1/partner/areas/province')
       .then(response => {
         setProvinces(response.data.results);
-        
+        console.log(response.data.results)
+
       })
       .catch(error => {
         console.error('Error fetching provinces:', error);

@@ -40,7 +40,7 @@ useEffect(() => {
         axios.get(`http://localhost:8000/api/categorys/${category_Id}`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
-            setCategory(response.data.data);
+            setCategory([response.data.data]);
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
@@ -74,9 +74,6 @@ useEffect(() => {
    
 
 }, [category_Id]);
-console.log('data',data)
-console.log(`http://localhost:8000/api/categorys/${category_Id}`)
-console.log('cate',categorys)
 useEffect(() => {
     setSelectedFilter("all");
     // Khi vào trang, thiết lập sản phẩm hiển thị là tất cả
@@ -319,25 +316,35 @@ const shortenText = (text, maxLength) => {
 
                 </div>
                 <div className='col-md-10 main-right'>
-                {categorys.map(category => (
-                    
-                    <div className='row' key={category.id}>
-                        <h5>{category.category_name}</h5>
-                        {filteredProducts.length > 0 ? (
-                            filteredProducts.filter(product => product.category_id === category.category_id).map(item =>(
-                            <div className='col-md-3 p-3 col-6' key={item.id}>
-                            <Link to={`/Product_detail/${item.product_id}`} style={{textDecoration:'none'}}>
-                                <img src={getImagePath(item.category_id, item.product_img)} style={{width:'100%'}}/>
-                                <Link to={`/Product_detail/${item.product_id}`} className='pro-name' style={{marginLeft:'16px'}}>{shortenText(item.product_name, 25)}</Link>
-                                <div className='d-flex justify-content-between' style={{marginLeft:'16px'}}>
-                                    <p style={{color:'red'}}>{item.product_price} đ</p>
-                                    <Link to={`/Product_detail/${item.product_id}`}><FontAwesomeIcon icon={faShoppingCart}  style={{color:'red'}}/></Link>
+                    {categorys!==null &&categorys?.length>0 ? 
+                    <>
+                    {categorys?.map(category => (
+                                                            
+                        <div className='row' key={category.id}>
+                            <h5>{category.category_name}</h5>
+                            {filteredProducts.length > 0 ? (
+                                filteredProducts.filter(product => product.category_id === category.category_id)?.map(item =>(
+                                <div className='col-md-3 p-3 col-6' key={item.id}>
+                                <Link to={`/Product_detail/${item.product_id}`} style={{textDecoration:'none'}}>
+                                    <img src={getImagePath(item.category_id, item.product_img)} style={{width:'100%'}}/>
+                                    <Link to={`/Product_detail/${item.product_id}`} className='pro-name' style={{marginLeft:'16px'}}>{shortenText(item.product_name, 25)}</Link>
+                                    <div className='d-flex justify-content-between' style={{marginLeft:'16px'}}>
+                                        <p style={{color:'red'}}>{item.product_price} đ</p>
+                                        <Link to={`/Product_detail/${item.product_id}`}><FontAwesomeIcon icon={faShoppingCart}  style={{color:'red'}}/></Link>
+                                    </div>
+                                    </Link>
                                 </div>
-                                </Link>
-                            </div>
-                        ))) : (<p style={{color:'red'}}>Không có sản phẩm nào!!!</p> ) // Thông báo khi không có sản phẩm
-                        }           
-                    </div>))}
+                            ))) : (<p style={{color:'red'}}>Không có sản phẩm nào!!!</p> ) // Thông báo khi không có sản phẩm
+                            }           
+                        </div>))
+                        }         
+                        </>           
+                    :
+                    console.log(categorys)
+                    }{
+                    
+                    }
+                
                 </div>
                 
 

@@ -67,7 +67,7 @@ function Order() {
                 <h6 style={{color:'red', padding:'4px 0 0 8px',marginTop:'12px'}}>CHỜ THANH TOÁN</h6>
             </div>
             
-            {Orders!==null? 
+            {Orders!==null && Orders?.length>0 ? 
             Orders.map(order=>(
             <>
                 <Link  to={{
@@ -96,14 +96,11 @@ function Order() {
             </>
             ))
             :
-            ''
-            }
-            
-            
             <div className="order_none">
                 <img src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/orderlist/5fafbb923393b712b964.png'/>
                 <p>Chưa có đơn hàng </p>
             </div>
+            }
         </div>
     );
 }

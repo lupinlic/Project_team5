@@ -5,6 +5,7 @@ import App from './App';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
+import { CartProvider } from './context/cartContext';  
 
 const token = localStorage.getItem('authToken');
 if (token) {
@@ -14,7 +15,9 @@ if (token) {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <CartProvider>
+      <App />
+    </CartProvider>
   </React.StrictMode>
 );
 

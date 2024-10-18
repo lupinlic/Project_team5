@@ -1,14 +1,16 @@
 import './style.css';
-import React, { useState, useEffect, useRef  } from 'react';
+import React, { useState, useEffect, useRef,useContext   } from 'react';
 import { Helmet } from 'react-helmet';
 import {Link } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { CartContext } from '../../../../context/cartContext';  // Import CartContext
+
 import { faSearch, faUser, faSignOutAlt, faShoppingCart , faPhone ,faHome, faCog,faLock, faMapMarkedAlt, faGift} from '@fortawesome/free-solid-svg-icons';
 // import logo from '../../../../assets/img/logo8.png';
 
 function Header() {
-    const [cartCount, setCartCount] = useState(0);
+    const { cartCount, setCartCount } = useContext(CartContext);  // Truy cập cartCount và setCartCount
     const [userId, setUserId] = useState(null);
     const userData = localStorage.getItem('user');
 
@@ -18,8 +20,6 @@ function Header() {
         localStorage.removeItem('authToken');
         localStorage.removeItem('user');
         setCartCount(0)
-        
-        
         // Chuyển hướng về trang đăng nhập
         // window.location.href = '/Login';
     };

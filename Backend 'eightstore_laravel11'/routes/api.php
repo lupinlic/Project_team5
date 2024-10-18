@@ -54,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('users/{user}/carts', [UserController::class,'HandleCart']);
     Route::get('users/{user}/receivers',[UserController::class,'ShowReceivers']);
     Route::get('users/{user}/receivers/type',[UserController::class,'showByType']);
-    Route::get('users/{user}/vouchers',[UserController::class,'ShowVouchers']);
+    Route::get('users/{user}/vouchers/{voucher_status}',[UserController::class,'ShowVouchers']);
     Route::apiResource('carts',CartController::class); 
     Route::apiResource('receivers',ReceiverController::class);
     Route::get('users/{user}/receivers/{receiver}/status',[ReceiverController::class,'HandleStatus']);
@@ -68,9 +68,15 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('orderDetails',OrderDetailController::class)->only('index','show','store'); 
     Route::apiResource('orderVouchers',OrderVoucherController::class)->only('index','show','store');
                                       
+    
+    Route::get('voucher/{voucher}/quantity',[VoucherController::class,'HandleSetQuantityOfVoucher']);                                       
     Route::get('category/{category}/categoryVouchers',[CategoryController::class,'HandleShowCategoryVoucher']);                                       
-    Route::get('product/{product}/productVouchers',[ProductController::class,'HandleShowProductVoucher']);                                       
-    Route::get('voucherGroup/vouchersOfGroupShop',[VoucherGroupController::class,'HandleShowVoucherOfShop']);                                       
+    Route::get('product/{product}/productVouchers',[ProductController::class,'HandleShowProductVoucher']);    
+    Route::post('product/{product}/productVoucherByName',[ProductController::class,'showVoucherByNameOfProduct']);                                       
+
+    Route::get('voucherGroup/vouchersOfGroupShop',[VoucherGroupController::class,'HandleShowVoucherOfShop']);   
+    Route::post('voucherGroup/vouchersOfGroupShopByName',[VoucherGroupController::class,'showVoucherByNameOfShop']);                                      
+                                    
     Route::get('voucherGroup/vouchersOfShip',[VoucherGroupController::class,'HandleShowVoucherOfShip']);                                       
     Route::post('shipping',[ShippingController::class,'HandleShowShippingByName']);
     Route::get('order/{order}/receiver',[OrderController::class,'ShowReceuverByOrder']);
@@ -107,9 +113,10 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('voucherGroup/{voucherGroup}/vouchers',[VoucherGroupController::class,'HandleShowVoucherOfVoucherGroup']);                                       
         Route::get('productVouchers/{voucher}/product',[ProductVoucherController::class,'GetProductByVoucher']);                                       
         Route::get('categoryVouchers/{voucher}/category',[CategoryVoucherController::class,'GetcategoryByVoucher']);                                       
-
+        
     });
 });
+Route::post('voucher/voucherByName',[VoucherController::class,'showVoucherByName']);                                       
 Route::post('user/login',[LoginController::class,'User_Login']);
 Route::post('user/regester',[RegesterController::class,'User_Regester']);
 
