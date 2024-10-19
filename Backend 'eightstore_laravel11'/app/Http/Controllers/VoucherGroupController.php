@@ -48,29 +48,40 @@ class VoucherGroupController extends Controller
      */
     public function store(StoreVoucherGroupRequest $request)
     {
-        $get_VoucherGroup = new VoucherGroup();
-       
-        if($get_VoucherGroup){
-            $get_VoucherGroup->voucherGroup_name = $request->voucherGroup_name;
-            $get_VoucherGroup->voucherGroup_img = $request->voucherGroup_img;
-            $get_VoucherGroup->voucherGroup_dsc = $request->voucherGroup_dsc;
+        if($request->has('img')){
+            $file = $request->file('img');
 
-            $get_VoucherGroup->save();
+            $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+            $file_name = time() . '-' . $request->voucherGroup_name .'.'. $extension;
+            $filterFile_name = preg_replace('/[^A-Za-z0-9\-_.]/', '_', $file_name);
 
-            return response()->json(
-                [
-                    "message" => "đã thêm dữ liệu thành công",
-                    "data" => $get_VoucherGroup,
-                ]
-            );
+            $file->move(public_path('uploads/VoucherGroup'),$filterFile_name);
+            
+            $request->merge(['voucherGroup_img'=> $filterFile_name]);
+
+            if(VoucherGroup::create($request->all())){
+                    
+                    return response()->json(
+                        [
+                            "message" => "đã thêm dữ liệu thành công",
+                        ]
+                    );
+                }else{
+                    return response()->json(
+                        [
+                            "message" => "thêm dữ liệu thất bại",
+                        ]
+                    );
+                }
         }else{
             return response()->json(
                 [
-                    "message" => "thêm dữ liệu thất bại",
-                ]
+                    "message" => "không có file ảnh đc gửi lên",
+                ],422
             );
         }
     }
+        
 
     /**
      * Display the specified resource.
@@ -98,18 +109,38 @@ class VoucherGroupController extends Controller
      */
     public function update(UpdateVoucherGroupRequest $request, VoucherGroup $voucherGroup)
     {
-            $voucherGroup->voucherGroup_name = $request->voucherGroup_name;
-            $voucherGroup->voucherGroup_img = $request->voucherGroup_img;
-            $voucherGroup->voucherGroup_dsc = $request->voucherGroup_dsc;
+        if($request->has('img')){
+            $file = $request->file('img');
 
-            $voucherGroup->save();
+            //xóa bỏ ảnh cũ
+            $filePath = public_path('uploads\\VoucherGroup\\'.$voucherGroup->voucherGroup_img);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+                // Thông báo thành công
+            }
+            // lưu ảnh mới
+            $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+            $file_name = time() . '-' . $request->voucherGroup_name .'.'. $extension;
+            $filterFile_name = preg_replace('/[^A-Za-z0-9\-_.]/', '_', $file_name);
 
-            return response()->json(
-                [
-                    "message" => "update dữ liệu thành công",
-                    "data" => $voucherGroup,
-                ]
-            );
+            $file->move(public_path('uploads/VoucherGroup'),$filterFile_name);
+            
+            $request->merge(['voucherGroup_img'=> $filterFile_name]);
+
+            //update dữ liệu
+            $voucherGroup->update($request->all());
+                
+        }else{
+            $voucherGroup->update([
+                'voucherGroup_name'=>$request->voucherGroup_name,
+                'voucherGroup_dsc'=>$request->voucherGroup_dsc,
+            ]);
+        }
+        return response()->json(
+            [
+                "message" => "đã update dữ liệu thành công",
+            ]
+        );
     }
 
     /**
@@ -231,6 +262,28 @@ class VoucherGroupController extends Controller
             return response()->json(
                 [
                     "message" => "lấy dữ liệu thất bại hoac ko co",                    
+                ]
+            );
+        }
+    }
+
+    public function HandleUploadFile(Request $request)
+    {
+        $file = $request->file('img');
+
+        if($file){
+            $filePath = $file->storeAs('img/VoucherGroup', $file->getClientOriginalName(), 'public');
+
+            return response()->json(
+                [
+                    "message" => "đã lưu ảnh thành công",
+                    "data" => $filePath,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoac ko co",
                 ]
             );
         }

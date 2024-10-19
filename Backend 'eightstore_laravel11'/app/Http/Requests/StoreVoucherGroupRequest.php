@@ -23,7 +23,6 @@ class StoreVoucherGroupRequest extends FormRequest
     {
         return [
             "voucherGroup_name" => 'required|string|unique:tbl_voucher_group,voucherGroup_name',
-            "voucherGroup_img" => 'required|string|min:5|unique:tbl_voucher_group,voucherGroup_img',
             "voucherGroup_dsc" => 'required|string|min:5',
         ];
     }

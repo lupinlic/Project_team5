@@ -12,6 +12,12 @@ class VoucherGroup extends Model
     protected $table = "tbl_voucher_group";
     protected $primaryKey = "voucherGroup_id";
 
+    protected $fillable = [
+        'voucherGroup_name',
+        'voucherGroup_img',
+        'voucherGroup_dsc',
+    ];
+
     public $timestamps  = false;
 
     public function vouchers(){

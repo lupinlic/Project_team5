@@ -24,16 +24,10 @@ class UpdateVoucherGroupRequest extends FormRequest
     {
         $voucherGroup = $this->route()->voucherGroup;
         return [
-            "voucherGroup_name" => [
-                "required",
-                "string",
+            "voucherGroup_name" =>[
+                'required',
+                'string',
                 Rule::unique('tbl_voucher_group','voucherGroup_name')->ignore($voucherGroup->voucherGroup_id,'voucherGroup_id')
-            ],
-            "voucherGroup_img" => [
-                "required",
-                "string",
-                'min:5',
-                Rule::unique('tbl_voucher_group','voucherGroup_img')->ignore($voucherGroup->voucherGroup_id,'voucherGroup_id')
             ],
             "voucherGroup_dsc" => 'required|string|min:5',
         ];
@@ -50,7 +44,7 @@ class UpdateVoucherGroupRequest extends FormRequest
 
     public function attributes(){
         return [
-            "voucherGroup_name" => 'Ten voucher',
+            "voucherGroup_name" => 'Ten nhóm voucher',
             "voucherGroup_img" => 'Anh voucher',
             "voucherGroup_dsc" => 'Mo ta voucher',
         ];

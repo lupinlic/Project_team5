@@ -101,6 +101,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::apiResource('suppliers',SupplierController::class)->only('store','update','destroy');
         Route::apiResource('vouchers',VoucherController::class)->only('store','update','destroy');
         Route::apiResource('voucherGroups',VoucherGroupController::class)->only('store','update','destroy');
+        Route::post('voucherGroups/upload',[VoucherGroupController::class,'HandleUploadFile']);
         Route::apiResource('orders',OrderController::class)->only('update');
         Route::apiResource('orderDetails',OrderDetailController::class)->only('update','destroy');                                       
         
@@ -116,7 +117,7 @@ Route::middleware('auth:sanctum')->group(function(){
         
     });
 });
-Route::post('voucher/voucherByName',[VoucherController::class,'showVoucherByName']);                                       
+// Route::post('voucher/voucherByName',[VoucherController::class,'showVoucherByName']);                                       
 Route::post('user/login',[LoginController::class,'User_Login']);
 Route::post('user/regester',[RegesterController::class,'User_Regester']);
 
