@@ -52,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function(){
     //  --2. show ra các thông tin mà customer có thể thấy
     Route::apiResource('users',UserController::class)->only('index','show','update','destroy');
     Route::get('users/{user}/carts', [UserController::class,'HandleCart']);
+
     Route::get('users/{user}/receivers',[UserController::class,'ShowReceivers']);
     Route::get('users/{user}/receivers/type',[UserController::class,'showByType']);
     Route::get('users/{user}/vouchers/{voucher_status}',[UserController::class,'ShowVouchers']);
@@ -65,6 +66,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('vouchers',VoucherController::class)->only('index','show');
     Route::apiResource('voucherGroups',VoucherGroupController::class)->only('index','show');
     Route::apiResource('orders',OrderController::class)->only('index','show','store','destroy');
+
     Route::apiResource('orderDetails',OrderDetailController::class)->only('index','show','store'); 
     Route::apiResource('orderVouchers',OrderVoucherController::class)->only('index','show','store');
                                       
@@ -86,9 +88,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('order/{order}/shipping',[OrderController::class,'GetShippingByOrder']);                                       
     Route::get('order/{order}/orderVoucher',[OrderController::class,'GetOrderVoucherByOrder']);                                       
     Route::get('user/{user}/orders',[UserController::class,'GetOrderByUser']);
-    
-
-                                           
+                                               
     //  --nd đăng nhập xog thì ms đăng xuất đc
     Route::get('user/logout',[LogoutController::class,'User_Logout']);
     
@@ -113,10 +113,21 @@ Route::middleware('auth:sanctum')->group(function(){
 
         Route::get('voucherGroup/{voucherGroup}/vouchers',[VoucherGroupController::class,'HandleShowVoucherOfVoucherGroup']);                                       
         Route::get('productVouchers/{voucher}/product',[ProductVoucherController::class,'GetProductByVoucher']);                                       
-        Route::get('categoryVouchers/{voucher}/category',[CategoryVoucherController::class,'GetcategoryByVoucher']);                                       
+        Route::get('categoryVouchers/{voucher}/category',[CategoryVoucherController::class,'GetcategoryByVoucher']);   
+        
+        Route::get('product/statistical',[ProductController::class,'HandleStatistical_Product']);
+        Route::post('product/statisticalByDate',[ProductController::class,'HandleStatistical_ProductByDate']);
+
+        Route::get('order/statistical',[OrderController::class,'GetTotalOrder']);
+        Route::post('order/statisticalByLinechart',[OrderController::class,'GetTotalOrderByTime']);
+        Route::post('order/statisticalByDate',[OrderController::class,'GetTotalOrderByDate']);
+        Route::get('user/statistical',[UserController::class,'GetUserStatistical']);
+
+
         
     });
 });
+
 // Route::post('voucher/voucherByName',[VoucherController::class,'showVoucherByName']);                                       
 Route::post('user/login',[LoginController::class,'User_Login']);
 Route::post('user/regester',[RegesterController::class,'User_Regester']);

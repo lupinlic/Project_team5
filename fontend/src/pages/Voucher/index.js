@@ -65,7 +65,7 @@ function VoucherList() {
                             key={item?.voucher_id}
                             >
                                 <div className='col-md-4'>
-                                    <img style={{ width: '25%', height: '25%' }} src={`/assets/img/Voucher/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
+                                    <img style={{ width: '25%', height: '25%' }} src={`http://localhost:8000/uploads/VoucherGroup/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
                                 </div>
                                 <div className='col-md-7'>
                                     <p>Giảm {item.voucher_discount} VNĐ</p>

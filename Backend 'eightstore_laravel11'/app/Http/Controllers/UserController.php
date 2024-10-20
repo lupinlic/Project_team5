@@ -136,23 +136,15 @@ class UserController extends Controller
     public function HandleCart(User $user)
     {
         $get_cart = $user->carts()->with('product')->get();
-        $count_cart = $user->carts()->with('product')->count('cart_id');
+        $count_cart = $user->carts()->count('cart_id');
 
-        if(count($get_cart)>0){
-            return response()->json(
-                [
-                    "message" => "đã lấy dữ liệu thành công",
-                    "data" => $get_cart,
-                    "count_cart" => $count_cart,
-                ]
-            );
-        }else{
-            return response()->json(
-                [
-                    "message" => "lấy dữ liệu thất bại hoặc không có",
-                ]
-            );
-        }
+        return response()->json(
+            [
+                "message" => "đã lấy dữ liệu thành công",
+                "data" => $get_cart,
+                 "count_cart" => $count_cart,
+            ]
+        );
     }
 
     public function ShowReceivers(User $user)
@@ -246,4 +238,17 @@ class UserController extends Controller
                 ]
             );
     }
+
+    public function GetUserStatistical()
+    {
+        $data = new \stdClass();
+        $data->user_count = User::where('user_role',0)->count();
+            return response()->json(
+                [
+                    "message" => "đã get thành công",
+                    "data" => $data,
+                ]
+            );
+    }
+    
 }

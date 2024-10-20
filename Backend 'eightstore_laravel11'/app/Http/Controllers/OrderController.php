@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
-use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -196,4 +197,64 @@ class OrderController extends Controller
                 ]
             );
     }
+
+    public function GetTotalOrder()
+    {
+        $data = [
+            'order_sum' => Order::sum('order_totalmoney'),
+            'order_count' => Order::count(),
+        ];
+
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                    "data" => $data,
+                ]
+            );
+    }
+
+    public function GetTotalOrderByDate(Request $request)
+    {
+
+        $data = new \stdClass();
+        $data->order_count = Order::whereBetween('order_date', [$request->start_date, $request->end_date])->count();
+        $data->order_sum = Order::whereBetween('order_date', [$request->start_date, $request->end_date])->sum('order_totalmoney');
+
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                    "data" => $data,
+                ]
+            );
+    }
+    
+    public function GetTotalOrderByTime(Request $request)
+    {
+        //nhận vào 2 dữ liệu 1 là sẽ thống kê theo j 2. năm bao nhiêu
+        $inputYear = $request->year;
+        if ($inputYear < 1000) {
+            // Xử lý để đưa về năm 4 chữ số
+            $inputYear += 2000; // Hoặc xử lý theo cách khác tùy theo ngữ cảnh
+        }
+        $data=[];
+        if($request->option_time){
+            $data = Order::select(DB::raw('QUARTER(order_date) as quarter, YEAR(order_date) as year, SUM(order_totalmoney) as sum'))
+            ->whereYear('order_date', $inputYear)
+            ->groupBy(DB::raw('YEAR(order_date), QUARTER(order_date)'))
+            ->get();
+        }else{
+            $data = Order::select(DB::raw('MONTH(order_date) as month, YEAR(order_date) as year, SUM(order_totalmoney) as sum'))
+            ->whereYear('order_date',$inputYear)
+            ->groupBy(DB::raw('YEAR(order_date), MONTH(order_date)'))
+            ->get();      
+        }
+        return response()->json(
+            [
+                "message" => "đã lấy thành công",
+                "data" => $data,
+            ]
+        );
+        
+    }
+    
 }

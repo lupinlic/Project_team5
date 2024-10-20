@@ -10,7 +10,7 @@ import { faSearch, faUser, faSignOutAlt, faShoppingCart , faPhone ,faHome, faCog
 // import logo from '../../../../assets/img/logo8.png';
 
 function Header() {
-    const { cartCount, setCartCount } = useContext(CartContext);  // Truy cập cartCount và setCartCount
+    const { cartCount, setCartCount } = useContext(CartContext); 
     const [userId, setUserId] = useState(null);
     const userData = localStorage.getItem('user');
 
@@ -43,14 +43,6 @@ function Header() {
             }
 
     },[userId]);
-
-    
-
-
-    // const Addcart=()=>{
-    //     setCartCount(prevCount => prevCount + 1); 
-    // }
-
     
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const settingsRef = useRef(null);

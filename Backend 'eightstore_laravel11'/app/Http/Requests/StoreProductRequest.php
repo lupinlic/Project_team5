@@ -24,7 +24,6 @@ class StoreProductRequest extends FormRequest
         $category = $this->route()->category;
         $rules = [
             "product_name" => 'required|string|unique:tbl_product,product_name',
-            "product_img" => 'required|string|unique:tbl_product,product_img',
             "product_price" => 'required|numeric',
             "product_dsc" => 'required|string',
             "supplier_id" => 'required|numeric|exists:tbl_supplier,supplier_id',
@@ -47,7 +46,6 @@ class StoreProductRequest extends FormRequest
     public function attributes(){
         return [
             "product_name" => 'Tên sản phẩm',
-            "product_img" => 'Ảnh sản phẩm',
             "product_price" => 'Giá sản phẩm',
             "product_dsc" => 'Mô tả sản phẩm',
             "category_id" => 'Nhóm sản phẩm',

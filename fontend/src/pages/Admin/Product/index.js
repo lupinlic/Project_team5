@@ -74,7 +74,7 @@ function AdProduct() {
         const getImagePath = (categoryId, productImg) => {
         const categoryName = getCategoryName(categoryId);
         try {
-          return `/assets/img/${categoryName}/${productImg}`;
+          return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
         } catch (error) {
           console.error('Error loading image:', error);
           return null; // Hoặc có thể trả về một hình ảnh mặc định
@@ -94,8 +94,8 @@ function AdProduct() {
       };
     //   xóa
     const deleteProduct = (productId) => {
-        if (window.confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này không?')) {
-          axios.delete(`http://localhost:8000/api/suppliers/${productId}`)
+        if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')) {
+          axios.delete(`http://localhost:8000/api/products/${productId}`)
             .then(response => {
                 updateProduct(); // Cập nhật lại danh sách sau khi xóa
             })

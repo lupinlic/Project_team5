@@ -29,11 +29,6 @@ class UpdateProductRequest extends FormRequest
                 "string",
                 Rule::unique('tbl_product','product_name')->ignore($product->product_id,'product_id')
             ],
-            "product_img" => [
-                "required",
-                "string",
-                Rule::unique('tbl_product','product_img')->ignore($product->product_id,'product_id')
-            ],
             "product_price" => 'required|numeric',
             "product_dsc" => 'required|string',
             "category_id" => 'required|numeric',
