@@ -211,7 +211,7 @@ const VoucherShop =({onClose,getCategory_id,HandleVoucher,getImagePath}) =>{
                             onClick={() => handleSelectVoucher(item,setVoucherShipSelected,VoucherShipSelected)}
                             >
                                 <div className='col-md-4 col-4'>
-                                    <img style={{ width: '80%', height: '80%' }} src={`/assets/img/Voucher/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
+                                    <img style={{ width: '80%', height: '80%' }} src={`http://localhost:8000/uploads/VoucherGroup/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
                                 </div>
                                 <div className='col-md-7 col-7'>
                                     <p>Giảm {item.voucher_discount} VNĐ</p>
@@ -246,7 +246,7 @@ const VoucherShop =({onClose,getCategory_id,HandleVoucher,getImagePath}) =>{
                             )}
                             >
                                 <div className='col-md-4'>
-                                    <img style={{ width: '80%', height: '80%' }} src={`/assets/img/Voucher/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
+                                    <img style={{ width: '80%', height: '80%' }} src={`http://localhost:8000/uploads/VoucherGroup/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
                                 </div>
                                 <div className='col-md-7'>
                                     <p>Giảm {item.voucher_discount} VNĐ</p>

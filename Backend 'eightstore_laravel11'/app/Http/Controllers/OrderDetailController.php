@@ -53,6 +53,7 @@ class OrderDetailController extends Controller
             $get_OrderDetail->product_id = $request->product_id;
             $get_OrderDetail->orderDetail_quantity = $request->orderDetail_quantity;
             $get_OrderDetail->orderDetail_total = $request->orderDetail_total;
+            $get_OrderDetail->orderDetail_date = $request->order_date;
 
             $get_OrderDetail->save();
 

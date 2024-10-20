@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -47,31 +48,37 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $get_product = new Product();
-       
-        if($get_product){
-            $get_product->product_name = $request->product_name;
-            $get_product->product_img = $request->product_img;
-            $get_product->product_price = $request->product_price;
-            $get_product->category_id = $request->category_id;
-            $get_product->product_dsc = $request->product_dsc;
-            $get_product->supplier_id = $request->supplier_id;
-            $get_product->product_quantity = $request->product_quantity;
+        $category = Category::where('category_id',$request->category_id)->first();
+        if($request->has('img')){
+            $file = $request->file('img');
 
+            $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+            $file_name = time() . '-' . $request->product_name .'.'. $extension;
+            $filterFile_name = preg_replace('/[^A-Za-z0-9\-_.]/', '_', $file_name);
 
-            $get_product->save();
+            $file->move(public_path('uploads/Categories/'.$category->category_name),$filterFile_name);
+            
+            $request->merge(['product_img'=> $filterFile_name]);
 
-            return response()->json(
-                [
-                    "message" => "đã thêm dữ liệu thành công",
-                    "data" => $get_product,
-                ]
-            );
+            if(Product::create($request->all())){
+                    
+                    return response()->json(
+                        [
+                            "message" => "đã thêm dữ liệu thành công",
+                        ]
+                    );
+                }else{
+                    return response()->json(
+                        [
+                            "message" => "thêm dữ liệu thất bại",
+                        ]
+                    );
+                }
         }else{
             return response()->json(
                 [
-                    "message" => "thêm dữ liệu thất bại",
-                ]
+                    "message" => "không có file ảnh đc gửi lên",
+                ],422
             );
         }
     }
@@ -102,23 +109,37 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-            $product->product_name = $request->product_name;
-            $product->product_img = $request->product_img;
-            $product->product_price = $request->product_price;
-            $product->product_dsc = $request->product_dsc;
-            $product->category_id = $request->category_id;
-            $product->supplier_id = $request->supplier_id;
-            $product->product_quantity = $request->product_quantity;
+        $category = Category::where('category_id',$product->category_id)->first();
+        if($request->has('img')){
+            $file = $request->file('img');
 
+            //xóa bỏ ảnh cũ
+            $filePath = public_path('uploads\\Categories\\'.$category->category_name.'\\'.$product->product_img);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+                // Thông báo thành công
+            }
+            // lưu ảnh mới
+            $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+            $file_name = time() . '-' . $request->product_name .'.'. $extension;
+            $filterFile_name = preg_replace('/[^A-Za-z0-9\-_.]/', '_', $file_name);
 
-            $product->save();
+            $file->move(public_path('uploads/Categories/'.$category->category_name),$filterFile_name);
+            
+            $request->merge(['product_img'=> $filterFile_name]);
 
-            return response()->json(
-                [
-                    "message" => "update dữ liệu thành công",
-                    "data" => $product,
-                ]
-            );
+            //update dữ liệu
+            $product->update($request->all());
+                
+        }else{
+            $request->only(['product_name','product_price','product_dsc','category_id','supplier_id','product_quantity']);
+            $product->update($request->all());
+        }
+        return response()->json(
+            [
+                "message" => "đã update dữ liệu thành công",
+            ]
+        );
     }
 
     /**
@@ -243,6 +264,59 @@ class ProductController extends Controller
                 [
                     "message" => "đã lấy dữ liệu thành công",
                     "data" => $filteredVouchers,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoac ko co",
+                ]
+            );
+        }
+    }
+    
+    public function HandleStatistical_Product()
+    {
+        $products = Product::join('tbl_order_detail','tbl_order_detail.product_id','=','tbl_product.product_id')
+        ->select('product_name',DB::raw('SUM(orderDetail_quantity) as quantity'))                    
+        ->groupBy('product_name')
+        ->orderBy('quantity','desc')
+        ->limit(6)
+        ->get()
+        ; 
+
+        if($products){
+            return response()->json(
+                [
+                    "message" => "đã lấy dữ liệu thành công",
+                    "data" => $products,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoac ko co",
+                ]
+            );
+        }
+    }
+    
+    public function HandleStatistical_ProductByDate(Request $request)
+    {
+        $products = Product::join('tbl_order_detail','tbl_order_detail.product_id','=','tbl_product.product_id')
+        ->select('product_name',DB::raw('SUM(orderDetail_quantity) as quantity'))
+        ->whereBetween('orderDetail_date', [$request->start_date, $request->end_date])                    
+        ->groupBy('product_name')
+        ->orderBy('quantity','desc')
+        ->limit(6)
+        ->get()
+        ; 
+
+        if($products){
+            return response()->json(
+                [
+                    "message" => "đã lấy dữ liệu thành công",
+                    "data" => $products,
                 ]
             );
         }else{

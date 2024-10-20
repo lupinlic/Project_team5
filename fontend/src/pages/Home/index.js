@@ -76,7 +76,7 @@ function Home (){
             const categoryName = getCategoryName(categoryId);
             console.log(`/assets/img/${categoryName}/${productImg}`)
             try {
-              return `/assets/img/${categoryName}/${productImg}`;
+              return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
               
             } catch (error) {
               console.error('Error loading image:', error);

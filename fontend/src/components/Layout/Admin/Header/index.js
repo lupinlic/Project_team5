@@ -90,12 +90,12 @@ function Header() {
                     <div className="col-md-1 text-end">
                         <FontAwesomeIcon icon={faBell} style={{color:'#62677399'}}/>
                     </div>
-                    <div className="col-md-2 account " onClick={toggleSettings} ref={settingsRef} style={{position:'relative'}}>
+                    <div className="col-md-2 account " onClick={toggleSettings} ref={settingsRef} style={{position:'relative',cursor:'pointer'}}>
                         <img className='' style={{width: 50, borderRadius: '50%',}} src='https://e7.pngegg.com/pngimages/754/474/png-clipart-computer-icons-system-administrator-avatar-computer-network-heroes-thumbnail.png'  alt />
                         <span style={{ fontSize: 16,color:'#62677399',marginLeft:'4px'}}>Admin</span>
                         <span style={{ fontSize: 16,color:'#62677399',marginLeft:'4px'}}><FontAwesomeIcon icon={faChevronDown}/></span>
                         {isSettingsOpen && (
-                            <div className='account_child' style={{position:'absolute',marginTop:'12px',padding:'8px'}}>
+                            <div className='account_child' style={{position:'absolute',marginTop:'12px',padding:'8px',background:'#dedede'}}>
                                 <h6>Welcome!</h6>
                                 <ul >
                                     <li><Link to=''><FontAwesomeIcon style={{paddingRight:'8px' ,color:'#62677399',textDecoration:'none'}} icon={faUser}/>Profile</Link></li>

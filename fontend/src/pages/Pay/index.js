@@ -279,7 +279,7 @@ function Pay() {
             order
         )
         .then(response => {
-            HandleOrderDetail(response.data.data.order_id);
+            HandleOrderDetail(response.data.data.order_id,response.data.data.order_date);
             HandleDeleteCart();
             setOrder_id(response.data.data.order_id);
             
@@ -292,7 +292,7 @@ function Pay() {
     }
 
 
-    const HandleOrderDetail = (order_id) => {
+    const HandleOrderDetail = (order_id,order_date) => {
         carts.map(cart=>{
             axios.post(`http://localhost:8000/api/orderDetails`,
                 {
@@ -300,6 +300,7 @@ function Pay() {
                     order_id : order_id,
                     orderDetail_quantity : cart.cart_quantity,
                     orderDetail_total : cart.cart_totalmoney,
+                    orderDetail_date:order_date,
                 }
             )
             .then(response => {
@@ -420,7 +421,7 @@ function Pay() {
     const getImagePath = (categoryId, productImg) => {
         const categoryName = getCategoryName(categoryId);
         try {
-          return `/assets/img/${categoryName}/${productImg}`;
+          return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
         } catch (error) {
           console.error('Error loading image:', error);
           return null; // Hoặc có thể trả về một hình ảnh mặc định

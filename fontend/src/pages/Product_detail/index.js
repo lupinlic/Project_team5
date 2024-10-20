@@ -63,7 +63,7 @@ const Product_detail = () => {
       const getImagePath = (categoryId, productImg) => {
         const categoryName = getCategoryName(categoryId);
         try {
-          return `/assets/img/${categoryName}/${productImg}`;
+          return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
         } catch (error) {
           console.error('Error loading image:', error);
           return null; // Hoặc có thể trả về một hình ảnh mặc định
