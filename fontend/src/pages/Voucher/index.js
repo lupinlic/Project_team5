@@ -4,6 +4,8 @@ import {Link  } from 'react-router-dom';
 // import Order_detail from "./Order_detail";
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../config';
+
 
 function VoucherList() {
 
@@ -32,7 +34,7 @@ function VoucherList() {
     },[voucher_status])
 
     const GetVouchers =()=>{
-        axios.get(`http://localhost:8000/api/users/${user_id}/vouchers/${voucher_status}`)
+        axios.get(`${apiUrl}/api/users/${user_id}/vouchers/${voucher_status}`)
         .then(response => {
             setVouchers(response.data.data); // assume response data has a 'data' field
         })
@@ -64,7 +66,7 @@ function VoucherList() {
                             key={item?.voucher_id}
                             >
                                 <div className='col-md-4'>
-                                    <img style={{ width: '25%', height: '25%' }} src={`http://localhost:8000/uploads/VoucherGroup/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
+                                    <img style={{ width: '25%', height: '25%' }} src={`${apiUrl}/uploads/VoucherGroup/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
                                 </div>
                                 <div className='col-md-7'>
                                     <p>Giảm {item.voucher_discount} VNĐ</p>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faList,faSearch,faBell,faChevronDown,faCog,faUser,faLock,faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
+import { apiUrl } from '../../../config';
 
 
 const VoucherProduct = ({ sendVoucher_id, onClose }) => {
@@ -17,7 +18,7 @@ const VoucherProduct = ({ sendVoucher_id, onClose }) => {
 
     // Fetch products when component mounts
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/products`)
+        axios.get(`${apiUrl}/api/products`)
             .then(response => {
                 setProducts(response.data.data); // assume response data has a 'data' field
             })
@@ -26,7 +27,7 @@ const VoucherProduct = ({ sendVoucher_id, onClose }) => {
 
     useEffect(() => {
         if(voucher_id!== null){
-            axios.get(`http://localhost:8000/api/productVouchers/${voucher_id}/product`)
+            axios.get(`${apiUrl}/api/productVouchers/${voucher_id}/product`)
             .then(response => {
                 setlsSelectproducts(response.data.data); // assume response data has a 'data' field
             })
@@ -38,7 +39,7 @@ const VoucherProduct = ({ sendVoucher_id, onClose }) => {
     const handleSaveVoucherProduct = (e) => {
         e.preventDefault();
         lsSelectproducts.map(product=>(
-            axios.post(`http://localhost:8000/api/productVouchers`, {
+            axios.post(`${apiUrl}/api/productVouchers`, {
                 voucher_id:voucher_id,
                 product_id: product.product_id,
                 productVoucher_dsc:productVoucher_dsc,

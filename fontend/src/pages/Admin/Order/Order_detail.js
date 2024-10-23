@@ -1,5 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
+
 
 const Order_detail=({sendOrder_id,onClose})=> {
     const [order_id, setorder_id] = useState(null);
@@ -12,7 +14,7 @@ const Order_detail=({sendOrder_id,onClose})=> {
 
     useEffect(()=>{
         if(order_id!==null){
-            axios.get(`http://localhost:8000/api/order/${order_id}/orderDetail`)
+            axios.get(`${apiUrl}/api/order/${order_id}/orderDetail`)
             .then(response => {
                 setorderDetails(response.data.data); // assume response data has a 'data' field
             })

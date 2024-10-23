@@ -3,6 +3,8 @@ import './style.css'
 import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from '../../config';
+
 
 function Register() {
     const navigate = useNavigate();
@@ -17,7 +19,7 @@ function Register() {
         e.preventDefault();
 
         if(user_password==reUser_password){
-            axios.post(`http://localhost:8000/api/user/regester`,{
+            axios.post(`${apiUrl}/api/user/regester`,{
                 user_name:user_name,
                 user_email:user_email,
                 user_password:user_password,

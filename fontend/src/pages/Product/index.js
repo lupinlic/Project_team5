@@ -6,6 +6,8 @@ import {Link,useParams  } from 'react-router-dom';
 import './style.css'
 import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
+import { apiUrl } from '../../config';
+
 
 const Product = () =>{
         const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,7 +29,7 @@ const [filteredProducts, setFilteredProducts] = useState([]);
 useEffect(() => {
     // Gọi hai API để lấy dữ liệu sản phẩm và danh mục, nhà cung cấp
     if(category_Id){
-        axios.get(`http://localhost:8000/api/categorys/${category_Id}/products`)
+        axios.get(`${apiUrl}/api/categorys/${category_Id}/products`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
             setData(response.data.data);
@@ -37,7 +39,7 @@ useEffect(() => {
             console.error('Error fetching data: ', error);
         });
 
-        axios.get(`http://localhost:8000/api/categorys/${category_Id}`)
+        axios.get(`${apiUrl}/api/categorys/${category_Id}`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
             setCategory([response.data.data]);
@@ -50,7 +52,7 @@ useEffect(() => {
 
         
     }else{
-    axios.get('http://localhost:8000/api/products')
+    axios.get(`${apiUrl}/api/products`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
             setData(response.data.data);
@@ -59,7 +61,7 @@ useEffect(() => {
             console.error('Error fetching data: ', error);
         });
 
-    axios.get('http://localhost:8000/api/categorys')
+    axios.get(`${apiUrl}/api/categorys`)
     .then(response => {
         // Truy cập vào phần "data" của API trả về và đặt vào state
         setCategory(response.data.data);
@@ -92,7 +94,7 @@ const getCategoryName = (categoryId) => {
   const getImagePath = (categoryId, productImg) => {
     const categoryName = getCategoryName(categoryId);
     try {
-      return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
+      return `${apiUrl}/uploads/Categories/${categoryName}/${productImg}`;
     } catch (error) {
       console.error('Error loading image:', error);
       return null; // Hoặc có thể trả về một hình ảnh mặc định

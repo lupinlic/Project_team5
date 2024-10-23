@@ -25,8 +25,6 @@ class StoreUserRequest extends FormRequest
             "user_name" => 'required|string|unique:tbl_user,user_name',
             "user_password" => 'required|string|min:5',
             "user_email" => 'required|string|unique:tbl_user,user_email',
-            "user_isNew" => 'required|numeric',
-            "user_role" => 'required|numeric',
         ];
     }
 

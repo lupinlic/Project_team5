@@ -1,6 +1,7 @@
 import Order_detail from "./Order_detail";
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
 
 
 function Order() {
@@ -21,7 +22,7 @@ function Order() {
     },[])
 
     const GetOrders =()=>{
-        axios.get(`http://localhost:8000/api/orders`)
+        axios.get(`${apiUrl}/api/orders`)
         .then(response => {
             setOrders(response.data.data); // assume response data has a 'data' field
             console.log(response.data)
@@ -31,14 +32,15 @@ function Order() {
 
 
     const OrderConfirmation= (order)=>{
-        axios.get(`http://localhost:8000/api/order/${order.order_id}/status`)
+        axios.get(`${apiUrl}/api/order/${order.order_id}/status`)
             .then(response => {
+                GetOrders()
             })
             .catch(error => console.error('có lỗi trong việc xác nhận đơn hàng:', error));
     }
 
     const OrderDelete= (order)=>{
-        axios.delete(`http://localhost:8000/api/orders/${order.order_id}`)
+        axios.delete(`${apiUrl}/api/orders/${order.order_id}`)
             .then(response => {
                 GetOrders()
                  // assume response data has a 'data' field

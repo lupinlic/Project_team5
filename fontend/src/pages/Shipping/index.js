@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './style.css';
 import ShippingForm from './ShippingForm';
+import { apiUrl } from '../../config';
+
 
 function Shipping() {
   const [selectedReceiverId, setSelectedReceiverId] = useState(null);
@@ -32,7 +34,7 @@ function Shipping() {
         }, []);
     useEffect(() => {
       if (userId !== null) {        
-        axios.get(`http://localhost:8000/api/users/${userId}/receivers`)
+        axios.get(`${apiUrl}/api/users/${userId}/receivers`)
             .then(response => {
                 // Truy cập vào phần "data" của API trả về và đặt vào state
                 setData(response.data.data);
@@ -44,7 +46,7 @@ function Shipping() {
     }, [userId]);
 
     const updateReceivers = () => {
-      axios.get(`http://localhost:8000/api/users/${userId}/receivers`)
+      axios.get(`${apiUrl}/api/users/${userId}/receivers`)
       .then(response => {
           setData(response.data.data);
       })
@@ -56,7 +58,7 @@ function Shipping() {
     // 
     const deleteReceiver = (receiverId) => {
       if (window.confirm('Bạn có chắc chắn muốn xóa địa chỉ này không?')) {
-        axios.delete(`http://localhost:8000/api/receivers/${receiverId}`)
+        axios.delete(`${apiUrl}/api/receivers/${receiverId}`)
           .then(response => {
               updateReceivers(); // Cập nhật lại danh sách sau khi xóa
           })
@@ -71,7 +73,7 @@ function Shipping() {
 
     const setDefault = (receiver) => {
       if(userId!==null){
-        axios.get(`http://localhost:8000/api/users/${userId}/receivers/${receiver.receiver_id}/status`,)
+        axios.get(`${apiUrl}/api/users/${userId}/receivers/${receiver.receiver_id}/status`,)
         .then(response => {
             // Gọi lại API để cập nhật danh sách địa chỉ sau khi thiết lập mặc định
             updateReceivers();

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
 
 
 const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,onClose}) =>{
@@ -32,7 +33,7 @@ const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,onClose}) =>{
             start_date :start_date,
             end_date :end_date,
         }
-        axios.post(`http://localhost:8000/api/vouchers`,voucher)
+        axios.post(`${apiUrl}/api/vouchers`,voucher)
         .then(response =>{
             GetAllVoucherByGroup();
             onClose();

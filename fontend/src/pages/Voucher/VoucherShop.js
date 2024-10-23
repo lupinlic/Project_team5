@@ -1,6 +1,8 @@
 import React, { useState ,useEffect } from 'react';
 import axios from 'axios';
 import { json } from 'react-router-dom';
+import { apiUrl } from '../../config';
+
 
 const VoucherShop =({onClose,getCategory_id,HandleVoucher,getImagePath}) =>{
     // lấy nhóm category và product_id
@@ -40,7 +42,7 @@ const VoucherShop =({onClose,getCategory_id,HandleVoucher,getImagePath}) =>{
             //voucher category
     useEffect(()=>{
         if(Category !== null && Category !== undefined){
-            axios.get(`http://localhost:8000/api/category/${Category}/categoryVouchers`)
+            axios.get(`${apiUrl}/api/category/${Category}/categoryVouchers`)
               .then(response => {
                   // Truy cập vào phần "data" của API trả về và đặt vào state
                   if(response.data.data?.length>0){
@@ -57,7 +59,7 @@ const VoucherShop =({onClose,getCategory_id,HandleVoucher,getImagePath}) =>{
             //voucher shop
         useEffect(()=>{
             if(Category !== null && Category !== undefined){
-                axios.get(`http://localhost:8000/api/voucherGroup/vouchersOfGroupShop`)
+                axios.get(`${apiUrl}/api/voucherGroup/vouchersOfGroupShop`)
                   .then(response => {
                     if(response.data.data.length>0){
                         setVouchersOfShop(response.data.data);
@@ -73,7 +75,7 @@ const VoucherShop =({onClose,getCategory_id,HandleVoucher,getImagePath}) =>{
             //voucher ship
     useEffect(()=>{
         if(Category !== null && Category !== undefined){
-            axios.get(`http://localhost:8000/api/voucherGroup/vouchersOfShip`)
+            axios.get(`${apiUrl}/api/voucherGroup/vouchersOfShip`)
               .then(response => {
                 if(response.data.data.length>0){
                     setVouchersOfShip(response.data.data);
@@ -160,7 +162,7 @@ const VoucherShop =({onClose,getCategory_id,HandleVoucher,getImagePath}) =>{
     }
 
     const SerchVoucher = () => {
-        axios.post(`http://localhost:8000/api/voucherGroup/vouchersOfGroupShopByName`,{
+        axios.post(`${apiUrl}/api/voucherGroup/vouchersOfGroupShopByName`,{
             voucher_code:voucher_code
         })
               .then(response => {
@@ -211,7 +213,7 @@ const VoucherShop =({onClose,getCategory_id,HandleVoucher,getImagePath}) =>{
                             onClick={() => handleSelectVoucher(item,setVoucherShipSelected,VoucherShipSelected)}
                             >
                                 <div className='col-md-4 col-4'>
-                                    <img style={{ width: '80%', height: '80%' }} src={`http://localhost:8000/uploads/VoucherGroup/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
+                                    <img style={{ width: '80%', height: '80%' }} src={`${apiUrl}/uploads/VoucherGroup/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
                                 </div>
                                 <div className='col-md-7 col-7'>
                                     <p>Giảm {item.voucher_discount} VNĐ</p>
@@ -246,7 +248,7 @@ const VoucherShop =({onClose,getCategory_id,HandleVoucher,getImagePath}) =>{
                             )}
                             >
                                 <div className='col-md-4'>
-                                    <img style={{ width: '80%', height: '80%' }} src={`http://localhost:8000/uploads/VoucherGroup/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
+                                    <img style={{ width: '80%', height: '80%' }} src={`${apiUrl}/uploads/VoucherGroup/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
                                 </div>
                                 <div className='col-md-7'>
                                     <p>Giảm {item.voucher_discount} VNĐ</p>

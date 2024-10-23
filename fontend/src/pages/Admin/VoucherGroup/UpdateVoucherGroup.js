@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
+
 
 function UpdateVoucherGroup({GetAllVoucherGroup,onClose,voucherGroup_id}) {
     const [imageSrc, setImageSrc] = useState('https://png.pngtree.com/png-vector/20190820/ourlarge/pngtree-no-avatar-vector-isolated-on-white-background-png-image_1694546.jpg'); // Ảnh mặc định
@@ -9,12 +11,12 @@ function UpdateVoucherGroup({GetAllVoucherGroup,onClose,voucherGroup_id}) {
     const [voucherGroup, setvoucherGroup] = useState(null);
 
     useEffect(()=>{
-        axios.get(`http://localhost:8000/api/voucherGroups/${voucherGroup_id}`)
+        axios.get(`${apiUrl}/api/voucherGroups/${voucherGroup_id}`)
           .then(response =>{
             setvoucherGroup(response.data.data);
             setvoucherGroup_name(response.data.data.voucherGroup_name)
             setvoucherGroup_dsc(response.data.data.voucherGroup_dsc)
-            setImageSrc(`http://localhost:8000/uploads/VoucherGroup/${response.data.data.voucherGroup_img}`)
+            setImageSrc(`${apiUrl}/uploads/VoucherGroup/${response.data.data.voucherGroup_img}`)
         })
           .catch(error => console.error('Error fetching categories:', error));
     },[])
@@ -40,7 +42,7 @@ function UpdateVoucherGroup({GetAllVoucherGroup,onClose,voucherGroup_id}) {
         formdata.append('voucherGroup_dsc',voucherGroup_dsc);
         console.log(formdata.get('voucherGroup_name'))
 
-        axios.post(`http://localhost:8000/api/voucherGroups/${voucherGroup_id}`,formdata)
+        axios.post(`${apiUrl}/api/voucherGroups/${voucherGroup_id}`,formdata)
           .then(response =>{
             GetAllVoucherGroup();
             onClose();

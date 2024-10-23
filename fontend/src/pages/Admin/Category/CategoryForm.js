@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
+
 
 const CategoryForm = ({ categoryId, onUpdate, onClose }) => {
   const [category, setCategory] = useState({
@@ -10,7 +12,7 @@ const CategoryForm = ({ categoryId, onUpdate, onClose }) => {
 
   useEffect(() => {
     if (categoryId) {
-      axios.get(`http://localhost:8000/api/categorys/${categoryId}`)
+      axios.get(`${apiUrl}/api/categorys/${categoryId}`)
         .then(response => {
           setCategory(response.data.data);
         })
@@ -36,7 +38,7 @@ const CategoryForm = ({ categoryId, onUpdate, onClose }) => {
 
   if (categoryId) {
     // Gọi API sửa nhà cung cấp
-    axios.put(`http://localhost:8000/api/categorys/${categoryId}`, category)
+    axios.put(`${apiUrl}/api/categorys/${categoryId}`, category)
       .then(response => {
         
         onUpdate(); 
@@ -45,7 +47,7 @@ const CategoryForm = ({ categoryId, onUpdate, onClose }) => {
       
   } else {
     // Gọi API thêm nhà cung cấp mới
-    axios.post('http://localhost:8000/api/categorys', category)
+    axios.post(`${apiUrl}/api/categorys`, category)
       .then(response => {
        
         setCategory({

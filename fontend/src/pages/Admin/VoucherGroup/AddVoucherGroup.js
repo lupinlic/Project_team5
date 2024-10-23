@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
+
 
 const AddVoucherGroup = ({GetAllVoucherGroup,onClose}) => {
     const [imageSrc, setImageSrc] = useState('https://png.pngtree.com/png-vector/20190820/ourlarge/pngtree-no-avatar-vector-isolated-on-white-background-png-image_1694546.jpg'); // Ảnh mặc định
@@ -24,7 +26,7 @@ const AddVoucherGroup = ({GetAllVoucherGroup,onClose}) => {
         formdata.append('voucherGroup_name',voucherGroup_name);
         formdata.append('voucherGroup_dsc',voucherGroup_dsc);
 
-        axios.post('http://localhost:8000/api/voucherGroups',formdata)
+        axios.post(`${apiUrl}/api/voucherGroups`,formdata)
           .then(response =>{
             GetAllVoucherGroup();
             onClose();

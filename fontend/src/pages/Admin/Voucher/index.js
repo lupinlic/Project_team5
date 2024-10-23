@@ -4,6 +4,8 @@ import VoucherFormAd from './VoucherFormAd';
 import FormUpdateVoucher from './UpdateVoucher';
 import FormaddVoucherCategory from './VoucherCategory';
 import FormaddVoucherProduct from './VoucherProduct';
+import { apiUrl } from '../../../config';
+
 
 function Voucher() {
     const [voucherGroup, setVoucherGroup] = useState([]);
@@ -15,7 +17,7 @@ function Voucher() {
 
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/voucherGroups')
+        axios.get(`${apiUrl}/api/voucherGroups`)
           .then(response => setVoucherGroup(response.data.data))
           .catch(error => console.error('Error fetching categories:', error));
     },[]);
@@ -27,7 +29,7 @@ function Voucher() {
     },[selectedVoucherGroup_id]);
 
     const GetAllVoucherByGroup = () => {
-        axios.get(`http://localhost:8000/api/voucherGroup/${selectedVoucherGroup_id}/vouchers`)
+        axios.get(`${apiUrl}/api/voucherGroup/${selectedVoucherGroup_id}/vouchers`)
         .then(response => setVouchers(response.data.data))
         .catch(error => console.error('Error fetching categories:', error));
     }
@@ -81,7 +83,7 @@ function Voucher() {
         };
 
         const HandleDeleteVoucher = (voucher_id) => {
-            axios.delete(`http://localhost:8000/api/vouchers/${voucher_id}`)
+            axios.delete(`${apiUrl}/api/vouchers/${voucher_id}`)
             .then(response => GetAllVoucherByGroup())
             .catch(error => console.error('có lỗi trong quá trình xóa voucher:', error));
         }

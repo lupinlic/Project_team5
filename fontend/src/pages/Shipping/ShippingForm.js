@@ -1,5 +1,7 @@
 import React, { useState, useEffect,useRef} from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../config';
+
 const ShippingForm = ({receiverId, onUpdate, onClose,setDefault}) => {
   // console.log(receiverId)
     const [userId, setUserId] = useState(null);
@@ -40,7 +42,7 @@ const ShippingForm = ({receiverId, onUpdate, onClose,setDefault}) => {
 // đổ địa chỉ theo id
 useEffect(() => {
   if (receiverId) {
-    axios.get(`http://localhost:8000/api/receivers/${receiverId}`)
+    axios.get(`${apiUrl}/api/receivers/${receiverId}`)
       .then(response => {
         setReceiver(response.data.data);
       })
@@ -160,7 +162,7 @@ const handleChange = (e) => {
 
     if (receiverId && receiverId !== null) {
       // Gọi API sửa nhà cung cấp
-      axios.put(`http://localhost:8000/api/receivers/${receiverId}`, receiver)
+      axios.put(`${apiUrl}/api/receivers/${receiverId}`, receiver)
       .then(response => {
         if(checkboxRef.current.checked){
           setDefault(response.data.data);
@@ -178,7 +180,7 @@ const handleChange = (e) => {
 
         receiver.user_id=userId;
 
-        axios.post('http://localhost:8000/api/receivers', receiver)
+        axios.post(`${apiUrl}/api/receivers`, receiver)
           .then(response => {
             if(checkboxRef.current.checked){
               setDefault(response.data.data);

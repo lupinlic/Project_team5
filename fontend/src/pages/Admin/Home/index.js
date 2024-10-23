@@ -1,6 +1,7 @@
 import { Line, Pie } from 'react-chartjs-2';
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
 
 
 import { Chart as ChartJS, ArcElement, LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend } from 'chart.js';
@@ -40,7 +41,7 @@ function AdHome() {
     },[products])
 
     const GetStatistical = (e) => {
-      axios.get('http://localhost:8000/api/order/statistical')
+      axios.get(`${apiUrl}/api/order/statistical`)
       .then(response => {
           // Truy cập vào phần "data" của API trả về và đặt vào state
           setorderstatistical(response.data.data);
@@ -49,7 +50,7 @@ function AdHome() {
           console.error('Error fetching data: ', error);
       });
 
-      axios.get('http://localhost:8000/api/user/statistical')
+      axios.get(`${apiUrl}/api/user/statistical`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
             setuserstatistical(response.data.data);
@@ -58,7 +59,7 @@ function AdHome() {
             console.error('Error fetching data: ', error);
         });
         
-      axios.get('http://localhost:8000/api/product/statistical')
+      axios.get(`${apiUrl}/api/product/statistical`)
       .then(response => {
           // Truy cập vào phần "data" của API trả về và đặt vào state
           setproducts(response.data.data);
@@ -72,7 +73,7 @@ function AdHome() {
     const HandleStatistical = (e) => {
       e.preventDefault();
 
-      axios.post('http://localhost:8000/api/order/statisticalByDate',{
+      axios.post(`${apiUrl}/api/order/statisticalByDate`,{
         start_date:start_date,
         end_date:end_date
       })
@@ -84,7 +85,7 @@ function AdHome() {
           console.error('Error fetching data: ', error);
       });
         
-      axios.post('http://localhost:8000/api/product/statisticalByDate',{
+      axios.post(`${apiUrl}/api/product/statisticalByDate`,{
         start_date:start_date,
         end_date:end_date
       })
@@ -98,7 +99,7 @@ function AdHome() {
     }
 
     const HandleLineChart = () => {
-      axios.post('http://localhost:8000/api/order/statisticalByLinechart',{
+      axios.post(`${apiUrl}/api/order/statisticalByLinechart`,{
         option_time:option_time,
         year:year,
       })

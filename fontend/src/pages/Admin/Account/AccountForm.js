@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+// Trong một component
+import { apiUrl } from '../../../config';
 
 const AccountForm = ({ userId, onUpdate, onClose }) => {
     const [user, setUser] = useState({
@@ -10,7 +12,7 @@ const AccountForm = ({ userId, onUpdate, onClose }) => {
 
       useEffect(() => {
         if (userId) {
-          axios.get(`http://localhost:8000/api/users/${userId}`)
+          axios.get(`${apiUrl}/api/users/${userId}`)
             .then(response => {
               setUser(response.data.data);
             })
@@ -37,7 +39,7 @@ const AccountForm = ({ userId, onUpdate, onClose }) => {
     
       if (userId) {
         // Gọi API sửa nhà cung cấp
-        axios.put(`http://localhost:8000/api/users/${userId}`, user)
+        axios.put(`${apiUrl}/api/users/${userId}`, user)
           .then(response => {
             
             onUpdate(); 
@@ -46,7 +48,7 @@ const AccountForm = ({ userId, onUpdate, onClose }) => {
           
       } else {
         // Gọi API thêm nhà cung cấp mới
-        axios.post('http://localhost:8000/api/users', user)
+        axios.post(`${apiUrl}/api/users`, user)
           .then(response => {
            
             setUser({

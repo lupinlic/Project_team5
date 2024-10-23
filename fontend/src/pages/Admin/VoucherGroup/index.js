@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddVoucherGroup from './AddVoucherGroup';
 import UpdateVoucherGroup from './UpdateVoucherGroup';
+import { apiUrl } from '../../../config';
+
 
 function VoucherGroup() {
     const [voucherGroup, setVoucherGroup] = useState([]);
@@ -20,7 +22,7 @@ function VoucherGroup() {
     },[]);
 
     const GetallVoucherGroup = () =>{
-        axios.get('http://localhost:8000/api/voucherGroups')
+        axios.get(`${apiUrl}/api/voucherGroups`)
           .then(response => setVoucherGroup(response.data.data))
           .catch(error => console.error('Error fetching categories:', error));
     }
@@ -45,7 +47,7 @@ function VoucherGroup() {
         };
           
         const HandleDeleteVoucherGroup = (voucherGroup_id) => {
-            axios.delete(`http://localhost:8000/api/voucherGroups/${voucherGroup_id}`)
+            axios.delete(`${apiUrl}/api/voucherGroups/${voucherGroup_id}`)
             .then(response => GetallVoucherGroup())
             .catch(error => console.error('có lỗi trong quá trình xóa voucher:', error));
         }
@@ -86,7 +88,7 @@ function VoucherGroup() {
                         <>
                         <tr key={item.voucherGroup_id}>
                             <td>
-                                <img style={{width:'15%', height:'15%'}} src={`http://localhost:8000/uploads/VoucherGroup/${item.voucherGroup_img}`}></img>
+                                <img style={{width:'15%', height:'15%'}} src={`${apiUrl}/uploads/VoucherGroup/${item.voucherGroup_img}`}></img>
                             </td>
                             <td>{item.voucherGroup_name}</td>
                             <td>{item.voucherGroup_dsc}</td>

@@ -2,6 +2,8 @@ import ShippingForm from '../Shipping/ShippingForm';
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../config';
+
 
 const MyAddress = ({onClose,setReceiver}) =>{
     const [isFormVisible, setIsFormVisible] = useState(false);
@@ -37,7 +39,7 @@ const MyAddress = ({onClose,setReceiver}) =>{
       }, [userId]);
 
       const updateReceivers = () => {
-        axios.get(`http://localhost:8000/api/users/${userId}/receivers`)
+        axios.get(`${apiUrl}/api/users/${userId}/receivers`)
         .then(response => {
             setData(response.data.data);
         })
@@ -48,7 +50,7 @@ const MyAddress = ({onClose,setReceiver}) =>{
 
         const setDefault = (receiver) => {
             if(userId!==null){
-              axios.get(`http://localhost:8000/api/users/${userId}/receivers/${receiver.receiver_id}/status`,)
+              axios.get(`${apiUrl}/api/users/${userId}/receivers/${receiver.receiver_id}/status`,)
               .then(response => {
                   // Gọi lại API để cập nhật danh sách địa chỉ sau khi thiết lập mặc định
                   updateReceivers();

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
 
 
 const UpdateShipping = ({ shipping_send,onUpdate, onClose}) => {
@@ -31,7 +32,7 @@ const UpdateShipping = ({ shipping_send,onUpdate, onClose}) => {
       shipping_name:shipping_name,
       shipping_price:shipping_price,
     }
-      axios.put(`http://localhost:8000/api/shippings/${shipping_send.shipping_id}`,getshipping)
+      axios.put(`${apiUrl}/api/shippings/${shipping_send.shipping_id}`,getshipping)
         .then(response => {
           onUpdate();
           onClose(shipping_send.shipping_id);

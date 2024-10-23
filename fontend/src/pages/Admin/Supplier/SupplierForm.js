@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
+
 
 const SupplierForm = ({ supplierId, onUpdate, onClose }) => {
   const [supplier, setSupplier] = useState({
@@ -13,7 +15,7 @@ const SupplierForm = ({ supplierId, onUpdate, onClose }) => {
 
   useEffect(() => {
     if (supplierId) {
-      axios.get(`http://localhost:8000/api/suppliers/${supplierId}`)
+      axios.get(`${apiUrl}/api/suppliers/${supplierId}`)
         .then(response => {
           setSupplier(response.data.data);
         })
@@ -42,7 +44,7 @@ const SupplierForm = ({ supplierId, onUpdate, onClose }) => {
 
   if (supplierId) {
     // Gọi API sửa nhà cung cấp
-    axios.put(`http://localhost:8000/api/suppliers/${supplierId}`, supplier)
+    axios.put(`${apiUrl}/api/suppliers/${supplierId}`, supplier)
       .then(response => {
         
         onUpdate(); 
@@ -51,7 +53,7 @@ const SupplierForm = ({ supplierId, onUpdate, onClose }) => {
       
   } else {
     // Gọi API thêm nhà cung cấp mới
-    axios.post('http://localhost:8000/api/suppliers', supplier)
+    axios.post(`${apiUrl}/api/suppliers`, supplier)
       .then(response => {
        
         setSupplier({

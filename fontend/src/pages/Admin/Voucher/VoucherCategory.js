@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faList,faSearch,faBell,faChevronDown,faCog,faUser,faLock,faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
+import { apiUrl } from '../../../config';
 
 
 const VoucherCategory = ({ sendVoucher_id, onClose }) => {
@@ -17,7 +18,7 @@ const VoucherCategory = ({ sendVoucher_id, onClose }) => {
 
     // Fetch products when component mounts
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/categorys`)
+        axios.get(`${apiUrl}/api/categorys`)
             .then(response => {
                 setcategorys(response.data.data); // assume response data has a 'data' field
             })
@@ -26,7 +27,7 @@ const VoucherCategory = ({ sendVoucher_id, onClose }) => {
 
     useEffect(() => {
         if(voucher_id!== null){
-            axios.get(`http://localhost:8000/api/categoryVouchers/${voucher_id}/category`)
+            axios.get(`${apiUrl}/api/categoryVouchers/${voucher_id}/category`)
             .then(response => {
                 setlsSelectcategorys(response.data.data); // assume response data has a 'data' field
             })
@@ -38,7 +39,7 @@ const VoucherCategory = ({ sendVoucher_id, onClose }) => {
     const handleSaveVoucherProduct = (e) => {
         e.preventDefault();
         lsSelectcategorys.map(category=>(
-            axios.post(`http://localhost:8000/api/categoryVouchers`, {
+            axios.post(`${apiUrl}/api/categoryVouchers`, {
                 voucher_id:voucher_id,
                 category_id: category.category_id,
                 categoryVoucher_dsc:categoryVoucher_dsc,

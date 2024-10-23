@@ -2,6 +2,8 @@ import './style.css';
 import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
 import {Link } from 'react-router-dom';
+import { apiUrl } from '../../config';
+
 
 function Home (){
         const [currentIndex, setCurrentIndex] = useState(0);
@@ -41,7 +43,7 @@ function Home (){
         const [categorys, setCategory] = useState([]);
         useEffect(() => {
             // Gọi hai API để lấy dữ liệu sản phẩm và danh mục, nhà cung cấp
-            axios.get('http://localhost:8000/api/products')
+            axios.get(`${apiUrl}/api/products`)
                
             
                 .then(response => {
@@ -52,7 +54,7 @@ function Home (){
                     console.error('Error fetching data: ', error);
                 });
 
-                axios.get('http://localhost:8000/api/categorys')
+                axios.get(`${apiUrl}/api/categorys`)
             .then(response => {
                 // Truy cập vào phần "data" của API trả về và đặt vào state
                 setCategory(response.data.data);
@@ -74,9 +76,8 @@ function Home (){
           };
           const getImagePath = (categoryId, productImg) => {
             const categoryName = getCategoryName(categoryId);
-            console.log(`/assets/img/${categoryName}/${productImg}`)
             try {
-              return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
+              return `${apiUrl}/uploads/Categories/${categoryName}/${productImg}`;
               
             } catch (error) {
               console.error('Error loading image:', error);

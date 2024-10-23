@@ -5,6 +5,7 @@ import MyAddress from './MyAddress';
 import VoucherForm from '../Voucher/VoucherShop';
 import VoucherProduct from '../Voucher/VoucherProduct';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from '../../config';
 
 
 
@@ -73,7 +74,7 @@ function Pay() {
         // receiver : lấy receiver mặc định và show các form như bên receiver
        useEffect(() => {       
         if(userId!==null){
-            axios.get(`http://localhost:8000/api/users/${userId}/receivers/type`)
+            axios.get(`${apiUrl}/api/users/${userId}/receivers/type`)
             .then(response => {
                 // Truy cập vào phần "data" của API trả về và đặt vào state
                 setData(response.data.data);
@@ -86,7 +87,7 @@ function Pay() {
 
     useEffect(() => {       
         if(receiver!==null &&receiver?.length>0){
-            axios.post(`http://localhost:8000/api/shipping`,{
+            axios.post(`${apiUrl}/api/shipping`,{
                 receiver_city:receiver[0].receiver_city,
                 receiver_district:receiver[0].receiver_district,
                 receiver_commune:receiver[0].receiver_commune,
@@ -275,7 +276,7 @@ function Pay() {
             receiver_id: receiver[0].receiver_id, // ID người nhận
             shipping_id: Shipping.shipping_id            // ID phương thức giao hàng
         };
-        axios.post(`http://localhost:8000/api/orders`,
+        axios.post(`${apiUrl}/api/orders`,
             order
         )
         .then(response => {
@@ -294,7 +295,7 @@ function Pay() {
 
     const HandleOrderDetail = (order_id,order_date) => {
         carts.map(cart=>{
-            axios.post(`http://localhost:8000/api/orderDetails`,
+            axios.post(`${apiUrl}/api/orderDetails`,
                 {
                     product_id : cart.product.product_id,
                     order_id : order_id,
@@ -314,7 +315,7 @@ function Pay() {
 
     const HandleDeleteCart = () => {
         carts.map(cart=>{
-            axios.delete(`http://localhost:8000/api/carts/${cart.cart_id}`)
+            axios.delete(`${apiUrl}/api/carts/${cart.cart_id}`)
             .then(response => {
             })
             .catch(error => {
@@ -328,7 +329,7 @@ function Pay() {
         // thực hiện set trạng thái sử dụng vouhcer của người dùng thành 1 tức là đã sd rồi
         // tham số nhận vào sẽ là voucher và thực hiện chuyển đổi
         Vouchers.map(data=> {
-            axios.get(`http://localhost:8000/api/voucherUser/${data.voucher.voucher_id}/status`)
+            axios.get(`${apiUrl}/api/voucherUser/${data.voucher.voucher_id}/status`)
             .then(response => {
             })
             .catch(error => {
@@ -340,7 +341,7 @@ function Pay() {
         // thực hiện set trạng thái sử dụng vouhcer của người dùng thành 1 tức là đã sd rồi
         // tham số nhận vào sẽ là voucher và thực hiện chuyển đổi
         Vouchers.map(data=> {
-            axios.post(`http://localhost:8000/api/orderVouchers`,{
+            axios.post(`${apiUrl}/api/orderVouchers`,{
                 order_id: order_id,
                 voucher_id:data.voucher.voucher_id,
                 orderVoucher_price:data.voucherdiscount
@@ -385,7 +386,7 @@ function Pay() {
 
     const HandleSetQuantityVoucher = () => {
         Vouchers.map(data=> {
-            axios.get(`http://localhost:8000/api/voucher/${data.voucher.voucher_id}/quantity`)
+            axios.get(`${apiUrl}/api/voucher/${data.voucher.voucher_id}/quantity`)
             .then(response => {
             })
             .catch(error => {
@@ -408,7 +409,7 @@ function Pay() {
     },[Order_id])
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/categorys')
+        axios.get(`${apiUrl}/api/categorys`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
             setCategory(response.data.data);
@@ -421,7 +422,7 @@ function Pay() {
     const getImagePath = (categoryId, productImg) => {
         const categoryName = getCategoryName(categoryId);
         try {
-          return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
+          return `${apiUrl}/uploads/Categories/${categoryName}/${productImg}`;
         } catch (error) {
           console.error('Error loading image:', error);
           return null; // Hoặc có thể trả về một hình ảnh mặc định
