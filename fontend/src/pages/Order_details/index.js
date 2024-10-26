@@ -93,7 +93,7 @@ function Order_detail() {
                 return orderVoucher.orderVoucher_price;
             });
             let total = lsVucherPrices.reduce((total,Price)=>{
-                return total+Price;
+                return total+parseInt(Price);
             },0)
             settotalVoucherOrder(total);
             }
@@ -120,7 +120,7 @@ function Order_detail() {
           const getCategoryName = (categoryId) => {
             let categoryName = 'Không xác định';
             categorys.forEach(category => {
-              if (category.category_id === categoryId) {
+              if (category.category_id == categoryId) {
                 categoryName = category.category_name;
               }
             });
@@ -196,7 +196,7 @@ function Order_detail() {
                     <div className='col-md-8'></div>
                     <div className='col-md-2 col-5'>Thành tiền</div>
                     <div className='col-md-2 col-7' style={{fontWeight:'500',color:'red',fontSize:'20px'}}>
-                        {order.order_totalmoney+shipping?.shipping_price-totalVoucherOrder}
+                        {parseInt(order.order_totalmoney)+parseInt(shipping?.shipping_price)-totalVoucherOrder}
                     </div>
                 </div>
                 <div className='row pt-2 pt-md-3 container'>

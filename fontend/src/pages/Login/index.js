@@ -38,11 +38,11 @@ function Login() {
 
         })
         .catch(error => {
-            console.error('Lỗi khi đăng nhập:', error);
+            alert('Tài khoản hoặc mật khẩu bị sai vui lòng đăng nhập lại:');
         });
     }; 
     useEffect(()=>{
-        if (user) {
+        if (user!==null) {
             if (user.user_role == 1) {
               window.location.href = '/Admin/Home';
             } else {

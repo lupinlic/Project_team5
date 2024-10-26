@@ -22,13 +22,11 @@ class StoreReceiverRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "receiver_name" => 'required|string|unique:tbl_receiver,receiver_name',
             "receiver_phone" => 'required|string|min:10|unique:tbl_receiver,receiver_phone',
             "user_id" => 'required|numeric|exists:tbl_user,user_id',
             "receiver_city" => 'required|string|min:5',
             "receiver_district" => 'required|string|min:5',
             "receiver_commune" => 'required|string|min:5',
-            "receiver_dsc" => 'required|string|min:5',
             "receiver_type" => 'required|numeric|min:0',
         ];
     }
@@ -44,13 +42,11 @@ class StoreReceiverRequest extends FormRequest
 
     public function attributes(){
         return [
-            "receiver_name" => 'Tên người nhận',
             "receiver_phone" => 'số điện thoại người nhận',
             "user_id" => 'Người dùng',
             "receiver_city" => 'Thành phố',
             "receiver_district" => 'Quận/Huyện',
             "receiver_commune" => 'Xã',
-            "receiver_dsc" => 'mô tả',
             "receiver_type" => 'kiểu mặc định',
         ];
     }

@@ -2,7 +2,7 @@ import React, { useState, useEffect,useRef} from 'react';
 import axios from 'axios';
 import { apiUrl } from '../../config';
 
-const ShippingForm = ({receiverId, onUpdate, onClose,setDefault}) => {
+const ShippingForm = ({receiverId, onUpdate, onClose,setDefault,count_receiver}) => {
   // console.log(receiverId)
     const [userId, setUserId] = useState(null);
     const [provinces, setProvinces] = useState([]);
@@ -156,7 +156,7 @@ const handleChange = (e) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(checkboxRef.current.checked){
+    if(checkboxRef.current.checked || count_receiver==null){
       receiver.receiver_type = 1;
     }
 
@@ -242,9 +242,9 @@ const handleChange = (e) => {
 
             <div className="d-flex">
                 <input className="form-check-input me-2" type="checkbox" defaultValue id="squareCheckbox" ref={checkboxRef}
-                style={receiver.receiver_type == 1 ? {display:'none'} : {} }
+                style={receiver.receiver_type == 1 || count_receiver==null ? {display:'none'} : {} }
                 />
-                <p style={receiver.receiver_type == 1 ? {display:'none'} : {} }>Đặt làm địa chỉ mặc định</p>
+                <p style={receiver.receiver_type == 1 || count_receiver==null ? {display:'none'} : {} }>Đặt làm địa chỉ mặc định</p>
             </div>
 
 

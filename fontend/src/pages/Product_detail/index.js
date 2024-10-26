@@ -56,7 +56,7 @@ const Product_detail = () => {
       const getCategoryName = (categoryId) => {
         let categoryName = 'Không xác định';
         categorys.forEach(category => {
-          if (category.category_id === categoryId) {
+          if (category.category_id == categoryId) {
             categoryName = category.category_name;
           }
         });

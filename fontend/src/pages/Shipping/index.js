@@ -11,6 +11,9 @@ function Shipping() {
   const [style_receiverType, setStyle] = useState({cursor: 'not-allowed' ,opacity: '.7'});
   const [style_noDelete, setdelete] = useState({display:'none'});
 
+  const [receiver, setData] = useState(null);
+  const [userId, setUserId] = useState(null);
+
 
   const openForm = (receiverId = null) => {
     setSelectedReceiverId(receiverId);
@@ -21,17 +24,14 @@ function Shipping() {
   const closeForm = () => {
     setIsFormVisible(false);
   };
-      const [receiver, setData] = useState([]);
-      const [userId, setUserId] = useState(null);
-
-
-      const userData = localStorage.getItem('user');
-      useEffect(() => {
-          
+  
+  useEffect(() => {  
+    const userData = localStorage.getItem('user');
           const parsedUser = JSON.parse(userData);
           setUserId(parsedUser.user_id);
 
         }, []);
+
     useEffect(() => {
       if (userId !== null) {        
         axios.get(`${apiUrl}/api/users/${userId}/receivers`)
@@ -98,6 +98,7 @@ function Shipping() {
                     onUpdate={updateReceivers} 
                     onClose={closeForm} 
                     setDefault={setDefault}
+                    count_receiver={receiver}
                     />
       )}
                     </>

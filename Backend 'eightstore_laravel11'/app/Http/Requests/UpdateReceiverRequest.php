@@ -24,11 +24,6 @@ class UpdateReceiverRequest extends FormRequest
     {
         $receiver = $this->route()->receiver;
         return [
-            "receiver_name" => [
-                'required',
-                'string',
-                Rule::unique('tbl_receiver','receiver_name')->ignore($receiver->receiver_id,'receiver_id')
-            ],
             "receiver_phone" =>[
                 'required',
                 'string',
@@ -42,7 +37,6 @@ class UpdateReceiverRequest extends FormRequest
             "receiver_city" => 'required|string|min:5',
             "receiver_district" => 'required|string|min:5',
             "receiver_commune" => 'required|string|min:5',
-            "receiver_dsc" => 'required|string|min:5',
             "receiver_type" => 'required|numeric|min:0',
         ];
     }
@@ -59,13 +53,11 @@ class UpdateReceiverRequest extends FormRequest
 
     public function attributes(){
         return [
-            "receiver_name" => 'Tên người nhận',
             "receiver_phone" => 'số điện thoại người nhận',
             "user_id" => 'Người dùng',
             "receiver_city" => 'Thành phố',
             "receiver_district" => 'Quận/Huyện',
             "receiver_commune" => 'Xã',
-            "receiver_dsc" => 'mô tả',
             "receiver_type" => 'kiểu mặc định',
         ];
     }

@@ -5,6 +5,8 @@ import {Link } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CartContext } from '../../../../context/cartContext';  // Import CartContext
+import { apiUrl } from '../../../../config';
+
 
 import { faSearch, faUser, faSignOutAlt, faShoppingCart , faPhone ,faHome, faCog,faLock, faMapMarkedAlt, faGift} from '@fortawesome/free-solid-svg-icons';
 // import logo from '../../../../assets/img/logo8.png';
@@ -16,7 +18,7 @@ function Header() {
 
     
     const handleLogout = () => {
-        axios.get('http://localhost:8000/api/user/logout')
+        axios.get(`${apiUrl}/api/user/logout`)
         localStorage.removeItem('authToken');
         localStorage.removeItem('user');
         setCartCount(0)
@@ -33,7 +35,7 @@ function Header() {
 
     useEffect(()=>{
         if(userId!== null && userId!==undefined){
-        axios.get(`http://localhost:8000/api/users/${userId}/carts`)
+        axios.get(`${apiUrl}/api/users/${userId}/carts`)
                 .then(response => {
                     setCartCount(response.data.count_cart);
                 })

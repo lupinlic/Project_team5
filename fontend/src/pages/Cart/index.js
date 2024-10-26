@@ -106,14 +106,14 @@ const Cart = () => {
       const getCategoryName = (categoryId) => {
         let categoryName = 'Không xác định';
         categorys.forEach(category => {
-          if (category.category_id === categoryId) {
+          if (category.category_id == categoryId) {
             categoryName = category.category_name;
           }
         });
         return categoryName;
       };
       const getImagePath = (categoryId, productImg) => {
-        const categoryName = getCategoryName(categoryId);
+        const categoryName = getCategoryName(parseInt(categoryId));
         try {
           return `${apiUrl}/uploads/Categories/${categoryName}/${productImg}`;
         } catch (error) {
@@ -214,8 +214,8 @@ const Cart = () => {
 
     const HandleTotalMoney = () => {
         let list_price = selectProducts.map(cart => cart.cart_totalmoney);
-        let sumtotal = list_price.reduce((sum,value)=>sum + value,0);
-        sessionStorage.setItem('carts_total',sumtotal);
+        let sumtotal = list_price.reduce((sum,value)=>sum + parseInt(value),0);
+        sessionStorage.setItem('carts_total',JSON.stringify(sumtotal));
         return sumtotal;
     }
 
