@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './style.css';
 import ShippingForm from './ShippingForm';
+import { apiUrl } from '../../config';
+
 
 function Shipping() {
   const [selectedReceiverId, setSelectedReceiverId] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [style_receiverType, setStyle] = useState({cursor: 'not-allowed' ,opacity: '.7'});
   const [style_noDelete, setdelete] = useState({display:'none'});
+
+  const [receiver, setData] = useState(null);
+  const [userId, setUserId] = useState(null);
 
 
   const openForm = (receiverId = null) => {
@@ -19,20 +24,17 @@ function Shipping() {
   const closeForm = () => {
     setIsFormVisible(false);
   };
-      const [receiver, setData] = useState([]);
-      const [userId, setUserId] = useState(null);
-
-
-      const userData = localStorage.getItem('user');
-      useEffect(() => {
-          
+  
+  useEffect(() => {  
+    const userData = localStorage.getItem('user');
           const parsedUser = JSON.parse(userData);
           setUserId(parsedUser.user_id);
 
         }, []);
+
     useEffect(() => {
       if (userId !== null) {        
-        axios.get(`http://localhost:8000/api/users/${userId}/receivers`)
+        axios.get(`${apiUrl}/api/users/${userId}/receivers`)
             .then(response => {
                 // Truy cập vào phần "data" của API trả về và đặt vào state
                 setData(response.data.data);
@@ -44,7 +46,7 @@ function Shipping() {
     }, [userId]);
 
     const updateReceivers = () => {
-      axios.get(`http://localhost:8000/api/users/${userId}/receivers`)
+      axios.get(`${apiUrl}/api/users/${userId}/receivers`)
       .then(response => {
           setData(response.data.data);
       })
@@ -56,7 +58,7 @@ function Shipping() {
     // 
     const deleteReceiver = (receiverId) => {
       if (window.confirm('Bạn có chắc chắn muốn xóa địa chỉ này không?')) {
-        axios.delete(`http://localhost:8000/api/receivers/${receiverId}`)
+        axios.delete(`${apiUrl}/api/receivers/${receiverId}`)
           .then(response => {
               updateReceivers(); // Cập nhật lại danh sách sau khi xóa
           })
@@ -71,7 +73,7 @@ function Shipping() {
 
     const setDefault = (receiver) => {
       if(userId!==null){
-        axios.get(`http://localhost:8000/api/users/${userId}/receivers/${receiver.receiver_id}/status`,)
+        axios.get(`${apiUrl}/api/users/${userId}/receivers/${receiver.receiver_id}/status`,)
         .then(response => {
             // Gọi lại API để cập nhật danh sách địa chỉ sau khi thiết lập mặc định
             updateReceivers();
@@ -96,6 +98,7 @@ function Shipping() {
                     onUpdate={updateReceivers} 
                     onClose={closeForm} 
                     setDefault={setDefault}
+                    count_receiver={receiver}
                     />
       )}
                     </>

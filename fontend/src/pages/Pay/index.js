@@ -5,6 +5,7 @@ import MyAddress from './MyAddress';
 import VoucherForm from '../Voucher/VoucherShop';
 import VoucherProduct from '../Voucher/VoucherProduct';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from '../../config';
 
 
 
@@ -21,7 +22,7 @@ function Pay() {
     const [category, setcategory] = useState(null);
     const [Voucher_shop, setVoucher_shop] = useState([]);
     const [Voucher_freeship, setVoucher_freeship] = useState([]);
-    const [Shipping, setShipping] = useState(null);
+    const [Shipping, setShipping] = useState({shipping_price:30000});
     const [discountShipping, setdiscountShipping] = useState(0);
     const [discountTotal, setdiscountTotal] = useState(0);
     const [totalPayMent, settotalPayMent] = useState(0);
@@ -35,7 +36,19 @@ function Pay() {
 
 
 
-
+    useEffect(() => {       
+        if(userId!==null){
+            axios.get(`${apiUrl}/api/users/${userId}/receivers/type`)
+            .then(response => {
+                // Truy cập vào phần "data" của API trả về và đặt vào state
+                setData(response.data.data);
+            })
+            .catch(error => {
+                alert('vui lòng thiết lập người nhận trước khi đặt hàng');
+                navigate('/Shipping');
+            });
+        }
+    }, [userId]);
 
     //form thanh toán
     /**
@@ -57,45 +70,34 @@ function Pay() {
             console.log(parsedUser)
             setUserId(parsedUser.user_id);
             setCarts(parsedCarts);
-            setcarts_total(parsedcarts_total)
+            setcarts_total(parseInt(parsedcarts_total))
+            settotalPayMent(parseInt(parsedcarts_total)- (Shipping.shipping_price))
+
             ClearSession()
            
        }, []);
 
        useEffect(()=>{
 
-        if(Shipping!==null){
+        if(Shipping.length>0){
        
-            settotalPayMent(carts_total- (Shipping.shipping_price?Shipping.shipping_price:30000))
+            settotalPayMent(carts_total- (Shipping.shipping_price))
         }
        },[Shipping])
 
         // receiver : lấy receiver mặc định và show các form như bên receiver
-       useEffect(() => {       
-        if(userId!==null){
-            axios.get(`http://localhost:8000/api/users/${userId}/receivers/type`)
-            .then(response => {
-                // Truy cập vào phần "data" của API trả về và đặt vào state
-                setData(response.data.data);
-            })
-            .catch(error => {
-                console.error('Error fetching data: ', error);
-            });
-        }
-    }, [userId]);
+       
 
     useEffect(() => {       
         if(receiver!==null &&receiver?.length>0){
-            axios.post(`http://localhost:8000/api/shipping`,{
+            axios.post(`${apiUrl}/api/shipping`,{
                 receiver_city:receiver[0].receiver_city,
                 receiver_district:receiver[0].receiver_district,
                 receiver_commune:receiver[0].receiver_commune,
             })
             .then(response => {
-                console.log(response.data.data)
-
-                // Truy cập vào phần "data" của API trả về và đặt vào state
-                setShipping(...response.data.data);
+                    // Truy cập vào phần "data" của API trả về và đặt vào state
+                    setShipping(...response.data.data);
             })
             .catch(error => {
                 console.error('Error fetching data: ', error);
@@ -171,7 +173,7 @@ function Pay() {
 
     const HandleVoucherToProduct = (voucher,product_id,isCancelVoucher) =>{
         let cart = carts.map(item => {
-                if (item.product.product_id === product_id) {
+                if (item.product.product_id == product_id) {
                     // Thêm voucher vào object
                     if(isCancelVoucher){
                     return {
@@ -194,7 +196,7 @@ function Pay() {
     }
 
     const handleVoucherToShopandShip = (voucher,isCancelVoucher) => {
-        switch(voucher.voucherGroup_id){
+        switch(parseInt(voucher.voucherGroup_id)){
             case 1:
                 if(isCancelVoucher){
                     setVoucher_freeship({...voucher,Voucher_freeship : handelVoucher_Type(voucher,carts_total)});
@@ -236,20 +238,20 @@ function Pay() {
 
     useEffect(() =>{
         if(Voucher_freeship?.voucher_id){
-            setdiscountShipping(handelVoucher_Type(Voucher_freeship,Shipping?.shipping_price));
+            setdiscountShipping(handelVoucher_Type(Voucher_freeship,Shipping.shipping_price));
         }
     },[Voucher_freeship])
 
     useEffect(()=>{
-        let totalDiscount = carts.reduce((total, item) => total + (item.discount_product || 0), 0);
-        let voucher_shop = Voucher_shop.Voucher_shop ? Voucher_shop.Voucher_shop:0;
+        let totalDiscount = carts.reduce((total, item) => total + (parseInt(item.discount_product) || 0), 0);
+        let voucher_shop = Voucher_shop.Voucher_shop ? parseInt(Voucher_shop.Voucher_shop):0;
         setdiscountTotal(totalDiscount+voucher_shop);
     },[carts,Voucher_shop]);
 
 
     useEffect(()=>{
         if(discountTotal>0 || discountShipping>0){
-            settotalPayMent(carts_total+Shipping?.shipping_price-discountShipping-discountTotal);
+            settotalPayMent(carts_total+parseInt(Shipping.shipping_price)-parseInt(discountShipping)-discountTotal);
         }
     },[discountTotal,discountShipping])
 
@@ -275,7 +277,7 @@ function Pay() {
             receiver_id: receiver[0].receiver_id, // ID người nhận
             shipping_id: Shipping.shipping_id            // ID phương thức giao hàng
         };
-        axios.post(`http://localhost:8000/api/orders`,
+        axios.post(`${apiUrl}/api/orders`,
             order
         )
         .then(response => {
@@ -294,7 +296,7 @@ function Pay() {
 
     const HandleOrderDetail = (order_id,order_date) => {
         carts.map(cart=>{
-            axios.post(`http://localhost:8000/api/orderDetails`,
+            axios.post(`${apiUrl}/api/orderDetails`,
                 {
                     product_id : cart.product.product_id,
                     order_id : order_id,
@@ -314,7 +316,7 @@ function Pay() {
 
     const HandleDeleteCart = () => {
         carts.map(cart=>{
-            axios.delete(`http://localhost:8000/api/carts/${cart.cart_id}`)
+            axios.delete(`${apiUrl}/api/carts/${cart.cart_id}`)
             .then(response => {
             })
             .catch(error => {
@@ -328,7 +330,7 @@ function Pay() {
         // thực hiện set trạng thái sử dụng vouhcer của người dùng thành 1 tức là đã sd rồi
         // tham số nhận vào sẽ là voucher và thực hiện chuyển đổi
         Vouchers.map(data=> {
-            axios.get(`http://localhost:8000/api/voucherUser/${data.voucher.voucher_id}/status`)
+            axios.get(`${apiUrl}/api/voucherUser/${data.voucher.voucher_id}/status`)
             .then(response => {
             })
             .catch(error => {
@@ -340,7 +342,7 @@ function Pay() {
         // thực hiện set trạng thái sử dụng vouhcer của người dùng thành 1 tức là đã sd rồi
         // tham số nhận vào sẽ là voucher và thực hiện chuyển đổi
         Vouchers.map(data=> {
-            axios.post(`http://localhost:8000/api/orderVouchers`,{
+            axios.post(`${apiUrl}/api/orderVouchers`,{
                 order_id: order_id,
                 voucher_id:data.voucher.voucher_id,
                 orderVoucher_price:data.voucherdiscount
@@ -385,7 +387,7 @@ function Pay() {
 
     const HandleSetQuantityVoucher = () => {
         Vouchers.map(data=> {
-            axios.get(`http://localhost:8000/api/voucher/${data.voucher.voucher_id}/quantity`)
+            axios.get(`${apiUrl}/api/voucher/${data.voucher.voucher_id}/quantity`)
             .then(response => {
             })
             .catch(error => {
@@ -408,7 +410,7 @@ function Pay() {
     },[Order_id])
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/categorys')
+        axios.get(`${apiUrl}/api/categorys`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
             setCategory(response.data.data);
@@ -421,7 +423,7 @@ function Pay() {
     const getImagePath = (categoryId, productImg) => {
         const categoryName = getCategoryName(categoryId);
         try {
-          return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
+          return `${apiUrl}/uploads/Categories/${categoryName}/${productImg}`;
         } catch (error) {
           console.error('Error loading image:', error);
           return null; // Hoặc có thể trả về một hình ảnh mặc định
@@ -431,7 +433,7 @@ function Pay() {
       const getCategoryName = (categoryId) => {
         let categoryName = 'Không xác định';
         categorys.forEach(category => {
-          if (category.category_id === categoryId) {
+          if (category.category_id == categoryId) {
             categoryName = category.category_name;
           }
         });
@@ -570,7 +572,7 @@ function Pay() {
                         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                             <p>Đơn vị vận chuyển:
                             <span style={{color:'#000',fontSize:'18px',marginLeft:'8px'}}> Vận chuyển nhanh</span></p>
-                            <p>{Shipping?.shipping_price}</p>
+                            <p>{Shipping.shipping_price}</p>
                         </div>
                     </div>
                 </div>
@@ -621,7 +623,7 @@ function Pay() {
                         </div>
                         <div className="row pb-2">
                             <div className="col-md-6 col-6">Phí vận chuyển</div>
-                            <div className="col-md-6 col-6">{Shipping?.shipping_price}</div>
+                            <div className="col-md-6 col-6">{Shipping.shipping_price}</div>
                         </div>
                         {Voucher_freeship.voucher_id ?
                          <div className="row pb-2">

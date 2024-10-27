@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
 
 
 const AddShipping = ({ onUpdate, onClose  }) => {
@@ -17,7 +18,7 @@ const AddShipping = ({ onUpdate, onClose  }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-      axios.post('http://localhost:8000/api/shippings', {
+      axios.post(`${apiUrl}/api/shippings`, {
         ...shipping,
         shipping_name:shipping_name,
         shipping_price:shipping_price,
@@ -78,14 +79,14 @@ const AddShipping = ({ onUpdate, onClose  }) => {
 
 
   useEffect(()=>{
-    if(wards!==null){
+    if(selectedWard!==null){
       setshipping({
         shipping_cityName:selectedProvince,
         shipping_districtName:selectedDistrict,
         shipping_communeName:selectedWard,
       })
     }
-  },[wards])
+  },[selectedWard])
 
   return (
     <>

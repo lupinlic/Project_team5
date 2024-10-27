@@ -56,8 +56,8 @@ class UserController extends Controller
             $get_user->user_password = Hash::make($request->user_password); // Sử dụng Hash::make()
             // $get_user->user_password = $request->user_password;
             $get_user->user_email = $request->user_email;
-            $get_user->user_isNew = $request->user_isNew;
-            $get_user->user_role = $request->user_role;
+            $get_user->user_isNew = 0;
+            $get_user->user_role = 0;
 
             $get_user->save();
 
@@ -103,7 +103,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $user->user_name = $request->user_name;
-        $user->user_password = $request->user_password;
+        $user->user_password = Hash::make($request->user_password); // Sử dụng Hash::make()
         $user->user_email = $request->user_email;
         $user->user_isNew = $request->user_isNew;
         $user->user_role = $request->user_role;
@@ -149,7 +149,7 @@ class UserController extends Controller
 
     public function ShowReceivers(User $user)
     {
-        $get_receivers = $user->receivers;
+        $get_receivers = $user->receivers()->orderBy('receiver_type','desc')->get();
 
         if(count($get_receivers)>0){
             return response()->json(
@@ -162,7 +162,7 @@ class UserController extends Controller
             return response()->json(
                 [
                     "message" => "lấy dữ liệu thất bại hoặc không có",
-                ]
+                ],404
             );
         }
     }
@@ -218,12 +218,21 @@ class UserController extends Controller
         $get_receivers = $user->receivers()->where('receiver_type',1)->get();
         // $receiver= Receiver::where('receiver_type',1)->get();
 
+        if(count($get_receivers)>0){
             return response()->json(
                 [
                     "message" => "đã get thành công",
                     "data" => $get_receivers,
                 ]
             );
+        }else{
+            return response()->json(
+                [
+                    "message" => "chưa có người nhận nào cả",
+                ],404
+            );
+        }
+            
     }
     
     public function GetOrderByUser(User $user)

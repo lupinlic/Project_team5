@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
+
 
 const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,sendvoucher_id,onClose}) =>{
     const [voucherGroup_id,setvoucherGroup_id] = useState(null);
@@ -22,7 +24,7 @@ const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,sendvoucher_id,o
 
     useEffect(()=>{
         if(voucherGroup_id!==null){
-            axios.get(`http://localhost:8000/api/vouchers/${voucher_id}`)
+            axios.get(`${apiUrl}/api/vouchers/${voucher_id}`)
             .then(response =>{
                 setvoucher(response.data.data);
             } )
@@ -48,7 +50,7 @@ const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,sendvoucher_id,o
     const HandleUpdateVoucher = (e) => {
         e.preventDefault();
 
-        axios.put(`http://localhost:8000/api/vouchers/${voucher_id}`,{
+        axios.put(`${apiUrl}/api/vouchers/${voucher_id}`,{
             voucherGroup_id :voucherGroup_id,
             voucher_type :voucher_type,
             voucher_discount :voucher_discount,

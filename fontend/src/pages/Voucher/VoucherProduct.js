@@ -1,6 +1,8 @@
 import React, { useState ,useEffect } from 'react';
 import axios from 'axios';
 import { json } from 'react-router-dom';
+import { apiUrl } from '../../config';
+
 
 const VoucherProduct =({onClose,getProduct_id,HandleVoucher,getImagePath}) =>{
     // lấy nhóm category và product_id
@@ -28,7 +30,7 @@ const VoucherProduct =({onClose,getProduct_id,HandleVoucher,getImagePath}) =>{
         //1. product api này sẽ áp dụng riêng cho từng sản phẩm
     useEffect(()=>{
         if(Product_id !== null && Product_id !== undefined){
-            axios.get(`http://localhost:8000/api/product/${Product_id}/productVouchers`)
+            axios.get(`${apiUrl}/api/product/${Product_id}/productVouchers`)
               .then(response => {
                   // Truy cập vào phần "data" của API trả về và đặt vào state
                   if(response.data.data?.length>0){
@@ -86,7 +88,7 @@ const VoucherProduct =({onClose,getProduct_id,HandleVoucher,getImagePath}) =>{
     }
 
     const SerchVoucher = () => {
-        axios.post(`http://localhost:8000/api/product/${Product_id}/productVoucherByName`,{
+        axios.post(`${apiUrl}/api/product/${Product_id}/productVoucherByName`,{
             voucher_code:voucher_code
         })
               .then(response => {
@@ -138,7 +140,7 @@ const VoucherProduct =({onClose,getProduct_id,HandleVoucher,getImagePath}) =>{
                             )}
                             >
                                 <div className='col-md-4'>
-                                    <img style={{ width: '80%', height: '80%' }} src={`http://localhost:8000/uploads/VoucherGroup/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
+                                    <img style={{ width: '80%', height: '80%' }} src={`${apiUrl}/uploads/VoucherGroup/${item.voucherGroup_img}`} alt={`Voucher ${item.voucher_id}`} />
                                 </div>
                                 <div className='col-md-7'>
                                     <p>Giảm {item.voucher_discount} VNĐ</p>

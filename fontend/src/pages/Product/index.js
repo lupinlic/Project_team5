@@ -6,6 +6,8 @@ import {Link,useParams  } from 'react-router-dom';
 import './style.css'
 import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
+import { apiUrl } from '../../config';
+
 
 const Product = () =>{
         const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,14 +22,14 @@ const Product = () =>{
         
         const { category_Id } = useParams();
 // gọi api đỏ sản phẩm
-const [data, setData] = useState([]);
+const [data, setData] = useState(null);
 const [categorys, setCategory] = useState([]);
 const [filteredProducts, setFilteredProducts] = useState([]);
         const [selectedFilter, setSelectedFilter] = useState(""); 
 useEffect(() => {
     // Gọi hai API để lấy dữ liệu sản phẩm và danh mục, nhà cung cấp
     if(category_Id){
-        axios.get(`http://localhost:8000/api/categorys/${category_Id}/products`)
+        axios.get(`${apiUrl}/api/categorys/${category_Id}/products`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
             setData(response.data.data);
@@ -37,7 +39,7 @@ useEffect(() => {
             console.error('Error fetching data: ', error);
         });
 
-        axios.get(`http://localhost:8000/api/categorys/${category_Id}`)
+        axios.get(`${apiUrl}/api/categorys/${category_Id}`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
             setCategory([response.data.data]);
@@ -45,21 +47,18 @@ useEffect(() => {
         .catch(error => {
             console.error('Error fetching data: ', error);
         });
-
-        
-
-        
     }else{
-    axios.get('http://localhost:8000/api/products')
+    axios.get(`${apiUrl}/api/products`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
+            console.log(response.data.data)
             setData(response.data.data);
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
         });
 
-    axios.get('http://localhost:8000/api/categorys')
+    axios.get(`${apiUrl}/api/categorys`)
     .then(response => {
         // Truy cập vào phần "data" của API trả về và đặt vào state
         setCategory(response.data.data);
@@ -68,16 +67,15 @@ useEffect(() => {
         console.error('Error fetching data: ', error);
     });
     }
-
-    
-     // Thiết lập mặc định
-   
-
 }, [category_Id]);
+
 useEffect(() => {
-    setSelectedFilter("all");
-    // Khi vào trang, thiết lập sản phẩm hiển thị là tất cả
-    setFilteredProducts(data); // Hiển thị tất cả sản phẩm
+    if(data!==null){
+        console.log(data)
+        setSelectedFilter("all");
+        // Khi vào trang, thiết lập sản phẩm hiển thị là tất cả
+        setFilteredProducts(data); // Hiển thị tất cả sản phẩm
+    }
   }, [data]);
 
 const getCategoryName = (categoryId) => {
@@ -90,9 +88,9 @@ const getCategoryName = (categoryId) => {
     return categoryName;
   };
   const getImagePath = (categoryId, productImg) => {
-    const categoryName = getCategoryName(categoryId);
+    const categoryName = getCategoryName(parseInt(categoryId));
     try {
-      return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
+      return `${apiUrl}/uploads/Categories/${categoryName}/${productImg}`;
     } catch (error) {
       console.error('Error loading image:', error);
       return null; // Hoặc có thể trả về một hình ảnh mặc định
@@ -322,8 +320,8 @@ const shortenText = (text, maxLength) => {
                                                             
                         <div className='row' key={category.id}>
                             <h5>{category.category_name}</h5>
-                            {filteredProducts.length > 0 ? (
-                                filteredProducts.filter(product => product.category_id === category.category_id)?.map(item =>(
+                            {filteredProducts?.length > 0 ? (
+                                filteredProducts.filter(product => product.category_id == category.category_id)?.map(item =>(
                                 <div className='col-md-3 p-3 col-6' key={item.id}>
                                 <Link to={`/Product_detail/${item.product_id}`} style={{textDecoration:'none'}}>
                                     <img src={getImagePath(item.category_id, item.product_img)} style={{width:'100%'}}/>

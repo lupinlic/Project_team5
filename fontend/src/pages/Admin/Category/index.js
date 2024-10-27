@@ -2,6 +2,8 @@ import './style.css'
 import React, { useState ,useEffect } from 'react';
 import CategoryForm from './CategoryForm';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
+
 
 function Category() {
 
@@ -11,7 +13,7 @@ function Category() {
     const [data, setData] = useState([]);
     // const [loading, setLoading] = useState(true);
     useEffect(() => {
-        axios.get('http://localhost:8000/api/categorys')
+        axios.get(`${apiUrl}/api/categorys`)
             .then(response => {
                 // Truy cập vào phần "data" của API trả về và đặt vào state
                 setData(response.data.data);
@@ -24,7 +26,7 @@ function Category() {
 
     // Cập nhật danh sách nhà cung cấp sau khi thêm hoặc sửa
     const updateCategorys = () => {
-        axios.get('http://localhost:8000/api/categorys')
+        axios.get(`${apiUrl}/api/categorys`)
         .then(response => {
             setData(response.data.data);
         })
@@ -47,7 +49,7 @@ function Category() {
     //   xóa
     const deleteCategory = (categoryId) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này không?')) {
-          axios.delete(`http://localhost:8000/api/categorys/${categoryId}`)
+          axios.delete(`${apiUrl}/api/categorys/${categoryId}`)
             .then(response => {
                 updateCategorys(); // Cập nhật lại danh sách sau khi xóa
             })

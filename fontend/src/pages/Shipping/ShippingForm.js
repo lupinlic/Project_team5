@@ -1,6 +1,8 @@
 import React, { useState, useEffect,useRef} from 'react';
 import axios from 'axios';
-const ShippingForm = ({receiverId, onUpdate, onClose,setDefault}) => {
+import { apiUrl } from '../../config';
+
+const ShippingForm = ({receiverId, onUpdate, onClose,setDefault,count_receiver}) => {
   // console.log(receiverId)
     const [userId, setUserId] = useState(null);
     const [provinces, setProvinces] = useState([]);
@@ -40,7 +42,7 @@ const ShippingForm = ({receiverId, onUpdate, onClose,setDefault}) => {
 // đổ địa chỉ theo id
 useEffect(() => {
   if (receiverId) {
-    axios.get(`http://localhost:8000/api/receivers/${receiverId}`)
+    axios.get(`${apiUrl}/api/receivers/${receiverId}`)
       .then(response => {
         setReceiver(response.data.data);
       })
@@ -154,13 +156,13 @@ const handleChange = (e) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(checkboxRef.current.checked){
+    if(checkboxRef.current.checked || count_receiver==null){
       receiver.receiver_type = 1;
     }
 
     if (receiverId && receiverId !== null) {
       // Gọi API sửa nhà cung cấp
-      axios.put(`http://localhost:8000/api/receivers/${receiverId}`, receiver)
+      axios.put(`${apiUrl}/api/receivers/${receiverId}`, receiver)
       .then(response => {
         if(checkboxRef.current.checked){
           setDefault(response.data.data);
@@ -178,7 +180,7 @@ const handleChange = (e) => {
 
         receiver.user_id=userId;
 
-        axios.post('http://localhost:8000/api/receivers', receiver)
+        axios.post(`${apiUrl}/api/receivers`, receiver)
           .then(response => {
             if(checkboxRef.current.checked){
               setDefault(response.data.data);
@@ -240,9 +242,9 @@ const handleChange = (e) => {
 
             <div className="d-flex">
                 <input className="form-check-input me-2" type="checkbox" defaultValue id="squareCheckbox" ref={checkboxRef}
-                style={receiver.receiver_type == 1 ? {display:'none'} : {} }
+                style={receiver.receiver_type == 1 || count_receiver==null ? {display:'none'} : {} }
                 />
-                <p style={receiver.receiver_type == 1 ? {display:'none'} : {} }>Đặt làm địa chỉ mặc định</p>
+                <p style={receiver.receiver_type == 1 || count_receiver==null ? {display:'none'} : {} }>Đặt làm địa chỉ mặc định</p>
             </div>
 
 

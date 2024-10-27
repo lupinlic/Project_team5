@@ -4,6 +4,7 @@ import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from '../../config';
 
 
 function Order_detail() {
@@ -26,7 +27,7 @@ function Order_detail() {
     })
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/categorys')
+        axios.get(`${apiUrl}/api/categorys`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
             setCategory(response.data.data);
@@ -38,7 +39,7 @@ function Order_detail() {
 
     useEffect(()=>{
         if(order_id!==null){
-            axios.get(`http://localhost:8000/api/order/${order_id}/orderDetail`)
+            axios.get(`${apiUrl}/api/order/${order_id}/orderDetail`)
             .then(response => {
                 setorderDetails(response.data.data); // assume response data has a 'data' field
             })
@@ -48,7 +49,7 @@ function Order_detail() {
 
     useEffect(()=>{
         if(order_id!==null){
-            axios.get(`http://localhost:8000/api/order/${order_id}/receiver`)
+            axios.get(`${apiUrl}/api/order/${order_id}/receiver`)
             .then(response => {
                 setreceiver(...response.data.data); // assume response data has a 'data' field
             })
@@ -58,7 +59,7 @@ function Order_detail() {
 
     useEffect(()=>{
         if(order_id!==null){
-            axios.get(`http://localhost:8000/api/orders/${order_id}`)
+            axios.get(`${apiUrl}/api/orders/${order_id}`)
             .then(response => {
                 setorder(response.data.data); // assume response data has a 'data' field
             })
@@ -68,7 +69,7 @@ function Order_detail() {
 
     useEffect(()=>{
         if(order_id!==null){
-            axios.get(`http://localhost:8000/api/order/${order_id}/shipping`)
+            axios.get(`${apiUrl}/api/order/${order_id}/shipping`)
             .then(response => {
                 setshipping(...response.data.data); // assume response data has a 'data' field
             })
@@ -78,7 +79,7 @@ function Order_detail() {
 
     useEffect(()=>{
         if(order_id!==null){
-            axios.get(`http://localhost:8000/api/order/${order_id}/orderVoucher`)
+            axios.get(`${apiUrl}/api/order/${order_id}/orderVoucher`)
             .then(response => {
                 setorderVouchers(response.data.data); // assume response data has a 'data' field
             })
@@ -92,14 +93,14 @@ function Order_detail() {
                 return orderVoucher.orderVoucher_price;
             });
             let total = lsVucherPrices.reduce((total,Price)=>{
-                return total+Price;
+                return total+parseInt(Price);
             },0)
             settotalVoucherOrder(total);
             }
     },[orderVouchers])
 
     const DeleteOrder = ()=> {
-        axios.delete(`http://localhost:8000/api/orders/${order_id}`)
+        axios.delete(`${apiUrl}/api/orders/${order_id}`)
             .then(response => {
                 navigate('/Order')
             })
@@ -109,7 +110,7 @@ function Order_detail() {
         const getImagePath = (categoryId, productImg) => {
             const categoryName = getCategoryName(categoryId);
             try {
-              return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
+              return `${apiUrl}/uploads/Categories/${categoryName}/${productImg}`;
             } catch (error) {
               console.error('Error loading image:', error);
               return null; // Hoặc có thể trả về một hình ảnh mặc định
@@ -119,7 +120,7 @@ function Order_detail() {
           const getCategoryName = (categoryId) => {
             let categoryName = 'Không xác định';
             categorys.forEach(category => {
-              if (category.category_id === categoryId) {
+              if (category.category_id == categoryId) {
                 categoryName = category.category_name;
               }
             });
@@ -195,7 +196,7 @@ function Order_detail() {
                     <div className='col-md-8'></div>
                     <div className='col-md-2 col-5'>Thành tiền</div>
                     <div className='col-md-2 col-7' style={{fontWeight:'500',color:'red',fontSize:'20px'}}>
-                        {order.order_totalmoney+shipping?.shipping_price-totalVoucherOrder}
+                        {parseInt(order.order_totalmoney)+parseInt(shipping?.shipping_price)-totalVoucherOrder}
                     </div>
                 </div>
                 <div className='row pt-2 pt-md-3 container'>

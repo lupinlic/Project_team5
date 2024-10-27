@@ -2,6 +2,8 @@ import {Link } from 'react-router-dom';
 import './style.css'
 import axios from 'axios';
 import React, { useState,useEffect } from 'react';
+import { apiUrl } from '../../config';
+
 function Login() {
 
   
@@ -14,7 +16,7 @@ function Login() {
     const handleLogin = (e) => {
         e.preventDefault();
     
-        axios.post('http://localhost:8000/api/user/login', {
+        axios.post(`${apiUrl}/api/user/login`, {
           user_email: user_email,
           user_password: user_password
         })
@@ -36,11 +38,11 @@ function Login() {
 
         })
         .catch(error => {
-            console.error('Lỗi khi đăng nhập:', error);
+            alert('Tài khoản hoặc mật khẩu bị sai vui lòng đăng nhập lại:');
         });
     }; 
     useEffect(()=>{
-        if (user) {
+        if (user!==null) {
             if (user.user_role == 1) {
               window.location.href = '/Admin/Home';
             } else {

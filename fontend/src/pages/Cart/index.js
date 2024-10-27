@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import {faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import './style.css'
+import { apiUrl } from '../../config';
+
 
 const Cart = () => {
     const [carts, setData] = useState([]);
@@ -35,7 +37,7 @@ const Cart = () => {
 
     const HandleGetCarts = () => {
 
-            axios.get(`http://localhost:8000/api/users/${userId}/carts`)
+            axios.get(`${apiUrl}/api/users/${userId}/carts`)
                 .then(response => {
                     setData(response.data.data);
                 })
@@ -43,7 +45,7 @@ const Cart = () => {
                     console.error('Error fetching data: ', error);
                 });
 
-            axios.get('http://localhost:8000/api/products')
+            axios.get(`${apiUrl}/api/products`)
                 .then(response => {
                     setProducts(response.data.data);
                 })
@@ -78,7 +80,7 @@ const Cart = () => {
 
       const deleteProduct = (cartId) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?')) {
-          axios.delete(`http://localhost:8000/api/carts/${cartId}`)
+          axios.delete(`${apiUrl}/api/carts/${cartId}`)
             .then(response => {
                 HandleGetCarts(); // Cập nhật lại danh sách sau khi xóa
             })
@@ -91,7 +93,7 @@ const Cart = () => {
 
     //   danh mục
       useEffect(() => {
-        axios.get('http://localhost:8000/api/categorys')
+        axios.get(`${apiUrl}/api/categorys`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
             setCategory(response.data.data);
@@ -104,16 +106,16 @@ const Cart = () => {
       const getCategoryName = (categoryId) => {
         let categoryName = 'Không xác định';
         categorys.forEach(category => {
-          if (category.category_id === categoryId) {
+          if (category.category_id == categoryId) {
             categoryName = category.category_name;
           }
         });
         return categoryName;
       };
       const getImagePath = (categoryId, productImg) => {
-        const categoryName = getCategoryName(categoryId);
+        const categoryName = getCategoryName(parseInt(categoryId));
         try {
-          return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
+          return `${apiUrl}/uploads/Categories/${categoryName}/${productImg}`;
         } catch (error) {
           console.error('Error loading image:', error);
           return null; // Hoặc có thể trả về một hình ảnh mặc định
@@ -159,7 +161,7 @@ const Cart = () => {
             new_quantity = event.target.value;
         }
         let newtotal = new_quantity*(cart.product.product_price);
-            axios.put(`http://localhost:8000/api/carts/${cart.cart_id}`, {
+            axios.put(`${apiUrl}/api/carts/${cart.cart_id}`, {
                 user_id : userId,
                 product_id : cart.product_id,
                 cart_quantity : new_quantity,
@@ -212,8 +214,8 @@ const Cart = () => {
 
     const HandleTotalMoney = () => {
         let list_price = selectProducts.map(cart => cart.cart_totalmoney);
-        let sumtotal = list_price.reduce((sum,value)=>sum + value,0);
-        sessionStorage.setItem('carts_total',sumtotal);
+        let sumtotal = list_price.reduce((sum,value)=>sum + parseInt(value),0);
+        sessionStorage.setItem('carts_total',JSON.stringify(sumtotal));
         return sumtotal;
     }
 

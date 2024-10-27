@@ -5,7 +5,6 @@ import User from './components/Layout/User';
 import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
-    
     <Router>
       <Routes>
         {

@@ -2,6 +2,8 @@
 import React, { useState ,useEffect } from 'react';
 import SupplierForm from './SupplierForm';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
+
 
 function Supplier() {
 
@@ -11,7 +13,7 @@ function Supplier() {
     const [data, setData] = useState([]);
     // const [loading, setLoading] = useState(true);
     useEffect(() => {
-        axios.get('http://localhost:8000/api/suppliers')
+        axios.get(`${apiUrl}/api/suppliers`)
             .then(response => {
                 // Truy cập vào phần "data" của API trả về và đặt vào state
                 setData(response.data.data);
@@ -24,7 +26,7 @@ function Supplier() {
 
     // Cập nhật danh sách nhà cung cấp sau khi thêm hoặc sửa
     const updateSuppliers = () => {
-        axios.get('http://localhost:8000/api/suppliers')
+        axios.get(`${apiUrl}/api/suppliers`)
         .then(response => {
             setData(response.data.data);
         })
@@ -47,7 +49,7 @@ function Supplier() {
     //   xóa
     const deleteSupplier = (supplierId) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này không?')) {
-          axios.delete(`http://localhost:8000/api/suppliers/${supplierId}`)
+          axios.delete(`${apiUrl}/api/suppliers/${supplierId}`)
             .then(response => {
                 updateSuppliers(); // Cập nhật lại danh sách sau khi xóa
             })

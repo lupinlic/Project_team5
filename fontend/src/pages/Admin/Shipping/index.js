@@ -3,6 +3,8 @@ import React, { useState,useEffect } from 'react';
 import AddShippingForm from './AddShipping';
 import UpdateShippingForm from './UpdateShipping';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
+
 
 function Shipping() {
     const [selectedShippingId, setSelectedShippingId] = useState(null);
@@ -15,7 +17,7 @@ function Shipping() {
 
     //Cập nhật danh sách sản phẩm sau khi thêm hoặc sửa
     const GetDataShippings = () => {
-        axios.get('http://localhost:8000/api/shippings')
+        axios.get(`${apiUrl}/api/shippings`)
         .then(response => {
             setshippings(response.data.data);
         })
@@ -47,7 +49,7 @@ function Shipping() {
     //   xóa
     const deleteShipping = (shipping_id) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa địa chỉ vận chuyển này không?')) {
-          axios.delete(`http://localhost:8000/api/shippings/${shipping_id}`)
+          axios.delete(`${apiUrl}/api/shippings/${shipping_id}`)
             .then(response => {
                 GetDataShippings(); // Cập nhật lại danh sách sau khi xóa
             })

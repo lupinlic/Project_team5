@@ -31,7 +31,7 @@ class LoginController extends Controller
         }
         return response()->json([
             'message' => 'đăng nhập thất bại sai tk hoặc mk',
-        ]);
+        ],401);
     }
 
     public function ShowProfile(Request $request){

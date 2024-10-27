@@ -2,8 +2,11 @@ import './style.css'
 import React, { useState ,useEffect } from 'react';
 import AccountForm from './AccountForm';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
+
 
 function Account() {
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isFormVisible, setIsFormVisible] = useState(false);
     const openForm = (userId = null) => {
@@ -22,7 +25,7 @@ function Account() {
     const [data, setData] = useState([]);
     // const [loading, setLoading] = useState(true);
     useEffect(() => {
-        axios.get('http://localhost:8000/api/users')
+        axios.get(`${apiUrl}/api/users`)
             .then(response => {
                 // Truy cập vào phần "data" của API trả về và đặt vào state
                 setData(response.data.data);
@@ -34,7 +37,7 @@ function Account() {
     
     // Cập nhật danh sách nhà cung cấp sau khi thêm hoặc sửa
     const updateUsers = () => {
-        axios.get('http://localhost:8000/api/users')
+        axios.get( `${apiUrl}/api/users`)
         .then(response => {
             setData(response.data.data);
         })
@@ -44,7 +47,7 @@ function Account() {
     };
     const deleteUser = (userId) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này không?')) {
-          axios.delete(`http://localhost:8000/api/users/${userId}`)
+          axios.delete(`${apiUrl}/api/users/${userId}`)
             .then(response => {
                 updateUsers(); // Cập nhật lại danh sách sau khi xóa
             })

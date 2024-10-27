@@ -2,6 +2,8 @@ import './style.css'
 import React, { useState,useEffect } from 'react';
 import ProductForm from './ProductForm';
 import axios from 'axios';
+import { apiUrl } from '../../../config';
+
 
 function AdProduct() {
 
@@ -12,7 +14,7 @@ function AdProduct() {
     const [suppliers, setSupplier] = useState([]);
     useEffect(() => {
         // Gọi hai API để lấy dữ liệu sản phẩm và danh mục, nhà cung cấp
-        axios.get('http://localhost:8000/api/products')
+        axios.get(`${apiUrl}/api/products`)
             .then(response => {
                 // Truy cập vào phần "data" của API trả về và đặt vào state
                 setData(response.data.data);
@@ -21,7 +23,7 @@ function AdProduct() {
                 console.error('Error fetching data: ', error);
             });
 
-            axios.get('http://localhost:8000/api/categorys')
+            axios.get(`${apiUrl}/api/categorys`)
             .then(response => {
                 // Truy cập vào phần "data" của API trả về và đặt vào state
                 setCategory(response.data.data);
@@ -29,7 +31,7 @@ function AdProduct() {
             .catch(error => {
                 console.error('Error fetching data: ', error);
             });
-            axios.get('http://localhost:8000/api/suppliers')
+            axios.get(`${apiUrl}/api/suppliers`)
             .then(response => {
                 // Truy cập vào phần "data" của API trả về và đặt vào state
                 setSupplier(response.data.data);
@@ -41,7 +43,7 @@ function AdProduct() {
 
     // Cập nhật danh sách sản phẩm sau khi thêm hoặc sửa
     const updateProduct = () => {
-        axios.get('http://localhost:8000/api/products')
+        axios.get(`${apiUrl}/api/products`)
         .then(response => {
             setData(response.data.data);
         })
@@ -74,7 +76,7 @@ function AdProduct() {
         const getImagePath = (categoryId, productImg) => {
         const categoryName = getCategoryName(categoryId);
         try {
-          return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
+          return `${apiUrl}/uploads/Categories/${categoryName}/${productImg}`;
         } catch (error) {
           console.error('Error loading image:', error);
           return null; // Hoặc có thể trả về một hình ảnh mặc định
@@ -95,7 +97,7 @@ function AdProduct() {
     //   xóa
     const deleteProduct = (productId) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')) {
-          axios.delete(`http://localhost:8000/api/products/${productId}`)
+          axios.delete(`${apiUrl}/api/products/${productId}`)
             .then(response => {
                 updateProduct(); // Cập nhật lại danh sách sau khi xóa
             })

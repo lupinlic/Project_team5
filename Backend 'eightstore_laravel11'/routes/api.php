@@ -37,11 +37,13 @@ use Illuminate\Support\Facades\Route;
 
 //trang chủ
 //  --hiện sp hiện kho voucher chung
-Route::get('products',[ProductController::class,'index']);
+Route::apiResource('products',ProductController::class)->only('index','show');
 Route::get('products/news',[ProductController::class,'ProductisNew']);
 Route::get('vouchers',[VoucherController::class,'index']);
 Route::get('categorys/{category}/products',[CategoryController::class,'ShowProducts']);
 Route::get('suppliers/{supplier}/products',[SupplierController::class,'ShowProducts']);
+Route::apiResource('categorys',CategoryController::class)->only('index','show');
+
 
 Route::middleware('auth:sanctum')->group(function(){
     //  --customer
@@ -58,10 +60,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('users/{user}/vouchers/{voucher_status}',[UserController::class,'ShowVouchers']);
     Route::apiResource('carts',CartController::class); 
     Route::apiResource('receivers',ReceiverController::class);
-    Route::get('users/{user}/receivers/{receiver}/status',[ReceiverController::class,'HandleStatus']);
-    
-    Route::apiResource('categorys',CategoryController::class)->only('index','show');
-    Route::apiResource('products',ProductController::class)->only('index','show');
+    Route::get('users/{user}/receivers/{receiver}/status',[ReceiverController::class,'HandleStatus']);    
     Route::apiResource('suppliers',SupplierController::class)->only('index','show');
     Route::apiResource('vouchers',VoucherController::class)->only('index','show');
     Route::apiResource('voucherGroups',VoucherGroupController::class)->only('index','show');

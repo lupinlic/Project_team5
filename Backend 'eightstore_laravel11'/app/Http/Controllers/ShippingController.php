@@ -138,11 +138,19 @@ class ShippingController extends Controller
         ->where('shipping_communeName',$request->receiver_commune)
         ->get();
 
+        if(count($shipping)>0){
             return response()->json(
                 [
                     "message" => "đã lấy thành công",
                     "data" => $shipping,
                 ]
             );
+        }else{
+            return response()->json(
+                [
+                    "message" => "đã lấy thành công",
+                ],404
+            );
+        }
     }
 }

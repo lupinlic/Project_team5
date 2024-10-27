@@ -9,6 +9,8 @@ import { CartContext } from '../../context/cartContext';  // Import CartContext
 
 import { useParams } from 'react-router-dom';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
+import { apiUrl } from '../../config';
+
 const Product_detail = () => {
     const { cartCount, setCartCount } = useContext(CartContext);  // Truy cập cartCount và setCartCount
 
@@ -28,7 +30,7 @@ const Product_detail = () => {
 
     useEffect(() => {
         // Giả sử bạn có API để lấy chi tiết sản phẩm
-        axios.get(`http://localhost:8000/api/products/${product_id}`)
+        axios.get(`${apiUrl}/api/products/${product_id}`)
         .then(response => {
           setProduct(response.data.data);
           
@@ -41,7 +43,7 @@ const Product_detail = () => {
       }, [product_id]);
 
       useEffect(() => {
-        axios.get('http://localhost:8000/api/categorys')
+        axios.get(`${apiUrl}/api/categorys`)
         .then(response => {
             // Truy cập vào phần "data" của API trả về và đặt vào state
             setCategory(response.data.data);
@@ -54,7 +56,7 @@ const Product_detail = () => {
       const getCategoryName = (categoryId) => {
         let categoryName = 'Không xác định';
         categorys.forEach(category => {
-          if (category.category_id === categoryId) {
+          if (category.category_id == categoryId) {
             categoryName = category.category_name;
           }
         });
@@ -63,7 +65,7 @@ const Product_detail = () => {
       const getImagePath = (categoryId, productImg) => {
         const categoryName = getCategoryName(categoryId);
         try {
-          return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
+          return `${apiUrl}/uploads/Categories/${categoryName}/${productImg}`;
         } catch (error) {
           console.error('Error loading image:', error);
           return null; // Hoặc có thể trả về một hình ảnh mặc định
@@ -100,7 +102,7 @@ const Product_detail = () => {
     
         console.log(userId.toString(), product_id,quantity.toString(),total.toString())
         // Gọi API để thêm sản phẩm vào giỏ hàng
-        axios.post('http://localhost:8000/api/carts', cartItem)
+        axios.post(`${apiUrl}/api/carts`, cartItem)
           .then(response => {
             console.log('Thêm vào giỏ hàng thành công:');
             setCartCount(cartCount+1);
