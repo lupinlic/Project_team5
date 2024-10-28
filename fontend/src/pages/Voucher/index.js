@@ -43,10 +43,11 @@ function VoucherList() {
 
     return ( 
         <>
-        <div className="row">
+        <div className="row pt-3">
             <div className="col-md-12" style={{width:'100%'}}>
                 <select 
                 name="voucherSelect" 
+                style={{width:'180px'}}
                 className="form-select" 
                 onChange={(e)=>setvoucher_status(parseInt(e.target.value))} id="exampleSelect" aria-label="Default select example">
                     <option value='0'>Chưa sử dụng</option>
