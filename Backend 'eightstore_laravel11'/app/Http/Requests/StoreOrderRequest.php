@@ -28,7 +28,6 @@ class StoreOrderRequest extends FormRequest
             "user_id" => 'required|numeric|exists:tbl_user,user_id',
             "order_content" => 'required|string',
             "receiver_id" => 'required|numeric|exists:tbl_receiver,receiver_id',
-            "shipping_id" => 'required|numeric|exists:tbl_shipping,shipping_id',
         ];
     }
 
@@ -47,7 +46,6 @@ class StoreOrderRequest extends FormRequest
             "user_id" => 'khach hang',
             "order_content" => 'noi dung don hang',
             "receiver_id" => 'nguoi nhan',
-            "shipping_id" => 'van chuyen',
         ];
     }
 }

@@ -28,7 +28,6 @@ class UpdateOrderRequest extends FormRequest
             "user_id" => 'required|numeric|exists:tbl_user,user_id',
             "order_content" => 'required|string',
             "receiver_id" => 'required|numeric|exists:tbl_receiver,receiver_id',
-            "shipping_id" => 'required|numeric|exists:tbl_shipping,shipping_id',
         ];
     }
 

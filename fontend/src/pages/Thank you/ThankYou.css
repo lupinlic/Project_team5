@@ -1,0 +1,121 @@
+/* Thiết kế trang cảm ơn */
+.thank-you-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    text-align: center;
+  }
+  
+  .thank-you-message h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-top: 20px;
+  }
+  
+  .thank-you-message p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 10px;
+  }
+  
+  /* Thiết kế vòng tròn */
+  .checkmark-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .circle-svg {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .circle {
+    fill: none;
+    stroke: #4caf50;
+    stroke-width: 5;
+    stroke-dasharray: 283; /* Chu vi của vòng tròn */
+    stroke-dashoffset: 283;
+    animation: draw-circle 1s forwards;
+  }
+  
+  @keyframes draw-circle {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  /* Thiết kế dấu chữ V */
+  .checkmark {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    transform: rotate(0deg);
+  }
+  
+  .checkmark::before,
+  .checkmark::after {
+    content: "";
+    position: absolute;
+    background-color: #4caf50;
+    border-radius: 2px;
+  }
+  
+  /* Tạo nét xiên trái */
+  .checkmark::before {
+    width: 6px;
+    height: 30px;
+    top: 5px;
+    left: 15px;
+    transform-origin: bottom;
+    transform: rotate(45deg) scaleY(0);
+    animation: draw-check-left 0.5s forwards;
+    animation-delay: 1s;
+  }
+  
+  /* Tạo nét xiên phải */
+  .checkmark::after {
+    width: 6px;
+    height: 30px;
+    top: 5px;
+    left: 28px;
+    transform-origin: bottom;
+    transform: rotate(-45deg) scaleY(0);
+    animation: draw-check-right 0.5s forwards;
+    animation-delay: 1.5s;
+  }
+  
+  @keyframes draw-check-left {
+    to {
+      transform: rotate(45deg) scaleY(1);
+    }
+  }
+  
+  @keyframes draw-check-right {
+    to {
+      transform: rotate(-45deg) scaleY(1);
+    }
+  }
+  
+  /* Nút quay về trang chủ */
+  .back-home-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .back-home-button:hover {
+    background-color: #0056b3;
+  }
+  

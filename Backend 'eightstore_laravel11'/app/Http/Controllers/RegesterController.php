@@ -42,6 +42,7 @@ class RegesterController extends Controller
             return response()->json(
                 [
                     "message" => "đăng ký tài khoản thành công",
+                    "user_id" =>$get_user->user_id,
                 ]
             );
         }else{

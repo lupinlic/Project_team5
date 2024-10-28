@@ -21,6 +21,7 @@ import ShippingAd from '../pages/Admin/Shipping';
 import Order from '../pages/Order';
 import Order_details from '../pages/Order_details';
 import VoucherGroup from '../pages/Admin/VoucherGroup';
+import ThankYou from '../pages/Thank you/ThankYou';
 
 
 const publicRoutes = [
@@ -56,6 +57,9 @@ const publicRoutes = [
     },
     {
         path:'/Order', component: Order
+    },
+    {
+        path:'/ThankYou', component: ThankYou
     },
     {
         path:'/VoucherList', component: VoucherList

@@ -11,6 +11,12 @@ class VoucherUser extends Model
     protected $table = "tbl_voucher_user";
     protected $primaryKey = "voucherUser_id";
 
+    protected $fillable = [
+        'user_id',
+        'voucher_id',
+        'voucherUser_status',
+        'voucherUser_date',
+    ];
     public $timestamps  = false;
 
     public function user(){

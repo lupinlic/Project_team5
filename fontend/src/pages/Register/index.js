@@ -26,8 +26,7 @@ function Register() {
             })
             .then(response => {
                 // Truy cập vào phần "data" của API trả về và đặt vào state
-                alert('đã đăng ký thành công hãy đăng nhập');
-                navigate('/Login')
+                AddVoucherToUser(response.data.user_id)
             })
             .catch(error => {
                 console.error('Error fetching data: ', error);
@@ -37,6 +36,24 @@ function Register() {
         }
         
     }
+
+    const AddVoucherToUser = (user_id) => {
+        if(user_id){
+            axios.get(`${apiUrl}/api/user/${user_id}/addvouchers`)
+            .then(response => {
+                // Truy cập vào phần "data" của API trả về và đặt vào state
+                alert('đã đăng ký thành công hãy đăng nhập');
+                navigate('/Login')
+            })
+            .catch(error => {
+                console.error('Error fetching data: ', error);
+            });
+        }else{
+            console.error('có gì đó ko ổn trong quá trình lấy user_id');
+        }
+        
+    }
+
     return ( <div>
 
         <div className="register-container">

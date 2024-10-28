@@ -130,6 +130,7 @@ Route::middleware('auth:sanctum')->group(function(){
 // Route::post('voucher/voucherByName',[VoucherController::class,'showVoucherByName']);                                       
 Route::post('user/login',[LoginController::class,'User_Login']);
 Route::post('user/regester',[RegesterController::class,'User_Regester']);
+Route::get('user/{user_id}/addvouchers',[VoucherController::class,'HandleAddVoucherToUserNew']);
 
 
 

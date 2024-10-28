@@ -405,7 +405,7 @@ function Pay() {
                 HandleSetQuantityVoucher();
             }
             sessionStorage.clear();
-            navigate('/')
+            navigate('/ThankYou')
         }
     },[Order_id])
 

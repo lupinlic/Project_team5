@@ -57,7 +57,11 @@ class OrderController extends Controller
             $get_Order->user_id = $request->user_id;
             $get_Order->order_content = $request->order_content;
             $get_Order->receiver_id = $request->receiver_id;
-            $get_Order->shipping_id = $request->shipping_id;
+            if($request->shipping_id){
+                $get_Order->shipping_id = $request->shipping_id;
+            }else{
+                $get_Order->shipping_id = null;
+            }
 
             $get_Order->save();
 
