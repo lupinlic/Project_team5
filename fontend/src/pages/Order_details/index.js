@@ -165,7 +165,7 @@ function Order_detail() {
                     </div>
                     <div className='col-md-5 col-4'>
                         <p>Đơn giá:{orderDetail.product.product_price}</p>
-                        <p>Tổng cộng:{orderDetail.orderDetail_total}</p>
+                        <p>Tổng cộng:{orderDetail.orderDetail_total.toLocaleString("de-DE")}</p>
                     </div>
                     
                 </div>
