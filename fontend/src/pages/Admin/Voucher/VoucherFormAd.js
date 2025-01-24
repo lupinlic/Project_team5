@@ -35,10 +35,17 @@ const VoucherFormAd =({GetAllVoucherByGroup,sendvoucherGroup_id,onClose}) =>{
         }
         axios.post(`${apiUrl}/api/vouchers`,voucher)
         .then(response =>{
+            AddVoucherToUsers(response.data.data.voucher_id);
             GetAllVoucherByGroup();
             onClose();
         } )
         .catch(error => console.error('Có lỗi trong việc tạo voucher:', error));
+    }
+
+    const AddVoucherToUsers = (voucher_id) =>{
+        axios.get(`${apiUrl}/api/voucher/${voucher_id}/addvoucherToUsers`)
+        .then(response =>{})
+        .catch(error => console.error('Có lỗi trong việc add voucher cho các users:', error));
     }
 
     return ( 

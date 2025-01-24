@@ -200,7 +200,7 @@ class VoucherController extends Controller
     {
         if($user_id){
         $voucher =
-        Voucher::where('start_date','>=',Carbon::now()->format('Y-m-d H:i:s'))
+        Voucher::where('end_date','<=',Carbon::now()->format('Y-m-d H:i:s'))
         ->get();
 
         // Lấy danh sách voucher_id từ voucherOfusers
@@ -219,6 +219,40 @@ class VoucherController extends Controller
             return response()->json(
                 [
                     "message" => "đã thêm voucher cho người dùng mới thành công",
+                    "list_vouchers" => $voucher_ids,
+                ]
+            );
+        }else{
+            return response()->json(
+                [
+                    "message" => "lấy dữ liệu thất bại hoac ko co",
+                ],404
+            );
+        }
+    }
+    
+    public function HandleAddVoucherToUsers($voucher_id)
+    {
+        if($voucher_id){
+        $users =
+        User::get();
+
+        // Lấy danh sách voucher_id từ voucherOfusers
+        $user_ids = $users->pluck('user_id')->toArray(); // Dùng pluck để lấy voucher_id trực tiếp
+
+        foreach ($user_ids as $user_id) {
+            // Kiểm tra nếu dòng dữ liệu cho người dùng và voucher này chưa tồn tại
+                VoucherUser::create([
+                    'user_id' => $user_id,
+                    'voucher_id' => $voucher_id,
+                    'voucherUser_status' => 0,
+                    'voucherUser_date' => now(),
+                ]);
+        }
+        // Kết quả là $filteredVouchers sẽ chứa các voucher mà user có nhưng chưa sử dụng
+            return response()->json(
+                [
+                    "message" => "đã thêm voucher cho tất cả người dùng thành công",
                 ]
             );
         }else{

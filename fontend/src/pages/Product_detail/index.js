@@ -10,8 +10,12 @@ import { CartContext } from '../../context/cartContext';  // Import CartContext
 import { useParams } from 'react-router-dom';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
 import { apiUrl } from '../../config';
+import { useNavigate } from 'react-router-dom';
+
 
 const Product_detail = () => {
+    const navigate = useNavigate();
+    
     const { cartCount, setCartCount } = useContext(CartContext);  // Truy cập cartCount và setCartCount
 
     const { product_id } = useParams(); // Lấy id sản phẩm từ URL
@@ -20,12 +24,13 @@ const Product_detail = () => {
     const [categorys, setCategory] = useState([]);
     const [userId, setUserId] = useState(null);
     const [isMessageVisible, setIsMessageVisible] = useState(false);
-    const userData = localStorage.getItem('user');
 
     useEffect(() => {
-        
-        const parsedUser = JSON.parse(userData);
-        setUserId(parsedUser.user_id);
+        const userData = localStorage.getItem('user');
+        if(userData){
+            const parsedUser = JSON.parse(userData);
+            setUserId(parsedUser.user_id);
+        }
       }, []);
 
     useEffect(() => {
@@ -118,6 +123,30 @@ const Product_detail = () => {
             setIsMessageVisible(false);
         }, 3000);
       };
+
+    const HandleCheckShipping = () =>{
+        if(userId!==null){
+            axios.get(`${apiUrl}/api/users/${userId}/receivers/type`)
+            .then(response => {
+                const cart = [
+                    {
+                        cart_quantity:quantity,
+                        cart_totalmoney:product.product_price,
+                        product:product,
+                    }
+                ]
+                sessionStorage.setItem('Product_detail',JSON.stringify(cart));
+                sessionStorage.setItem('Product_detailTotal',JSON.stringify(product.product_price*quantity));
+                navigate('/Pay_detail');
+            })
+            .catch(error => {
+                alert('vui lòng thiết lập người nhận trước khi đặt hàng');
+                navigate('/Shipping');
+            });
+        }else{
+            navigate('/Login');
+        }
+    }
     
     return ( 
         <div className='mt-4 mb-5'>
@@ -161,7 +190,12 @@ const Product_detail = () => {
                     {/*  */}
                     <div className='row'>
                         <div className='col-md-5'>
-                            <Link to='/Pay'><Button className='w-100' style={{background: 'white',color: 'rgb(237, 111, 132)',borderColor:'rgb(237, 111, 132)'}}>Mua Ngay</Button></Link>
+                            <Button className='w-100' 
+                            style={{background: 'white',color: 'rgb(237, 111, 132)',borderColor:'rgb(237, 111, 132)'}}
+                            onClick={(e)=>HandleCheckShipping()}
+                            >
+                                Mua Ngay
+                            </Button>
                         </div>
                         <div className='col-md-5'>
                             <Link to=''><Button className="w-100" style={{background: 'rgb(237, 111, 132)',color: 'white',borderColor:'white'}}

@@ -22,7 +22,7 @@ import Order from '../pages/Order';
 import Order_details from '../pages/Order_details';
 import VoucherGroup from '../pages/Admin/VoucherGroup';
 import ThankYou from '../pages/Thank you/ThankYou';
-
+import Pay_detail from '../pages/Pay_detail';
 
 const publicRoutes = [
     {
@@ -39,6 +39,9 @@ const publicRoutes = [
     },
     {
         path:'/Pay', component: Pay
+    },
+    {
+        path:'/Pay_detail', component: Pay_detail
     },
     {
         path:'/Cart', component: Cart

@@ -122,6 +122,9 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('order/statisticalByDate',[OrderController::class,'GetTotalOrderByDate']);
         Route::get('user/statistical',[UserController::class,'GetUserStatistical']);
 
+        //tạo voucher mới sẽ add hết cho từng user
+        Route::get('voucher/{voucher_id}/addvoucherToUsers',[VoucherController::class,'HandleAddVoucherToUsers']);
+
 
         
     });

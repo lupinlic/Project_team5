@@ -277,11 +277,12 @@ const Cart = () => {
                             Giảm ₫300.000 phí vận chuyển đơn tối thiểu ₫0; Giảm ₫500.000 phí vận chuyển đơn tối thiểu ₫500.000
                         </div>
                     </div>
-                )) : <p>Chưa có sản phẩm nào đc mua.</p> }
+                )) : <p>Vui lòng chọn sản phẩm để mua hàng.</p> }
 
                 
                 </div>
             {/* mua hàng */}
+            {carts!==null && carts?.length > 0 ?
             <div className={ isFixed ? "fixed-checkout-bar bar" : "static-checkout-bar bar"}>
                     <div className='col-md-6 d-none d-md-block' >
                         <div className='d-flex align-items-center' style={{margin:'0 12px'}}>
@@ -298,11 +299,15 @@ const Cart = () => {
                         </p>
                     </div>
                     <div className='col-md-2 col-6'>
-                        <Link to='/pay' >
+                         
+                            <Link to='/pay' >
                             <button style={{height:'40px', width:'80%', color:'#fff', border:'none'}}>Mua hàng</button>
-                        </Link>
+                            </Link>  
                     </div>
             </div>
+            :
+                <span></span>
+                }
             {/* có thể cũng thích */}
             <div className='mt-5 '>
                 <div className='row'>
