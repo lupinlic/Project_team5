@@ -14,6 +14,7 @@ import { faSearch, faUser, faSignOutAlt, faShoppingCart, faPhone, faHome, faCog,
 function Header() {
     const { cartCount, setCartCount } = useContext(CartContext);
     const [userId, setUserId] = useState(null);
+    const [UserName, setUserName] = useState(null);
     const userData = localStorage.getItem('user');
 
 
@@ -30,6 +31,7 @@ function Header() {
         const parsedUser = JSON.parse(userData);
         if (parsedUser !== null && parsedUser !== undefined) {
             setUserId(parsedUser.user_id);
+            setUserName(parsedUser.user_name);
         }
     }, []);
 
@@ -156,7 +158,7 @@ function Header() {
                                         </div>
                                         <div className="col-9 col-md-9">Xin chào!<br />
                                             {userId ? (
-                                                <strong className="text-danger">Lupin</strong>
+                                                <strong className="text-danger">{UserName}</strong>
                                             ) : (
                                                 // Nếu chưa đăng nhập
                                                 <Link to="/Login" style={{ textDecoration: 'none', color: 'red', fontWeight: '500' }}>Đăng nhập</Link>
