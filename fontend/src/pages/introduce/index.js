@@ -38,7 +38,7 @@ function Introducue() {
             <div className=" gt p-3">
                 <div className="row">
                 <div className="col-md-6">
-                    <p style={{fontWeight: 500, fontSize: 20}}>Giới thiệu</p>
+                    
                     <p style={{fontWeight: 500}}>EIGHT STORE - Mỹ phẩm chính hãng tại Triều Khúc: LAN TỎA ĐIỀU ĐẸP ĐẼ</p>
                     <p>Dù chỉ là cửa hàng nhỏ nhắn thuộc Triều Khúc xinh đẹp nhưng Eight Store
                     thật sự hạnh phúc khi lúc nào cũng nhận được sự yêu thương và ủng hộ của các bạn.</p>
