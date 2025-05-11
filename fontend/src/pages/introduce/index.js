@@ -27,17 +27,11 @@ function Introducue() {
         <div>
             <div id="container1" className="container py-3">
             <div className="snow" />
-            <div className=" main_gt p-3">
-                <div className="row">
-                <div className="col-md-5"><p>Trang chủ&gt; Giới thiệu</p></div>
-                <div className="col-md-7">
-                    {/* <img style="height:50px; width:300px" src="../../css/img/noel/GIAY HOA.png" alt=""> */}
-                </div>
-                </div>
-            </div>
+           
             <div className=" gt p-3">
                 <div className="row">
                 <div className="col-md-6">
+                    <p style={{fontWeight: 500}}>Giới thiệu</p>
                     
                     <p style={{fontWeight: 500}}>EIGHT STORE - Mỹ phẩm chính hãng tại Triều Khúc: LAN TỎA ĐIỀU ĐẸP ĐẼ</p>
                     <p>Dù chỉ là cửa hàng nhỏ nhắn thuộc Triều Khúc xinh đẹp nhưng Eight Store

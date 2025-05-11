@@ -268,9 +268,7 @@ function Header() {
 
                                         </div>
                                     </li>
-                                    <li className="nav-item ">
-                                        <Link className="nav-link" to="/Introduce">Giới thiệu</Link>
-                                    </li>
+                                    
                                 </ul>
                             </div>
                             <div className="col-12 col-md-6">
