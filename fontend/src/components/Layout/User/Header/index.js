@@ -29,7 +29,7 @@ function Header() {
   const userData = localStorage.getItem("user");
   const [searchType, setSearchType] = useState("product");
   const [inputValue, setInputValue] = useState(""); // giá trị người đang gõ
-  const [sort] = useState("");
+  const [sort] = useState("price");
 
   const handleLogout = () => {
     axios.get(`${apiUrl}/api/user/logout`);

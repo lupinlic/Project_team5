@@ -65,10 +65,10 @@ class ProductController extends Controller
 
     // Sắp xếp
     if ($request->has('sort')) {
-      if ($request->sort === 'price_asc') {
-        $query->orderBy('price', 'asc');
-      } elseif ($request->sort === 'price_desc') {
-        $query->orderBy('price', 'desc');
+      if ($request->sort === 'price') {
+        $query->orderBy('product_price', 'asc');
+      } elseif ($request->sort === 'price') {
+        $query->orderBy('product_price', 'desc');
       }
     }
 

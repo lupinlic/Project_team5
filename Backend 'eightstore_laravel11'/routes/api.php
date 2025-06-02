@@ -43,6 +43,8 @@ Route::get('vouchers', [VoucherController::class, 'index']);
 Route::get('categorys/{category}/products', [CategoryController::class, 'ShowProducts']);
 Route::get('suppliers/{supplier}/products', [SupplierController::class, 'ShowProducts']);
 Route::apiResource('categorys', CategoryController::class)->only('index', 'show');
+Route::get('getconditionOfProducts', [ProductController::class, 'getProductsForCondition']);
+
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -89,7 +91,6 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::get('user/{user}/orders', [UserController::class, 'GetOrderByUser']);
 
 
-  Route::get('getconditionOfProducts', [ProductController::class, 'getProductsForCondition']);
 
 
   //  --nd đăng nhập xog thì ms đăng xuất đc
